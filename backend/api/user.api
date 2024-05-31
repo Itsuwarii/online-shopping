@@ -2,45 +2,48 @@ syntax = "v1"
 
 // 用户登录
 type (
-    LoginReq {
-        Username string `json:"username"`
-        Password string `json:"password"`
-    }
+	LoginReq {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
 
-    LoginResp {
-        Id       int64  `json:"id"`
-        Name     string `json:"name"`
-        Token    string `json:"token"`
-        Expire   int64  `json:"expire"`
-		RefreshAfter int64 `json:"refresh_after"`
-    }
+	LoginResp {
+		Id           int64  `json:"id"`
+		Name         string `json:"name"`
+		Token        string `json:"token"`
+		Expire       int64  `json:"expire"`
+		RefreshAfter int64  `json:"refresh_after"`
+	}
 )
 
 // 用户注册
 type (
-	RegisterRequest {
+	RegisterReq {
 		Name      string `json:"name"`
 		Password  string `json:"password"`
 		Sex       int    `json:"sex"`
 		TelePhone int64  `json:"telephone"`
 		Intro     string `json:"intro"`
 	}
+
+	RegisterResp {
+	}
 )
 
 // 用户登录注册与令牌
 @server (
-    prefix: /login
+	prefix: /token
 )
 service mall-api {
 	@handler Login
-    post /signin (LoginReq) returns (LoginResp)
+	post /signin (LoginReq) returns (LoginResp)
 
-    @handler Register
-    post /register (RegisterRequest) returns (LoginResp)
+	@handler Register
+	post /register (RegisterReq) returns (LoginResp)
 
 	// 刷新令牌
 	@handler Refresh
-    post /refresh returns (LoginResp)
+	post /refresh returns (LoginResp)
 }
 
 // 用户存取自己的信息
@@ -63,7 +66,7 @@ type (
 )
 
 @server (
-    jwt: Auth
+	jwt: Auth
 )
 service mall-api {
 	@handler GetUserInfoHandler
@@ -72,4 +75,3 @@ service mall-api {
 	@handler PutUserInfoHandler
 	post /user (PutUserInfoRequest)
 }
-

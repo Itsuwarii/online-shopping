@@ -25,6 +25,6 @@ func NewGetProductLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetPro
 
 func (l *GetProductLogic) GetProduct(req *types.GetProductRequest) (resp *types.GetProductReply, err error) {
 	// todo: add your logic here and delete this line
-
+	
 	return
 }
