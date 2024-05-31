@@ -1,61 +1,72 @@
 syntax = "v1"
 
+// 用户登录
 type (
     LoginReq {
         Username string `json:"username"`
         Password string `json:"password"`
     }
 
-    LoginResp {
-        Id       int64  `json:"id"`
-        Name     string `json:"name"`
-        Token    string `json:"token"`
-        ExpireAt string `json:"expireAt"`
-    }
+    // LoginResp {
+    //     Id       int64  `json:"id"`
+    //     Name     string `json:"name"`
+    //     Token    string `json:"token"`
+    //     ExpireAt string `json:"expireAt"`
+    // }
 )
 
+// 用户注册
 type (
 	RegisterRequest {
-		ID        int64  `json:"user_id"`
 		Name      string `json:"name"`
-		ImageId   int64  `json:"image_id"`
+		Password  string `json:"password"`
 		Sex       int    `json:"sex"`
 		TelePhone int64  `json:"telephone"`
-		CartId    int64  `json:"cart_id"`
-		Desc      string `json:"desc"`
+		Intro     string `json:"intro"`
 	}
 
-	RegisterReply {
-        Id       int64  `json:"id"`
-        Name     string `json:"name"`
-        Token    string `json:"token"`
-        ExpireAt string `json:"expireAt"`
-    }
+	// RegisterReply {
+    //     Id       int64  `json:"id"`
+    //     Name     string `json:"name"`
+	// 	ImageId  int64  `json:"image_id"`
+    //     Token    string `json:"token"`
+    //     ExpireAt string `json:"expireAt"`
+    // }
 )
 
+// 用户登录注册与令牌
+@server (
+    prefix: /login
+)
 service mall-api {
 	@handler Login
-    post /login (LoginReq) returns (LoginResp)
+    post /signin (LoginReq)
 
     @handler Register
-    post /register (RegisterRequest) returns (RegisterReply)
+    post /register (RegisterRequest)
+
+	// 刷新令牌
+	@handler Refresh
+    post /refresh
 }
 
-
+// 用户存取自己的信息
 type (
-	GetUserInfoRequest {
-		UserID int64 `path:"id"`
-	}
 	GetUserInfoReply {
-		ID        int64  `json:"user_id"`
 		Name      string `json:"name"`
 		ImageId   int64  `json:"image_id"`
 		Sex       int    `json:"sex"`
 		TelePhone int64  `json:"telephone"`
-		CartId    int64  `json:"cart_id"`
 		Desc      string `json:"desc"`
 	}
 
+	PutUserInfoRequest {
+		Name      string `json:"name"`
+		ImageId   int64  `json:"image_id"`
+		Sex       int    `json:"sex"`
+		TelePhone int64  `json:"telephone"`
+		Intro     string `json:"intro"`
+	}
 )
 
 @server (
@@ -63,6 +74,9 @@ type (
 )
 service mall-api {
 	@handler GetUserInfoHandler
-	get /user/:id (GetUserInfoRequest) returns (GetUserInfoReply)
+	get /user returns (GetUserInfoReply)
+
+	@handler PutUserInfoHandler
+	post /user (PutUserInfoRequest)
 }
 

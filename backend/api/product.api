@@ -1,0 +1,69 @@
+syntax = "v1"
+
+type (
+	GetAllProductReply {
+		ProductIdList []int64 `json:"id_list"`
+	}
+
+	GetProductRequest {
+		ProductId int64 `path:"id"`
+	}
+
+	GetProductReply {
+		ID          int64  `json:"id"`
+		Name        string `json:"name"`
+		Price       int64  `json:"price"`
+		ImageIdList string `json:"image_id_list"`
+		Desc        string `json:"desc"`
+		MerchantId  string `json:"merchant"`
+		State       int64  `json:"state"`
+		Amount      int64  `json:"amount"`
+	}
+
+	AddProductRequest {
+		Name        string `json:"name"`
+		Price       int64  `json:"price"`
+		ImageIdList string `json:"image_id_list"`
+		Desc        string `json:"desc"`
+		State       int64  `json:"state"`
+		Amount      int64  `json:"amount"`
+	}
+
+	UpdateProductRequest {
+		ID          int64  `path:"id"`
+		Name        string `json:"name"`
+		Price       int64  `json:"price"`
+		ImageIdList string `json:"image_id_list"`
+		Desc        string `json:"desc"`
+		State       int64  `json:"state"`
+		Amount      int64  `json:"amount"`
+	}
+
+	DeleteProductRequest {
+		ID          int64  `path:"id"`
+	}
+)
+
+// 订单
+@server (
+	jwt: Auth
+)
+service mall-api {
+	@handler GetAllProductHandler
+	get /product returns (GetAllProductReply)
+
+	@handler GetProductHandler
+	get /product/:id (GetProductRequest) returns (GetProductReply)
+
+	// 商家添加商品
+	@handler AddProductHandler
+	post /product/:id (AddProductRequest)
+
+	// 商家修改商品
+	@handler UpdateProductHandler
+	put /product/:id (UpdateProductRequest)
+
+	// 商家删除商品
+	@handler DeleteProductHandler
+	delete /product/:id (DeleteProductRequest)
+}

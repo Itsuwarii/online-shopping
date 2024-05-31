@@ -1,18 +1,55 @@
 syntax = "v1"
 
 type (
-	ActionRequest {
+	GetActionListReply {
+		ActionIdList []int64 `json:"action_id_list"`
+	}
+
+	GetActionRequest {
 		ActionID int64 `path:"id"`
 	}
-	ActionReply {
-		ID           int64  `json:"id"`
-		UserId       int64  `json:"user_id"`
-		MerchantId   int64  `json:"merchant_id"`
-		ContentList  string `json:"content_list"`
+
+	GetActionReply {
+		ID          int64  `json:"id"`
+		UserId      int64  `json:"user_id"`
+		MerchantId  int64  `json:"merchant_id"`
+		ContentList []string `json:"content_list"`
+	}
+
+	CreateActionRequest {
+		UserId     int64 `json:"user_id"`
+		MerchantId int64 `json:"merchant_id"`
+	}
+
+	CreateActionReply {
+		ID          int64  `json:"id"`
+	}
+
+	// 增加内容
+	AddActionContentRequest {
+		ID          int64  `path:"id"`
+		NewContent  string `json:"content"`
+	}
+
+	// 删除整个会话
+	DeleteActionRequest {
+		ID          int64  `path:"id"`
 	}
 )
 
 service mall-api {
-	@handler ActionHandler
-	get /action/:id (ActionRequest) returns (ActionReply)
+	@handler GetActionListHandler
+	get /action returns (GetActionListReply)
+
+	@handler GetActionRequestHandler
+	get /action/:id (GetActionRequest) returns (GetActionReply)
+
+	@handler CreateActionHandler
+	post /action/:id (CreateActionRequest) returns (CreateActionReply)
+
+	@handler AddActionContentHandler
+	put /action/:id (AddActionContentRequest)
+
+	@handler DeleteActionHandler
+	delete /action/:id (DeleteActionRequest)
 }
