@@ -1,0 +1,19 @@
+syntax = "v1"
+
+type (
+	OrderRequest {
+		ActionID int64 `path:"id"`
+	}
+    
+	OrderReply {
+		ID                 int64  `json:"id"`
+		UserId             int64  `json:"user_id"`
+		MerchantId         int64  `json:"merchant_id"`
+		OrderProductsList  string `json:"order_products_list"`
+	}
+)
+
+service mall-api {
+	@handler OrderHandler
+	get /order/:id (OrderRequest) returns (OrderReply)
+}

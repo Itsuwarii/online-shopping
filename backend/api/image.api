@@ -1,0 +1,17 @@
+syntax = "v1"
+
+type (
+	ImageRequest {
+		ImageId int64 `path:"id"`
+	}
+	ImageReply {
+		ID    int64  `json:"id"`
+		ImageBase64 string `json:"imagebase64"`
+	}
+)
+
+service mall-api {
+	@handler ImageHandler
+	get /image/:id (ImageRequest) returns (ImageReply)
+}
+

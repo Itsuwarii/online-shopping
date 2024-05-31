@@ -1,0 +1,68 @@
+syntax = "v1"
+
+type (
+    LoginReq {
+        Username string `json:"username"`
+        Password string `json:"password"`
+    }
+
+    LoginResp {
+        Id       int64  `json:"id"`
+        Name     string `json:"name"`
+        Token    string `json:"token"`
+        ExpireAt string `json:"expireAt"`
+    }
+)
+
+type (
+	RegisterRequest {
+		ID        int64  `json:"user_id"`
+		Name      string `json:"name"`
+		ImageId   int64  `json:"image_id"`
+		Sex       int    `json:"sex"`
+		TelePhone int64  `json:"telephone"`
+		CartId    int64  `json:"cart_id"`
+		Desc      string `json:"desc"`
+	}
+
+	RegisterReply {
+        Id       int64  `json:"id"`
+        Name     string `json:"name"`
+        Token    string `json:"token"`
+        ExpireAt string `json:"expireAt"`
+    }
+)
+
+service mall-api {
+	@handler Login
+    post /login (LoginReq) returns (LoginResp)
+
+    @handler Register
+    post /register (RegisterRequest) returns (RegisterReply)
+}
+
+
+type (
+	GetUserInfoRequest {
+		UserID int64 `path:"id"`
+	}
+	GetUserInfoReply {
+		ID        int64  `json:"user_id"`
+		Name      string `json:"name"`
+		ImageId   int64  `json:"image_id"`
+		Sex       int    `json:"sex"`
+		TelePhone int64  `json:"telephone"`
+		CartId    int64  `json:"cart_id"`
+		Desc      string `json:"desc"`
+	}
+
+)
+
+@server (
+    jwt: Auth
+)
+service mall-api {
+	@handler GetUserInfoHandler
+	get /user/:id (GetUserInfoRequest) returns (GetUserInfoReply)
+}
+

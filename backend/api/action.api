@@ -1,0 +1,18 @@
+syntax = "v1"
+
+type (
+	ActionRequest {
+		ActionID int64 `path:"id"`
+	}
+	ActionReply {
+		ID           int64  `json:"id"`
+		UserId       int64  `json:"user_id"`
+		MerchantId   int64  `json:"merchant_id"`
+		ContentList  string `json:"content_list"`
+	}
+)
+
+service mall-api {
+	@handler ActionHandler
+	get /action/:id (ActionRequest) returns (ActionReply)
+}

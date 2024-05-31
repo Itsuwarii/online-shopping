@@ -1,0 +1,17 @@
+syntax = "v1"
+
+type (
+	UserCartRequest {
+		CartID int64 `path:"id"`
+	}
+	UserCartReply {
+		CartID      int64  `json:"cart_id"`
+		ProductList string `json:"product_list"`
+	}
+)
+
+service mall-api {
+	@handler UserCartHandler
+	get /cart/:id (UserCartRequest) returns (UserCartReply)
+}
+
