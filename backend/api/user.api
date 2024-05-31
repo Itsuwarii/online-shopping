@@ -7,12 +7,13 @@ type (
         Password string `json:"password"`
     }
 
-    // LoginResp {
-    //     Id       int64  `json:"id"`
-    //     Name     string `json:"name"`
-    //     Token    string `json:"token"`
-    //     ExpireAt string `json:"expireAt"`
-    // }
+    LoginResp {
+        Id       int64  `json:"id"`
+        Name     string `json:"name"`
+        Token    string `json:"token"`
+        Expire   int64  `json:"expire"`
+		RefreshAfter int64 `json:"refresh_after"`
+    }
 )
 
 // 用户注册
@@ -24,14 +25,6 @@ type (
 		TelePhone int64  `json:"telephone"`
 		Intro     string `json:"intro"`
 	}
-
-	// RegisterReply {
-    //     Id       int64  `json:"id"`
-    //     Name     string `json:"name"`
-	// 	ImageId  int64  `json:"image_id"`
-    //     Token    string `json:"token"`
-    //     ExpireAt string `json:"expireAt"`
-    // }
 )
 
 // 用户登录注册与令牌
@@ -40,14 +33,14 @@ type (
 )
 service mall-api {
 	@handler Login
-    post /signin (LoginReq)
+    post /signin (LoginReq) returns (LoginResp)
 
     @handler Register
-    post /register (RegisterRequest)
+    post /register (RegisterRequest) returns (LoginResp)
 
 	// 刷新令牌
 	@handler Refresh
-    post /refresh
+    post /refresh returns (LoginResp)
 }
 
 // 用户存取自己的信息
