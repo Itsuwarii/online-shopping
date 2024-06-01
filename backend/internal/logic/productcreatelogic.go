@@ -9,22 +9,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type UpdateProductLogic struct {
+type ProductCreateLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewUpdateProductLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateProductLogic {
-	return &UpdateProductLogic{
+func NewProductCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ProductCreateLogic {
+	return &ProductCreateLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *UpdateProductLogic) UpdateProduct(req *types.UpdateProductReq) error {
+func (l *ProductCreateLogic) ProductCreate(req *types.NewProduct) (resp *types.ProductId, err error) {
 	// todo: add your logic here and delete this line
 
-	return nil
+	return
 }

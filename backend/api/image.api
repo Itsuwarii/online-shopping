@@ -21,6 +21,6 @@ service mall-api {
 	@handler ImageHandler
 	get / (ImageId) returns (Image)
 
-	@handler PutImageHandler
+	@handler ImagePutHandler
 	post / (NewImage) returns (ImageId)
 }

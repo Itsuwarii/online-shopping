@@ -9,7 +9,7 @@ import (
 	"seig.com/onlineshoppingbackend/internal/types"
 )
 
-func DeleteOrderHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func OrderGetHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.OrderId
 		if err := httpx.Parse(r, &req); err != nil {
@@ -17,12 +17,12 @@ func DeleteOrderHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			return
 		}
 
-		l := logic.NewDeleteOrderLogic(r.Context(), svcCtx)
-		err := l.DeleteOrder(&req)
+		l := logic.NewOrderGetLogic(r.Context(), svcCtx)
+		resp, err := l.OrderGet(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.Ok(w)
+			httpx.OkJsonCtx(r.Context(), w, resp)
 		}
 	}
 }

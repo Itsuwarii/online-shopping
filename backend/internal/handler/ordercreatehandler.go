@@ -9,16 +9,16 @@ import (
 	"seig.com/onlineshoppingbackend/internal/types"
 )
 
-func CreateProductHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func OrderCreateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.NewProduct
+		var req types.NewOrder
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewCreateProductLogic(r.Context(), svcCtx)
-		resp, err := l.CreateProduct(&req)
+		l := logic.NewOrderCreateLogic(r.Context(), svcCtx)
+		resp, err := l.OrderCreate(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

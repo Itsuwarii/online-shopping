@@ -9,16 +9,16 @@ import (
 	"seig.com/onlineshoppingbackend/internal/types"
 )
 
-func UpdateProductHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ActionUpdateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.UpdateProductReq
+		var req types.UpdateActionReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewUpdateProductLogic(r.Context(), svcCtx)
-		err := l.UpdateProduct(&req)
+		l := logic.NewActionUpdateLogic(r.Context(), svcCtx)
+		err := l.ActionUpdate(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

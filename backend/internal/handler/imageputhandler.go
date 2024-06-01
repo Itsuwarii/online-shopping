@@ -9,20 +9,20 @@ import (
 	"seig.com/onlineshoppingbackend/internal/types"
 )
 
-func UpdateActionHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ImagePutHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.UpdateActionReq
+		var req types.NewImage
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewUpdateActionLogic(r.Context(), svcCtx)
-		err := l.UpdateAction(&req)
+		l := logic.NewImagePutLogic(r.Context(), svcCtx)
+		resp, err := l.ImagePut(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.Ok(w)
+			httpx.OkJsonCtx(r.Context(), w, resp)
 		}
 	}
 }

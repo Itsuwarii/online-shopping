@@ -8,14 +8,14 @@ import (
 	"seig.com/onlineshoppingbackend/internal/svc"
 )
 
-func ClearCartHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ProductRandomIdListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		l := logic.NewClearCartLogic(r.Context(), svcCtx)
-		err := l.ClearCart()
+		l := logic.NewProductRandomIdListLogic(r.Context(), svcCtx)
+		resp, err := l.ProductRandomIdList()
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.Ok(w)
+			httpx.OkJsonCtx(r.Context(), w, resp)
 		}
 	}
 }

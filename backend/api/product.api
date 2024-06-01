@@ -50,21 +50,21 @@ type (
 	jwt: Auth
 )
 service mall-api {
-	@handler RandomProductIdListHandler
+	@handler ProductRandomIdListHandler
 	get /random returns (RandomProductIdListResp)
 
 	@handler ProductHandler
 	get / (ProductId) returns (Product)
 
 	// 商家添加商品
-	@handler CreateProductHandler
+	@handler ProductCreateHandler
 	post / (NewProduct) returns (ProductId)
 
 	// 商家修改商品
-	@handler UpdateProductHandler
+	@handler ProductUpdateHandler
 	put / (UpdateProductReq)
 
 	// 商家删除商品
-	@handler DeleteProductHandler
+	@handler ProductDeleteHandler
 	delete / (DeleteProductReq)
 }

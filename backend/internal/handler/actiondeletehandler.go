@@ -9,16 +9,16 @@ import (
 	"seig.com/onlineshoppingbackend/internal/types"
 )
 
-func UpdateCartHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ActionDeleteHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.Cart
+		var req types.DeleteActionReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewUpdateCartLogic(r.Context(), svcCtx)
-		err := l.UpdateCart(&req)
+		l := logic.NewActionDeleteLogic(r.Context(), svcCtx)
+		err := l.ActionDelete(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

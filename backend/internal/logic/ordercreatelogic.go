@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type PutImageLogic struct {
+type OrderCreateLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewPutImageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PutImageLogic {
-	return &PutImageLogic{
+func NewOrderCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *OrderCreateLogic {
+	return &OrderCreateLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *PutImageLogic) PutImage(req *types.NewImage) (resp *types.ImageId, err error) {
+func (l *OrderCreateLogic) OrderCreate(req *types.NewOrder) (resp *types.Order, err error) {
 	// todo: add your logic here and delete this line
 
 	return

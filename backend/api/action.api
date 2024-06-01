@@ -1,8 +1,9 @@
 syntax = "v1"
 
 type Content {
-	Date string `json:"date"`
-	Text string `json:"text"`
+	OwnerId int64 `json:owner`
+	Date 	int64 `json:"date"`
+	Text 	string `json:"text"`
 }
 
 type (
@@ -13,34 +14,33 @@ type (
 
 	// 一个会话
 	ActionReq {
-		ActionID int64 `json:"id"`
+		ActionID int64 `json:"action_id"`
 	}
 
 	ActionResp {
-		ID          int64     `json:"id"`
+		ActionID    int64     `json:"action_id"`
 		UserId      int64     `json:"user_id"`
 		MerchantId  int64     `json:"merchant_id"`
 		ContentList []Content `json:"content_list"`
 	}
 
 	NewActionReq {
-		UserId     int64 `json:"user_id"`
 		MerchantId int64 `json:"merchant_id"`
 	}
 
 	NewActionResp {
-		ID int64 `json:"id"`
+		ActionID int64 `json:"action_id"`
 	}
 
 	// 增加内容
 	UpdateActionReq {
-		ID      int64   `json:"id"`
-		Content Content `json:"content"`
+		ActionID int64   `json:"action_id"`
+		Content  Content `json:"content"`
 	}
 
 	// 删除整个会话
 	DeleteActionReq {
-		ID int64 `json:"id"`
+		ActionID int64 `json:"action_id"`
 	}
 )
 
@@ -55,12 +55,12 @@ service mall-api {
 	@handler ActionHandler
 	get / (ActionReq) returns (ActionResp)
 
-	@handler CreateActionHandler
+	@handler ActionCreateHandler
 	post / (NewActionReq) returns (NewActionResp)
 
-	@handler UpdateActionHandler
+	@handler ActionUpdateHandler
 	put / (UpdateActionReq)
 
-	@handler DeleteActionHandler
+	@handler ActionDeleteHandler
 	delete / (DeleteActionReq)
 }

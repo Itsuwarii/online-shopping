@@ -6,11 +6,11 @@ type ActionListResp struct {
 }
 
 type ActionReq struct {
-	ActionID int64 `json:"id"`
+	ActionID int64 `json:"action_id"`
 }
 
 type ActionResp struct {
-	ID          int64     `json:"id"`
+	ActionID    int64     `json:"action_id"`
 	UserId      int64     `json:"user_id"`
 	MerchantId  int64     `json:"merchant_id"`
 	ContentList []Content `json:"content_list"`
@@ -32,8 +32,9 @@ type CartProduct struct {
 }
 
 type Content struct {
-	Date string `json:"date"`
-	Text string `json:"text"`
+	OwnerId int64  `json:owner`
+	Date    int64  `json:"date"`
+	Text    string `json:"text"`
 }
 
 type DateScope struct {
@@ -42,7 +43,7 @@ type DateScope struct {
 }
 
 type DeleteActionReq struct {
-	ID int64 `json:"id"`
+	ActionID int64 `json:"action_id"`
 }
 
 type DeleteProductReq struct {
@@ -86,12 +87,11 @@ type NameAvailableResp struct {
 }
 
 type NewActionReq struct {
-	UserId     int64 `json:"user_id"`
 	MerchantId int64 `json:"merchant_id"`
 }
 
 type NewActionResp struct {
-	ID int64 `json:"id"`
+	ActionID int64 `json:"action_id"`
 }
 
 type NewImage struct {
@@ -169,8 +169,8 @@ type RegisterResp struct {
 }
 
 type UpdateActionReq struct {
-	ID      int64   `json:"id"`
-	Content Content `json:"content"`
+	ActionID int64   `json:"action_id"`
+	Content  Content `json:"content"`
 }
 
 type UpdateProductReq struct {

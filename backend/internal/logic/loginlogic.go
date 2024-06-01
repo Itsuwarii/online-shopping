@@ -25,12 +25,11 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 	}
 }
 
-func (l *LoginLogic) getJwtToken(secret string, accessExpire int64, now int64, id int64, cartId int64) (jwtToken string, err error) {
-
+func (l *LoginLogic) getJwtToken(secret string, id int64, cartId int64) (jwtToken string, err error) {
 	claims := make(jwt.MapClaims)
-	claims["exp"] = now + accessExpire
 	claims["id"] = id
 	claims["cart_id"] = cartId
+
 	token := jwt.New(jwt.SigningMethodHS256)
 	token.Claims = claims
 	return token.SignedString([]byte(secret))
@@ -48,7 +47,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	now := time.Now().Unix()
 	accessExpire := l.svcCtx.Config.Auth.AccessExpire
 	accessSecret := l.svcCtx.Config.Auth.AccessSecret
-	jwtToken, err := l.getJwtToken(accessSecret, accessExpire, now, id, cartId)
+	jwtToken, err := l.getJwtToken(accessSecret, id, cartId)
 	if err != nil {
 		return nil, err
 	}

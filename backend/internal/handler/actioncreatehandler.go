@@ -9,20 +9,20 @@ import (
 	"seig.com/onlineshoppingbackend/internal/types"
 )
 
-func DeleteProductHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ActionCreateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.DeleteProductReq
+		var req types.NewActionReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewDeleteProductLogic(r.Context(), svcCtx)
-		err := l.DeleteProduct(&req)
+		l := logic.NewActionCreateLogic(r.Context(), svcCtx)
+		resp, err := l.ActionCreate(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.Ok(w)
+			httpx.OkJsonCtx(r.Context(), w, resp)
 		}
 	}
 }

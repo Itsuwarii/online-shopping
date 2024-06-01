@@ -9,22 +9,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type DeleteActionLogic struct {
+type OrderGetLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewDeleteActionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteActionLogic {
-	return &DeleteActionLogic{
+func NewOrderGetLogic(ctx context.Context, svcCtx *svc.ServiceContext) *OrderGetLogic {
+	return &OrderGetLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *DeleteActionLogic) DeleteAction(req *types.DeleteActionReq) error {
+func (l *OrderGetLogic) OrderGet(req *types.OrderId) (resp *types.Order, err error) {
 	// todo: add your logic here and delete this line
 
-	return nil
+	return
 }

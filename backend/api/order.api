@@ -47,14 +47,14 @@ service mall-api {
 	get /list (DateScope) returns (OrderIdList)
 
 	// 获取属于登录用户的一个订单
-	@handler GetOrderHandler
+	@handler OrderGetHandler
 	get / (OrderId) returns (Order)
 
 	// 创建订单
-	@handler CreateOrderHandler
+	@handler OrderCreateHandler
 	post / (NewOrder) returns (Order)
 
 	// 删除订单
-	@handler DeleteOrderHandler
+	@handler OrderDeleteHandler
 	delete / (OrderId)
 }

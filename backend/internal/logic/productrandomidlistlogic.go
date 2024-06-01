@@ -9,22 +9,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type DeleteOrderLogic struct {
+type ProductRandomIdListLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewDeleteOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteOrderLogic {
-	return &DeleteOrderLogic{
+func NewProductRandomIdListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ProductRandomIdListLogic {
+	return &ProductRandomIdListLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *DeleteOrderLogic) DeleteOrder(req *types.OrderId) error {
+func (l *ProductRandomIdListLogic) ProductRandomIdList() (resp *types.RandomProductIdListResp, err error) {
 	// todo: add your logic here and delete this line
 
-	return nil
+	return
 }

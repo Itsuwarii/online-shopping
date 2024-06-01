@@ -20,10 +20,10 @@ service mall-api {
 	get / returns (Cart)
 
 	// 修改购物车
-	@handler UpdateCartHandler
+	@handler CartUpdateHandler
 	post / (Cart)
 
 	// 清空购物车
-	@handler ClearCartHandler
+	@handler CartClearHandler
 	delete /
 }
