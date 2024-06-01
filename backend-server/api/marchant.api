@@ -1,0 +1,112 @@
+syntax = "v1"
+
+type MerchantAuth {
+	Token        string `json:"token"`
+	Expire       int64  `json:"expire"`
+	RefreshAfter int64  `json:"refresh_after"`
+}
+
+type (
+	MerchantLoginReq {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+
+	MerchantLoginResp {
+		Id      int64        `json:"id"`
+		Name    string       `json:"name"`
+		Status  int64        `json:"status"`
+		Message string       `json:"message"`
+		Auth    MerchantAuth `json:"auth"`
+	}
+)
+
+type (
+	MerchantNameAvailableReq {
+		Name string `json:"name"`
+	}
+
+	MerchantNameAvailableResp {
+		Status int64 `json:"status"`
+	}
+
+	MerchantRegisterReq {
+		Name      string `json:"name"`
+		Password  string `json:"password"`
+		Sex       int    `json:"sex"`
+		TelePhone int64  `json:"telephone"`
+		Intro     string `json:"intro"`
+	}
+
+	MerchantRegisterResp {
+		Status  int64        `json:"status"`
+		Message string       `json:"message"`
+		Auth    MerchantAuth `json:"auth"`
+	}
+)
+
+@server (
+	prefix: /merchant/token
+)
+service mall-api {
+	@handler MerchantLoginHandler
+	post /signin (MerchantLoginReq) returns (MerchantLoginResp)
+
+	@handler MerchantRegisterNameAvailableHandler
+	get /register/checkname (MerchantNameAvailableReq) returns (MerchantNameAvailableResp)
+
+	@handler MerchantRegisterHandler
+	post /register (MerchantRegisterReq) returns (MerchantRegisterResp)
+}
+
+// 刷新令牌
+@server (
+	prefix: /token/merchant
+	jwt: Auth
+)
+service mall-api {
+	@handler MerchantRefreshHandler
+	post /refresh returns (MerchantAuth)
+}
+
+// 用户存取自己的信息
+type (
+	MerchantInfoResp {
+		Name      string `json:"name"`
+		ImageId   int64  `json:"image_id"`
+		Sex       int    `json:"sex"`
+		TelePhone int64  `json:"telephone"`
+		Desc      string `json:"desc"`
+	}
+
+	MerchantUpdateInfoReq {
+		Name      string `json:"name"`
+		ImageId   int64  `json:"image_id"`
+		Sex       int    `json:"sex"`
+		TelePhone int64  `json:"telephone"`
+		Intro     string `json:"intro"`
+	}
+
+	MerchantUpdateInfoResp {
+	}
+
+	MerchantDeleteReq {
+	}
+	MerchantDeleteResp {
+	}
+)
+
+@server (
+	prefix: /merchant
+	jwt: Auth
+)
+service mall-api {
+	@handler MerchantInfoHandler
+	get / returns (MerchantInfoResp)
+
+	@handler MerchantUpdateInfoHandler
+	post / (MerchantUpdateInfoReq) returns (MerchantUpdateInfoResp)
+
+	@handler MerchantDeleteHandler
+	delete / (MerchantDeleteReq) returns (MerchantDeleteResp)
+}
