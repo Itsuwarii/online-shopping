@@ -9,22 +9,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetActionListLogic struct {
+type UpdateActionLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewGetActionListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetActionListLogic {
-	return &GetActionListLogic{
+func NewUpdateActionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateActionLogic {
+	return &UpdateActionLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *GetActionListLogic) GetActionList() (resp *types.GetActionListReply, err error) {
+func (l *UpdateActionLogic) UpdateAction(req *types.UpdateActionReq) error {
 	// todo: add your logic here and delete this line
 
-	return
+	return nil
 }

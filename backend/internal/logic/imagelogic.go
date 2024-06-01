@@ -9,22 +9,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type PutUserInfoLogic struct {
+type ImageLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewPutUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PutUserInfoLogic {
-	return &PutUserInfoLogic{
+func NewImageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ImageLogic {
+	return &ImageLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *PutUserInfoLogic) PutUserInfo(req *types.PutUserInfoRequest) error {
+func (l *ImageLogic) Image(req *types.ImageId) (resp *types.Image, err error) {
 	// todo: add your logic here and delete this line
 
-	return nil
+	return
 }

@@ -14,72 +14,38 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodGet,
-				Path:    "/action",
-				Handler: GetActionListHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/action/:id",
-				Handler: GetActionRequestHandler(serverCtx),
+				Path:    "/",
+				Handler: ImageHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/action/:id",
-				Handler: CreateActionHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPut,
-				Path:    "/action/:id",
-				Handler: AddActionContentHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodDelete,
-				Path:    "/action/:id",
-				Handler: DeleteActionHandler(serverCtx),
-			},
-		},
-	)
-
-	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/order",
-				Handler: CreateOrderHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/order/:id",
-				Handler: GetOrderHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodDelete,
-				Path:    "/order/:id",
-				Handler: DeleteOrderHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/orders",
-				Handler: GetOrdersHandler(serverCtx),
-			},
-		},
-		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
-	)
-
-	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPut,
-				Path:    "/image",
+				Path:    "/",
 				Handler: PutImageHandler(serverCtx),
 			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/image/:id",
-				Handler: GetImageHandler(serverCtx),
-			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/image"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/register",
+				Handler: RegisterHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/register/checkname",
+				Handler: RegisterNameAvailableHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/signin",
+				Handler: LoginHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/token"),
 	)
 
 	server.AddRoutes(
@@ -89,85 +55,143 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/refresh",
 				Handler: RefreshHandler(serverCtx),
 			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/register",
-				Handler: RegisterHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/signin",
-				Handler: LoginHandler(serverCtx),
-			},
-		},
-		rest.WithPrefix("/login"),
-	)
-
-	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodGet,
-				Path:    "/user",
-				Handler: GetUserInfoHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/user",
-				Handler: PutUserInfoHandler(serverCtx),
-			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/token"),
 	)
 
 	server.AddRoutes(
 		[]rest.Route{
 			{
 				Method:  http.MethodGet,
-				Path:    "/cart",
-				Handler: GetCartHandler(serverCtx),
+				Path:    "/",
+				Handler: UserInfoHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodPut,
-				Path:    "/cart",
-				Handler: UpdateProductToCartHandler(serverCtx),
+				Method:  http.MethodPost,
+				Path:    "/",
+				Handler: UpdateUserInfoHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/cart",
+				Path:    "/",
+				Handler: DeleteUserHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/user"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/",
+				Handler: CartHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/",
+				Handler: UpdateCartHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/",
 				Handler: ClearCartHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/cart"),
 	)
 
 	server.AddRoutes(
 		[]rest.Route{
 			{
 				Method:  http.MethodGet,
-				Path:    "/product",
-				Handler: GetAllProductHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/product/:id",
-				Handler: GetProductHandler(serverCtx),
+				Path:    "/",
+				Handler: ProductHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/product/:id",
-				Handler: AddProductHandler(serverCtx),
+				Path:    "/",
+				Handler: CreateProductHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPut,
-				Path:    "/product/:id",
+				Path:    "/",
 				Handler: UpdateProductHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/product/:id",
+				Path:    "/",
 				Handler: DeleteProductHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/random",
+				Handler: RandomProductIdListHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/product"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/",
+				Handler: ActionHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/",
+				Handler: CreateActionHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPut,
+				Path:    "/",
+				Handler: UpdateActionHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/",
+				Handler: DeleteActionHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/all",
+				Handler: ActionListHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/action"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/",
+				Handler: GetOrderHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/",
+				Handler: CreateOrderHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/",
+				Handler: DeleteOrderHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/list",
+				Handler: OrdersListHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/order"),
 	)
 }

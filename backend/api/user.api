@@ -1,5 +1,11 @@
 syntax = "v1"
 
+type Auth {
+	Token        string `json:"token"`
+	Expire       int64  `json:"expire"`
+	RefreshAfter int64  `json:"refresh_after"`
+}
+
 // 用户登录
 type (
 	LoginReq {
@@ -8,16 +14,24 @@ type (
 	}
 
 	LoginResp {
-		Id           int64  `json:"id"`
-		Name         string `json:"name"`
-		Token        string `json:"token"`
-		Expire       int64  `json:"expire"`
-		RefreshAfter int64  `json:"refresh_after"`
+		Id      int64  `json:"id"`
+		Name    string `json:"name"`
+		Status  int64  `json:"status"`
+		Message string `json:"message"`
+		Auth    Auth   `json:"auth"`
 	}
 )
 
 // 用户注册
 type (
+	NameAvailableReq {
+		Name string `json:"name"`
+	}
+
+	NameAvailableResp {
+		Status int64 `json:"status"`
+	}
+
 	RegisterReq {
 		Name      string `json:"name"`
 		Password  string `json:"password"`
@@ -27,28 +41,40 @@ type (
 	}
 
 	RegisterResp {
+		Status  int64  `json:"status"`
+		Message string `json:"message"`
+		Auth    Auth   `json:"auth"`
 	}
 )
 
-// 用户登录注册与令牌
+// 用户登录注册
 @server (
 	prefix: /token
 )
 service mall-api {
-	@handler Login
+	@handler LoginHandler
 	post /signin (LoginReq) returns (LoginResp)
 
-	@handler Register
-	post /register (RegisterReq) returns (LoginResp)
+	@handler RegisterNameAvailableHandler
+	get /register/checkname (NameAvailableReq) returns (NameAvailableResp)
 
-	// 刷新令牌
-	@handler Refresh
-	post /refresh returns (LoginResp)
+	@handler RegisterHandler
+	post /register (RegisterReq) returns (RegisterResp)
+}
+
+// 刷新令牌
+@server (
+	prefix: /token
+	jwt: Auth
+)
+service mall-api {
+	@handler RefreshHandler
+	post /refresh returns (Auth)
 }
 
 // 用户存取自己的信息
 type (
-	GetUserInfoReply {
+	UserInfoResp {
 		Name      string `json:"name"`
 		ImageId   int64  `json:"image_id"`
 		Sex       int    `json:"sex"`
@@ -56,22 +82,34 @@ type (
 		Desc      string `json:"desc"`
 	}
 
-	PutUserInfoRequest {
+	UpdateUserInfoReq {
 		Name      string `json:"name"`
 		ImageId   int64  `json:"image_id"`
 		Sex       int    `json:"sex"`
 		TelePhone int64  `json:"telephone"`
 		Intro     string `json:"intro"`
 	}
+
+	UpdateUserInfoResp {
+	}
+
+	DeleteUserReq {
+	}
+	DeleteUserResp {
+	}
 )
 
 @server (
+	prefix: /user
 	jwt: Auth
 )
 service mall-api {
-	@handler GetUserInfoHandler
-	get /user returns (GetUserInfoReply)
+	@handler UserInfoHandler
+	get / returns (UserInfoResp)
 
-	@handler PutUserInfoHandler
-	post /user (PutUserInfoRequest)
+	@handler UpdateUserInfoHandler
+	post / (UpdateUserInfoReq) returns (UpdateUserInfoResp)
+
+	@handler DeleteUserHandler
+	delete / (DeleteUserReq) returns (DeleteUserResp)
 }

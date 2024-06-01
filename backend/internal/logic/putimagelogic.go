@@ -23,7 +23,7 @@ func NewPutImageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PutImage
 	}
 }
 
-func (l *PutImageLogic) PutImage(req *types.PutImageRequest) (resp *types.PutImageReply, err error) {
+func (l *PutImageLogic) PutImage(req *types.NewImage) (resp *types.ImageId, err error) {
 	// todo: add your logic here and delete this line
 
 	return

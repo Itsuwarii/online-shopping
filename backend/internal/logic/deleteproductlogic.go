@@ -23,7 +23,7 @@ func NewDeleteProductLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Del
 	}
 }
 
-func (l *DeleteProductLogic) DeleteProduct(req *types.DeleteProductRequest) error {
+func (l *DeleteProductLogic) DeleteProduct(req *types.DeleteProductReq) error {
 	// todo: add your logic here and delete this line
 
 	return nil

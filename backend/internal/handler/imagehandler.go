@@ -9,20 +9,20 @@ import (
 	"seig.com/onlineshoppingbackend/internal/types"
 )
 
-func AddProductHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ImageHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.AddProductRequest
+		var req types.ImageId
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewAddProductLogic(r.Context(), svcCtx)
-		err := l.AddProduct(&req)
+		l := logic.NewImageLogic(r.Context(), svcCtx)
+		resp, err := l.Image(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.Ok(w)
+			httpx.OkJsonCtx(r.Context(), w, resp)
 		}
 	}
 }

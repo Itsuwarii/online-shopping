@@ -23,7 +23,7 @@ func NewGetOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetOrder
 	}
 }
 
-func (l *GetOrderLogic) GetOrder(req *types.GetOrderRequest) (resp *types.GetOrderReply, err error) {
+func (l *GetOrderLogic) GetOrder(req *types.OrderId) (resp *types.Order, err error) {
 	// todo: add your logic here and delete this line
 
 	return

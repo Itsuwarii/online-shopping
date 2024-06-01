@@ -1,69 +1,70 @@
 syntax = "v1"
 
 type (
-	GetAllProductReply {
+	RandomProductIdListResp {
 		ProductIdList []int64 `json:"id_list"`
 	}
 
-	GetProductRequest {
-		ProductId int64 `path:"id"`
+	ProductId {
+		Id int64 `json:"id"`
 	}
 
-	GetProductReply {
+	Product {
 		ID          int64  `json:"id"`
 		Name        string `json:"name"`
-		Price       int64  `json:"price"`
-		ImageIdList string `json:"image_id_list"`
+		Price       float64 `json:"price"`
+		ImageIdList []int64 `json:"image_id_list"`
 		Desc        string `json:"desc"`
-		MerchantId  string `json:"merchant"`
-		State       int64  `json:"state"`
+		MerchantId  int64  `json:"merchant"`
+		State       int  `json:"state"`
 		Amount      int64  `json:"amount"`
 	}
 
-	AddProductRequest {
+	NewProduct {
 		Name        string `json:"name"`
-		Price       int64  `json:"price"`
-		ImageIdList string `json:"image_id_list"`
+		Price       float64 `json:"price"`
+		ImageIdList []int64 `json:"image_id_list"`
 		Desc        string `json:"desc"`
-		State       int64  `json:"state"`
+		State       int    `json:"state"`
 		Amount      int64  `json:"amount"`
 	}
 
-	UpdateProductRequest {
+	UpdateProductReq {
 		ID          int64  `path:"id"`
 		Name        string `json:"name"`
-		Price       int64  `json:"price"`
+		Price       float64 `json:"price"`
 		ImageIdList string `json:"image_id_list"`
 		Desc        string `json:"desc"`
-		State       int64  `json:"state"`
+		State       int    `json:"state"`
 		Amount      int64  `json:"amount"`
 	}
 
-	DeleteProductRequest {
+	DeleteProductReq {
 		ID          int64  `path:"id"`
 	}
 )
 
-// 订单
+// 商品
 @server (
+	prefix: /product
 	jwt: Auth
 )
 service mall-api {
-	@handler GetAllProductHandler
-	get /product returns (GetAllProductReply)
+	@handler RandomProductIdListHandler
+	get /random returns (RandomProductIdListResp)
 
-	@handler GetProductHandler
-	get /product/:id (GetProductRequest) returns (GetProductReply)
+	@handler ProductHandler
+	get / (ProductId) returns (Product)
 
 	// 商家添加商品
-	@handler AddProductHandler
-	post /product/:id (AddProductRequest)
+	@handler CreateProductHandler
+	post / (NewProduct) returns (ProductId)
 
 	// 商家修改商品
 	@handler UpdateProductHandler
-	put /product/:id (UpdateProductRequest)
+	put / (UpdateProductReq)
 
 	// 商家删除商品
 	@handler DeleteProductHandler
-	delete /product/:id (DeleteProductRequest)
+	delete / (DeleteProductReq)
 }

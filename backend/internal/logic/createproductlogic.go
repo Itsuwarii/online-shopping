@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetImageLogic struct {
+type CreateProductLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewGetImageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetImageLogic {
-	return &GetImageLogic{
+func NewCreateProductLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateProductLogic {
+	return &CreateProductLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *GetImageLogic) GetImage(req *types.GetImageRequest) (resp *types.GetImageReply, err error) {
+func (l *CreateProductLogic) CreateProduct(req *types.NewProduct) (resp *types.ProductId, err error) {
 	// todo: add your logic here and delete this line
 
 	return

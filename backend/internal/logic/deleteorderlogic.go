@@ -23,7 +23,7 @@ func NewDeleteOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delet
 	}
 }
 
-func (l *DeleteOrderLogic) DeleteOrder(req *types.DeleteOrderRequest) error {
+func (l *DeleteOrderLogic) DeleteOrder(req *types.OrderId) error {
 	// todo: add your logic here and delete this line
 
 	return nil

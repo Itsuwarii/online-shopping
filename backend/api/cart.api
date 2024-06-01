@@ -1,31 +1,29 @@
 syntax = "v1"
 
-// 购物车取、加、改
-type (
-	GetCartReply {
-		ProductsList []string `json:"products_list"`
-	}
+type CartProduct {
+	ProductId int64 `json:"id"`
+	Number    int   `json:"number"`
+}
 
-	UpdateProductToCartRequest {
-		ProductId int64 `json:"product_id"`
-		ProductNum int64 `json:"product_num"`
-	}
-)
+// 购物车
+type Cart {
+	CartProductList []CartProduct `json:"cart_product_list"`
+}
 
 @server (
-    jwt: Auth
+	prefix: /cart
+	jwt: Auth
 )
 service mall-api {
-	// 获取全部商品
-	@handler GetCartHandler
-	get /cart returns (GetCartReply)
+	// 获取购物车
+	@handler CartHandler
+	get / returns (Cart)
 
-	// （增、删、改）一种商品
-	@handler UpdateProductToCartHandler
-	put /cart (UpdateProductToCartRequest)
+	// 修改购物车
+	@handler UpdateCartHandler
+	post / (Cart)
 
 	// 清空购物车
 	@handler ClearCartHandler
-	delete /cart
+	delete /
 }
-

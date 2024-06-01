@@ -8,10 +8,10 @@ import (
 	"seig.com/onlineshoppingbackend/internal/svc"
 )
 
-func GetActionListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ActionListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		l := logic.NewGetActionListLogic(r.Context(), svcCtx)
-		resp, err := l.GetActionList()
+		l := logic.NewActionListLogic(r.Context(), svcCtx)
+		resp, err := l.ActionList()
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

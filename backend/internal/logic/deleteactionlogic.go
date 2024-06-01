@@ -23,7 +23,7 @@ func NewDeleteActionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Dele
 	}
 }
 
-func (l *DeleteActionLogic) DeleteAction(req *types.DeleteActionRequest) error {
+func (l *DeleteActionLogic) DeleteAction(req *types.DeleteActionReq) error {
 	// todo: add your logic here and delete this line
 
 	return nil

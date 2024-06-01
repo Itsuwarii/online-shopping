@@ -1,57 +1,60 @@
 syntax = "v1"
 
+// 订单里的一个商品
+type OrderProduct {
+	ProductId int64   `json:"id"`
+	Number    int64   `json:"number"`
+	Price     float64 `json:"price"`
+}
+
 type (
-	GetOrdersRequest {
-		StartDate		string `json:start_date`
-		EndDate			string `json:end_date`
+	DateScope {
+		StartDate string `json:"start_date"`
+		EndDate   string `json:"end_date"`
 	}
 
-	GetOrdersReply {
-		OrdersIdList	[]int64 `json:"orders_id_list"` 
+	OrderIdList {
+		OrdersIdList []int64 `json:"orders_id_list"`
 	}
 
-	GetOrderRequest {
-		OrderId 		  int64 `path:"id"`
+	Order {
+		UserId           int64          `json:"user_id"`
+		MerchantId       int64          `json:"merchant_id"`
+		Date             string         `json:"date"`
+		State            int64          `json:"state"`
+		LogisticsIdList  []int64        `json:"logistics_id_list"`
+		OrderProductList []OrderProduct `json:"order_product_ist"`
 	}
 
-	GetOrderReply {
-		UserId            int64  `json:"user_id"`
-		Date			  string `json:"date"`
-		State			  int64  `json:"state"`
-		LogisticsIdList	  int64  `json:"logistics_id_list"`
-		TotalPaid		  int64	 `json:"total_paid"`
-		ProductsList	  string `json:"products_list"`
+	NewOrder {
+		UserId           int64          `json:"user_id"`
+		OrderProductList []OrderProduct `json:"order_product_list"`
 	}
 
-	CreateOrderRequest {
-		UserId            int64  `json:"user_id"`
-		TotalPaid		  int64	 `json:"total_paid"`
-		ProductsList	  string `json:"products_list"`
-	}
-
-	DeleteOrderRequest{
-		OrderId 		  int64 `path:"id"`
+	OrderId {
+		Id int64 `json:"id"`
 	}
 )
 
 // 订单
 @server (
+	prefix: /order
 	jwt: Auth
 )
 service mall-api {
 	// 获取订单索引
-	@handler GetOrdersHandler
-	get /orders (GetOrdersRequest) returns (GetOrdersReply)
+	@handler OrdersListHandler
+	get /list (DateScope) returns (OrderIdList)
 
 	// 获取属于登录用户的一个订单
 	@handler GetOrderHandler
-	get /order/:id (GetOrderRequest) returns (GetOrderReply)
+	get / (OrderId) returns (Order)
 
-    // 创建订单
+	// 创建订单
 	@handler CreateOrderHandler
-	post /order (CreateOrderRequest)
+	post / (NewOrder) returns (Order)
 
 	// 删除订单
 	@handler DeleteOrderHandler
-	delete /order/:id (DeleteOrderRequest)
+	delete / (OrderId)
 }

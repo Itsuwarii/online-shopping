@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetUserInfoLogic struct {
+type OrdersListLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUserInfoLogic {
-	return &GetUserInfoLogic{
+func NewOrdersListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *OrdersListLogic {
+	return &OrdersListLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *GetUserInfoLogic) GetUserInfo() (resp *types.GetUserInfoReply, err error) {
+func (l *OrdersListLogic) OrdersList(req *types.DateScope) (resp *types.OrderIdList, err error) {
 	// todo: add your logic here and delete this line
 
 	return

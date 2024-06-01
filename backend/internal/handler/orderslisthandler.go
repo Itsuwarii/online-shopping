@@ -6,12 +6,19 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"seig.com/onlineshoppingbackend/internal/logic"
 	"seig.com/onlineshoppingbackend/internal/svc"
+	"seig.com/onlineshoppingbackend/internal/types"
 )
 
-func GetCartHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func OrdersListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		l := logic.NewGetCartLogic(r.Context(), svcCtx)
-		resp, err := l.GetCart()
+		var req types.DateScope
+		if err := httpx.Parse(r, &req); err != nil {
+			httpx.ErrorCtx(r.Context(), w, err)
+			return
+		}
+
+		l := logic.NewOrdersListLogic(r.Context(), svcCtx)
+		resp, err := l.OrdersList(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

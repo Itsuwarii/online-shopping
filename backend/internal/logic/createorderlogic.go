@@ -23,8 +23,8 @@ func NewCreateOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Creat
 	}
 }
 
-func (l *CreateOrderLogic) CreateOrder(req *types.CreateOrderRequest) error {
+func (l *CreateOrderLogic) CreateOrder(req *types.NewOrder) (resp *types.Order, err error) {
 	// todo: add your logic here and delete this line
 
-	return nil
+	return
 }

@@ -1,31 +1,26 @@
 syntax = "v1"
 
-type (
-	GetImageRequest {
-		ImageId int64 `path:"id"`
-	}
-	
-	GetImageReply {
-		ImageBase64 string `json:"imagebase64"`
-	}
-
-	PutImageRequest {
-		ImageBase64 string `json:"imagebase64"`
-	}
-
-	PutImageReply {
-		ID    int64  `json:"image_id"`
-	}
-)
-
-@server (
-    jwt: Auth
-)
-service mall-api {
-	@handler GetImageHandler
-	get /image/:id (GetImageRequest) returns (GetImageReply)
-
-	@handler PutImageHandler
-	put /image (PutImageRequest) returns (PutImageReply)
+type Image {
+	ImageId     int64  `json:"id"`
+	ImageBase64 string `json:"imagebase64"`
 }
 
+type ImageId {
+	Id int64 `json:"id"`
+}
+
+type NewImage {
+	ImageBase64 string `json:"imagebase64"`
+}
+
+@server (
+	prefix: /image
+	jwt: Auth
+)
+service mall-api {
+	@handler ImageHandler
+	get / (ImageId) returns (Image)
+
+	@handler PutImageHandler
+	post / (NewImage) returns (ImageId)
+}

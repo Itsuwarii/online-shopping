@@ -23,7 +23,7 @@ func NewCreateActionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Crea
 	}
 }
 
-func (l *CreateActionLogic) CreateAction(req *types.CreateActionRequest) (resp *types.CreateActionReply, err error) {
+func (l *CreateActionLogic) CreateAction(req *types.NewActionReq) (resp *types.NewActionResp, err error) {
 	// todo: add your logic here and delete this line
 
 	return

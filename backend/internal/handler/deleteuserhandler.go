@@ -9,20 +9,20 @@ import (
 	"seig.com/onlineshoppingbackend/internal/types"
 )
 
-func PutUserInfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func DeleteUserHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.PutUserInfoRequest
+		var req types.DeleteUserReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewPutUserInfoLogic(r.Context(), svcCtx)
-		err := l.PutUserInfo(&req)
+		l := logic.NewDeleteUserLogic(r.Context(), svcCtx)
+		resp, err := l.DeleteUser(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.Ok(w)
+			httpx.OkJsonCtx(r.Context(), w, resp)
 		}
 	}
 }

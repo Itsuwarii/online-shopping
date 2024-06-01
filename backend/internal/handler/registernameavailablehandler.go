@@ -9,16 +9,16 @@ import (
 	"seig.com/onlineshoppingbackend/internal/types"
 )
 
-func GetImageHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func RegisterNameAvailableHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.GetImageRequest
+		var req types.NameAvailableReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewGetImageLogic(r.Context(), svcCtx)
-		resp, err := l.GetImage(&req)
+		l := logic.NewRegisterNameAvailableLogic(r.Context(), svcCtx)
+		resp, err := l.RegisterNameAvailable(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

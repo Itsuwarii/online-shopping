@@ -23,7 +23,7 @@ func NewRefreshLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RefreshLo
 	}
 }
 
-func (l *RefreshLogic) Refresh() (resp *types.LoginResp, err error) {
+func (l *RefreshLogic) Refresh() (resp *types.Auth, err error) {
 	// todo: add your logic here and delete this line
 
 	return

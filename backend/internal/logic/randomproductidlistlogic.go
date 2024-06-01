@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type RegisterLogic struct {
+type RandomProductIdListLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RegisterLogic {
-	return &RegisterLogic{
+func NewRandomProductIdListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RandomProductIdListLogic {
+	return &RandomProductIdListLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterResp, err error) {
+func (l *RandomProductIdListLogic) RandomProductIdList() (resp *types.RandomProductIdListResp, err error) {
 	// todo: add your logic here and delete this line
 
 	return

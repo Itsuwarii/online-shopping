@@ -11,18 +11,18 @@ import (
 
 func CreateOrderHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.CreateOrderRequest
+		var req types.NewOrder
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
 		l := logic.NewCreateOrderLogic(r.Context(), svcCtx)
-		err := l.CreateOrder(&req)
+		resp, err := l.CreateOrder(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.Ok(w)
+			httpx.OkJsonCtx(r.Context(), w, resp)
 		}
 	}
 }
