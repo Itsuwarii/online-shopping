@@ -1,8 +1,0 @@
-syntax = "v1"
-
-import "user.api"
-import "cart.api"
-import "product.api"
-import "action.api"
-import "order.api"
-import "image.api"
