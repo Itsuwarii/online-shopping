@@ -5,13 +5,11 @@ import (
 	"errors"
 	"time"
 
-	"ludwig.com/onlineshopping/internal/model"
 	"ludwig.com/onlineshopping/internal/svc"
 	"ludwig.com/onlineshopping/internal/types"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
 type LoginLogic struct {
@@ -40,10 +38,9 @@ func (l *LoginLogic) getJwtToken(secret string, id int) (jwtToken string, err er
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err error) {
 	username := req.Username
 	password := req.Password
-	l.Logger.Error("username=", username, ",password=", password, " into login")
+	l.Logger.Info("username=", username, ",password=", password, " into login")
 
-	conn := sqlx.NewSqlConn("mysql", l.svcCtx.Config.DataSource)
-	userModel := model.NewUserModel(conn)
+	userModel := l.svcCtx.Model.UserModel
 	user, err := userModel.FindOneByUsername(l.ctx, username)
 	if err != nil || user.Password != password {
 		l.Logger.Error(err)
@@ -51,7 +48,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	}
 
 	var id int = int(user.Id)
-	l.Logger.Error(id, " logged success")
+	l.Logger.Info(id, " logged success")
 	now := time.Now().Unix()
 	accessExpire := l.svcCtx.Config.Auth.AccessExpire
 	accessSecret := l.svcCtx.Config.Auth.AccessSecret
@@ -63,7 +60,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	return &types.LoginResp{
 		Id:      int(user.Id),
 		Name:    user.Username,
-		State:   1,
+		State:   types.SUCCESS,
 		Message: "logined",
 		Auth: types.Auth{
 			Token:        jwtToken,

@@ -107,9 +107,9 @@ service mall-api {
 	@handler UserInfoHandler
 	get / returns (UserInfoResp)
 
-	@handler UpdateUserInfoHandler
+	@handler UserInfoUpdateHandler
 	post / (UserInfoUpdateReq) returns (UserInfoUpdateResp)
 
-	@handler DeleteUserHandler
+	@handler UserDeleteHandler
 	delete / (UserDeleteReq) returns (UserDeleteResp)
 }
