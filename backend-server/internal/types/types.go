@@ -45,8 +45,8 @@ type ActionUpdateReq struct {
 
 type Auth struct {
 	Token        string `json:"token"`
-	Expire       int    `json:"expire"`
-	RefreshAfter int    `json:"refresh_after"`
+	Expire       int64  `json:"expire"`
+	RefreshAfter int64  `json:"refresh_after"`
 }
 
 type Cart struct {
@@ -85,6 +85,75 @@ type LoginResp struct {
 	State   int    `json:"state"`
 	Message string `json:"message"`
 	Auth    Auth   `json:"auth"`
+}
+
+type MerchantAuth struct {
+	Token        string `json:"token"`
+	Expire       int64  `json:"expire"`
+	RefreshAfter int64  `json:"refresh_after"`
+}
+
+type MerchantDeleteReq struct {
+}
+
+type MerchantDeleteResp struct {
+}
+
+type MerchantInfoResp struct {
+	Id        int    `json:"id"`
+	Name      string `json:"name"`
+	ImageId   string `json:"image_id"`
+	Date      int64  `json:"date"`
+	LicenceID int    `json:"lience_id"`
+	TelePhone int    `json:"telephone"`
+	Desc      string `json:"desc"`
+}
+
+type MerchantLoginReq struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type MerchantLoginResp struct {
+	Id      int          `json:"id"`
+	Name    string       `json:"name"`
+	State   int          `json:"state"`
+	Message string       `json:"message"`
+	Auth    MerchantAuth `json:"auth"`
+}
+
+type MerchantNameAvailableReq struct {
+	Name string `json:"name"`
+}
+
+type MerchantNameAvailableResp struct {
+	State int `json:"state"`
+}
+
+type MerchantRegisterReq struct {
+	Name      string `json:"name"`
+	Password  string `json:"password"`
+	TelePhone int    `json:"telephone"`
+	LicenceID int    `json:"lience_id"`
+	Intro     string `json:"intro"`
+}
+
+type MerchantRegisterResp struct {
+	State   int          `json:"state"`
+	Message string       `json:"message"`
+	Auth    MerchantAuth `json:"auth"`
+}
+
+type MerchantUpdateInfoReq struct {
+	Name      string `json:"name"`
+	ImageId   string `json:"image_id"`
+	Date      int64  `json:"date"`
+	LicenceID int    `json:"lience_id"`
+	TelePhone int    `json:"telephone"`
+	Desc      string `json:"desc"`
+}
+
+type MerchantUpdateInfoResp struct {
 }
 
 type NameAvailableReq struct {

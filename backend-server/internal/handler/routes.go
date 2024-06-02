@@ -13,33 +13,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodGet,
-				Path:    "/",
-				Handler: OrderGetHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/",
-				Handler: OrderCreateHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodDelete,
-				Path:    "/",
-				Handler: OrderDeleteHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/list",
-				Handler: OrdersListHandler(serverCtx),
-			},
-		},
-		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
-		rest.WithPrefix("/order"),
-	)
-
-	server.AddRoutes(
-		[]rest.Route{
-			{
 				Method:  http.MethodPost,
 				Path:    "/register",
 				Handler: RegisterHandler(serverCtx),
@@ -90,6 +63,61 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/user"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/register",
+				Handler: MerchantRegisterHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/register/checkname",
+				Handler: MerchantRegisterNameAvailableHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/signin",
+				Handler: MerchantLoginHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/merchant/token"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/refresh",
+				Handler: MerchantRefreshHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/token/merchant"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/",
+				Handler: MerchantInfoHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/",
+				Handler: MerchantUpdateInfoHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/",
+				Handler: MerchantDeleteHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/merchant"),
 	)
 
 	server.AddRoutes(
@@ -181,5 +209,32 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/action"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/",
+				Handler: OrderGetHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/",
+				Handler: OrderCreateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/",
+				Handler: OrderDeleteHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/list",
+				Handler: OrdersListHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/order"),
 	)
 }

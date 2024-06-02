@@ -2,8 +2,8 @@ syntax = "v1"
 
 type MerchantAuth {
 	Token        string `json:"token"`
-	Expire       int    `json:"expire"`
-	RefreshAfter int    `json:"refresh_after"`
+	Expire       int64    `json:"expire"`
+	RefreshAfter int64    `json:"refresh_after"`
 }
 
 type (
