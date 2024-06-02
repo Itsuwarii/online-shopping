@@ -2,37 +2,39 @@ syntax = "v1"
 
 // 订单里的一个商品
 type OrderProduct {
-	ProductId int64   `json:"id"`
-	Number    int64   `json:"number"`
+	ProductId int     `json:"id"`
+	Number    int     `json:"number"`
 	Price     float64 `json:"price"`
+	Logistics string  `json:"logistics"`
 }
 
 type (
 	DateScope {
-		StartDate string `json:"start_date"`
-		EndDate   string `json:"end_date"`
+		StartDate int64 `json:"start_date"`
+		EndDate   int64 `json:"end_date"`
 	}
 
 	OrderIdList {
-		OrdersIdList []int64 `json:"orders_id_list"`
+		OrdersIdList []int `json:"orders_id_list"`
 	}
 
 	Order {
-		UserId           int64          `json:"user_id"`
-		MerchantId       int64          `json:"merchant_id"`
-		Date             string         `json:"date"`
-		State            int64          `json:"state"`
-		LogisticsIdList  []int64        `json:"logistics_id_list"`
+		UserId           int            `json:"user_id"`
+		MerchantId       int            `json:"merchant_id"`
+		Date             int64          `json:"date"`
+		State            int            `json:"state"`
+		Remark           string         `json:"remark"`
 		OrderProductList []OrderProduct `json:"order_product_ist"`
 	}
 
 	NewOrder {
-		UserId           int64          `json:"user_id"`
+		UserId           int            `json:"user_id"`
+		Remark           string         `json:"remark"`
 		OrderProductList []OrderProduct `json:"order_product_list"`
 	}
 
 	OrderId {
-		Id int64 `json:"id"`
+		Id int `json:"id"`
 	}
 )
 

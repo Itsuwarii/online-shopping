@@ -1,8 +1,9 @@
 syntax = "v1"
 
 type CartProduct {
-	ProductId int64 `json:"id"`
+	ProductId int   `json:"id"`
 	Number    int   `json:"number"`
+	Date	  int64 `json:"date`
 }
 
 // 购物车

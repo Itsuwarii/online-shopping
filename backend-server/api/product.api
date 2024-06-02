@@ -2,45 +2,48 @@ syntax = "v1"
 
 type (
 	RandomProductIdListResp {
-		ProductIdList []int64 `json:"id_list"`
+		ProductIdList []int `json:"id_list"`
 	}
 
 	ProductId {
-		Id int64 `json:"id"`
+		Id int `json:"id"`
 	}
 
 	Product {
-		ID          int64  `json:"id"`
-		Name        string `json:"name"`
+		ID          int     `json:"id"`
+		Name        string  `json:"name"`
 		Price       float64 `json:"price"`
-		ImageIdList []int64 `json:"image_id_list"`
-		Desc        string `json:"desc"`
-		MerchantId  int64  `json:"merchant"`
-		State       int  `json:"state"`
-		Amount      int64  `json:"amount"`
+		AvatarId    string  `json:"avatar_id"`
+		ImageIdList []int   `json:"image_id_list"`
+		Desc        string  `json:"desc"`
+		MerchantId  int     `json:"merchant"`
+		State       int     `json:"state"`
+		Amount      int     `json:"amount"`
 	}
 
 	NewProduct {
-		Name        string `json:"name"`
+		Name        string  `json:"name"`
 		Price       float64 `json:"price"`
-		ImageIdList []int64 `json:"image_id_list"`
-		Desc        string `json:"desc"`
-		State       int    `json:"state"`
-		Amount      int64  `json:"amount"`
+		AvatarId    string  `json:"avatar_id"`
+		ImageIdList []int   `json:"image_id_list"`
+		Desc        string  `json:"desc"`
+		State       int     `json:"state"`
+		Amount      int     `json:"amount"`
 	}
 
 	UpdateProductReq {
-		ID          int64  `path:"id"`
-		Name        string `json:"name"`
-		Price       float64 `json:"price"`
-		ImageIdList string `json:"image_id_list"`
-		Desc        string `json:"desc"`
-		State       int    `json:"state"`
-		Amount      int64  `json:"amount"`
+		ID          int      `path:"id"`
+		Name        string   `json:"name"`
+		Price       float64  `json:"price"`
+		AvatarId    string   `json:"avatar_id"`
+		ImageIdList []string `json:"image_id_list"`
+		Desc        string   `json:"desc"`
+		State       int      `json:"state"`
+		Amount      int      `json:"amount"`
 	}
 
 	DeleteProductReq {
-		ID          int64  `path:"id"`
+		ID int `path:"id"`
 	}
 )
 

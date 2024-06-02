@@ -2,8 +2,8 @@ syntax = "v1"
 
 type MerchantAuth {
 	Token        string `json:"token"`
-	Expire       int64  `json:"expire"`
-	RefreshAfter int64  `json:"refresh_after"`
+	Expire       int    `json:"expire"`
+	RefreshAfter int    `json:"refresh_after"`
 }
 
 type (
@@ -13,9 +13,9 @@ type (
 	}
 
 	MerchantLoginResp {
-		Id      int64        `json:"id"`
+		Id      int          `json:"id"`
 		Name    string       `json:"name"`
-		Status  int64        `json:"status"`
+		State   int          `json:"state"`
 		Message string       `json:"message"`
 		Auth    MerchantAuth `json:"auth"`
 	}
@@ -27,19 +27,19 @@ type (
 	}
 
 	MerchantNameAvailableResp {
-		Status int64 `json:"status"`
+		State int `json:"state"`
 	}
 
 	MerchantRegisterReq {
 		Name      string `json:"name"`
 		Password  string `json:"password"`
-		Sex       int    `json:"sex"`
-		TelePhone int64  `json:"telephone"`
+		TelePhone int    `json:"telephone"`
+		LicenceID int    `json:"lience_id"`
 		Intro     string `json:"intro"`
 	}
 
 	MerchantRegisterResp {
-		Status  int64        `json:"status"`
+		State   int          `json:"state"`
 		Message string       `json:"message"`
 		Auth    MerchantAuth `json:"auth"`
 	}
@@ -69,22 +69,24 @@ service mall-api {
 	post /refresh returns (MerchantAuth)
 }
 
-// 用户存取自己的信息
 type (
 	MerchantInfoResp {
+		Id        int    `json:"id"`
 		Name      string `json:"name"`
-		ImageId   int64  `json:"image_id"`
-		Sex       int    `json:"sex"`
-		TelePhone int64  `json:"telephone"`
+		ImageId   string `json:"image_id"`
+		Date      int64  `json:"date"`
+		LicenceID int    `json:"lience_id"`
+		TelePhone int    `json:"telephone"`
 		Desc      string `json:"desc"`
 	}
 
 	MerchantUpdateInfoReq {
 		Name      string `json:"name"`
-		ImageId   int64  `json:"image_id"`
-		Sex       int    `json:"sex"`
-		TelePhone int64  `json:"telephone"`
-		Intro     string `json:"intro"`
+		ImageId   string `json:"image_id"`
+		Date      int64  `json:"date"`
+		LicenceID int    `json:"lience_id"`
+		TelePhone int    `json:"telephone"`
+		Desc      string `json:"desc"`
 	}
 
 	MerchantUpdateInfoResp {

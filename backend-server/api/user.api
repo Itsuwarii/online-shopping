@@ -2,8 +2,8 @@ syntax = "v1"
 
 type Auth {
 	Token        string `json:"token"`
-	Expire       int64  `json:"expire"`
-	RefreshAfter int64  `json:"refresh_after"`
+	Expire       int    `json:"expire"`
+	RefreshAfter int    `json:"refresh_after"`
 }
 
 // 用户登录
@@ -14,9 +14,9 @@ type (
 	}
 
 	LoginResp {
-		Id      int64  `json:"id"`
+		Id      int    `json:"id"`
 		Name    string `json:"name"`
-		Status  int64  `json:"status"`
+		State   int    `json:"state"`
 		Message string `json:"message"`
 		Auth    Auth   `json:"auth"`
 	}
@@ -29,19 +29,19 @@ type (
 	}
 
 	NameAvailableResp {
-		Status int64 `json:"status"`
+		State int `json:"state"`
 	}
 
 	RegisterReq {
 		Name      string `json:"name"`
 		Password  string `json:"password"`
 		Sex       int    `json:"sex"`
-		TelePhone int64  `json:"telephone"`
+		TelePhone int    `json:"telephone"`
 		Intro     string `json:"intro"`
 	}
 
 	RegisterResp {
-		Status  int64  `json:"status"`
+		State   int    `json:"state"`
 		Message string `json:"message"`
 		Auth    Auth   `json:"auth"`
 	}
@@ -76,26 +76,26 @@ service mall-api {
 type (
 	UserInfoResp {
 		Name      string `json:"name"`
-		ImageId   int64  `json:"image_id"`
+		ImageId   string `json:"image_id"`
 		Sex       int    `json:"sex"`
-		TelePhone int64  `json:"telephone"`
+		TelePhone int    `json:"telephone"`
 		Desc      string `json:"desc"`
 	}
 
-	UpdateUserInfoReq {
+	UserInfoUpdateReq {
 		Name      string `json:"name"`
-		ImageId   int64  `json:"image_id"`
+		ImageId   string `json:"image_id"`
 		Sex       int    `json:"sex"`
-		TelePhone int64  `json:"telephone"`
+		TelePhone int    `json:"telephone"`
 		Intro     string `json:"intro"`
 	}
 
-	UpdateUserInfoResp {
+	UserInfoUpdateResp {
 	}
 
-	DeleteUserReq {
+	UserDeleteReq {
 	}
-	DeleteUserResp {
+	UserDeleteResp {
 	}
 )
 
@@ -108,8 +108,8 @@ service mall-api {
 	get / returns (UserInfoResp)
 
 	@handler UpdateUserInfoHandler
-	post / (UpdateUserInfoReq) returns (UpdateUserInfoResp)
+	post / (UserInfoUpdateReq) returns (UserInfoUpdateResp)
 
 	@handler DeleteUserHandler
-	delete / (DeleteUserReq) returns (DeleteUserResp)
+	delete / (UserDeleteReq) returns (UserDeleteResp)
 }
