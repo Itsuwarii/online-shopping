@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"errors"
 
 	"ludwig.com/onlineshopping/internal/svc"
 	"ludwig.com/onlineshopping/internal/types"
@@ -24,7 +25,23 @@ func NewRegisterNameAvailableLogic(ctx context.Context, svcCtx *svc.ServiceConte
 }
 
 func (l *RegisterNameAvailableLogic) RegisterNameAvailable(req *types.NameAvailableReq) (resp *types.NameAvailableResp, err error) {
-	// todo: add your logic here and delete this line
+	Name := req.Name
+	l.Logger.Info("into check", Name, " username available")
 
-	return
+	UserModel := l.svcCtx.Model.UserModel
+	user, err := UserModel.FindOneByUsername(l.ctx, Name)
+	if err != nil {
+		l.Logger.Error("query failed ", err)
+		return nil, errors.New("check failed")
+	}
+
+	if user != nil {
+		return &types.NameAvailableResp{
+			State: types.FAILED,
+		}, errors.New("username existed")
+	}
+
+	return &types.NameAvailableResp{
+		State: types.SUCCESS,
+	}, nil
 }

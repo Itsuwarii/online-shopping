@@ -26,7 +26,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 	}
 }
 
-func (l *LoginLogic) getJwtToken(secret string, id int) (jwtToken string, err error) {
+func GetJwtToken(secret string, id int64) (jwtToken string, err error) {
 	claims := make(jwt.MapClaims)
 	claims["id"] = id
 
@@ -47,12 +47,12 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 		return nil, errors.New("password check failed")
 	}
 
-	var id int = int(user.Id)
+	id := user.Id
 	l.Logger.Info(id, " logged success")
 	now := time.Now().Unix()
 	accessExpire := l.svcCtx.Config.Auth.AccessExpire
 	accessSecret := l.svcCtx.Config.Auth.AccessSecret
-	jwtToken, err := l.getJwtToken(accessSecret, id)
+	jwtToken, err := GetJwtToken(accessSecret, id)
 	if err != nil {
 		return nil, err
 	}
