@@ -2,13 +2,16 @@ package logic
 
 import (
 	"context"
+	"errors"
 	"time"
 
+	"ludwig.com/onlineshopping/internal/model"
 	"ludwig.com/onlineshopping/internal/svc"
 	"ludwig.com/onlineshopping/internal/types"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
 type LoginLogic struct {
@@ -25,10 +28,9 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 	}
 }
 
-func (l *LoginLogic) getJwtToken(secret string, id int64, cartId int64) (jwtToken string, err error) {
+func (l *LoginLogic) getJwtToken(secret string, id int) (jwtToken string, err error) {
 	claims := make(jwt.MapClaims)
 	claims["id"] = id
-	claims["cart_id"] = cartId
 
 	token := jwt.New(jwt.SigningMethodHS256)
 	token.Claims = claims
@@ -37,26 +39,32 @@ func (l *LoginLogic) getJwtToken(secret string, id int64, cartId int64) (jwtToke
 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err error) {
 	username := req.Username
-	// password := req.Password
-	l.Logger.Info(username, " into login")
+	password := req.Password
+	l.Logger.Error("username=", username, ",password=", password, " into login")
 
-	var id int64 = 123
-	var cartId int64 = 123
+	conn := sqlx.NewSqlConn("mysql", l.svcCtx.Config.DataSource)
+	userModel := model.NewUserModel(conn)
+	user, err := userModel.FindOneByUsername(l.ctx, username)
+	if err != nil || user.Password != password {
+		l.Logger.Error(err)
+		return nil, errors.New("password check failed")
+	}
 
-	l.Logger.Info(id, " logged success")
+	var id int = int(user.Id)
+	l.Logger.Error(id, " logged success")
 	now := time.Now().Unix()
 	accessExpire := l.svcCtx.Config.Auth.AccessExpire
 	accessSecret := l.svcCtx.Config.Auth.AccessSecret
-	jwtToken, err := l.getJwtToken(accessSecret, id, cartId)
+	jwtToken, err := l.getJwtToken(accessSecret, id)
 	if err != nil {
 		return nil, err
 	}
 
 	return &types.LoginResp{
-		Id:      123,
-		Name:    "wtf",
+		Id:      int(user.Id),
+		Name:    user.Username,
 		State:   1,
-		Message: "ok",
+		Message: "logined",
 		Auth: types.Auth{
 			Token:        jwtToken,
 			Expire:       now + accessExpire,

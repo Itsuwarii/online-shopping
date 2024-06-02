@@ -5,3 +5,5 @@ Port: 8888
 Auth:
   AccessSecret: 'password'
   AccessExpire: 3600
+
+DataSource: root:123456@tcp(localhost:3306)/onlineshopping?parseTime=true
