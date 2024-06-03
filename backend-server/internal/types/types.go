@@ -100,17 +100,17 @@ type MerchantDeleteResp struct {
 }
 
 type MerchantInfoResp struct {
-	Id        int64   `json:"id"`
-	Name      string  `json:"name"`
-	ImageId   string  `json:"image_id"`
-	Date      int64   `json:"date"`
-	Licence   string  `json:"lience"`
-	TelePhone string  `json:"telephone"`
-	Intro     string  `json:"intro"`
+	Id            int64  `db:"Id"`
+	Name          string `db:"Name"`
+	AvatarLocator string `db:"AvatarLocator"`
+	Licence       string `db:"Licence"`
+	TelePhone     string `db:"TelePhone"`
+	Intro         string `db:"Intro"`
+	Date          int64  `db:"Date"`
 }
 
 type MerchantLoginReq struct {
-	Username string `json:"username"`
+	MarchantName string `json:"marchantName"`
 	Password string `json:"password"`
 }
 
@@ -145,12 +145,11 @@ type MerchantRegisterResp struct {
 }
 
 type MerchantUpdateInfoReq struct {
-	Name      string `json:"name"`
-	AvatarLocator   string `json:"avatar_locator"`
-	Date      int64  `json:"date"`
-	Licence   string `json:"lience"`
-	TelePhone string `json:"telephone"`
-	Intro      string `json:"intro"`
+	Name          string `db:"Name"`
+	AvatarLocator string `db:"AvatarLocator"`
+	Licence       string `db:"Licence"`
+	TelePhone     string `db:"TelePhone"`
+	Intro         string `db:"Intro"`
 }
 
 type MerchantUpdateInfoResp struct {

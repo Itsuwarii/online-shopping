@@ -24,7 +24,7 @@ func NewMerchantRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *MerchantRegisterLogic) MerchantRegister(req *types.MerchantRegisterReq) (resp *types.MerchantRegisterResp, err error) {
-	// todo: add your logic here and delete this line
+	
 
 	return
 }

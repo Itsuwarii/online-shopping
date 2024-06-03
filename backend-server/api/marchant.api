@@ -1,15 +1,16 @@
+go: 'go mod init' accepts at most one argument
 syntax = "v1"
 
 type MerchantAuth {
 	Token        string `json:"token"`
-	Expire       int64    `json:"expire"`
-	RefreshAfter int64    `json:"refresh_after"`
+	Expire       int64  `json:"expire"`
+	RefreshAfter int64  `json:"refresh_after"`
 }
 
 type (
 	MerchantLoginReq {
-		Username string `json:"username"`
-		Password string `json:"password"`
+		MarchantName string `json:"marchant_name"`
+		Password     string `json:"password"`
 	}
 
 	MerchantLoginResp {
@@ -71,22 +72,21 @@ service mall-api {
 
 type (
 	MerchantInfoResp {
-		Id        int    `json:"id"`
-		Name      string `json:"name"`
-		ImageId   string `json:"image_id"`
-		Date      int64  `json:"date"`
-		LicenceID int    `json:"lience_id"`
-		TelePhone int    `json:"telephone"`
-		Desc      string `json:"desc"`
+		Id            int64  `db:"Id"`
+		Name          string `db:"Name"`
+		AvatarLocator string `db:"AvatarLocator"`
+		Licence       string `db:"Licence"`
+		TelePhone     string `db:"TelePhone"`
+		Intro         string `db:"Intro"`
+		Date          int64  `db:"Date"`
 	}
 
 	MerchantUpdateInfoReq {
-		Name      string `json:"name"`
-		ImageId   string `json:"image_id"`
-		Date      int64  `json:"date"`
-		LicenceID int    `json:"lience_id"`
-		TelePhone int    `json:"telephone"`
-		Desc      string `json:"desc"`
+		Name          string `db:"Name"`
+		AvatarLocator string `db:"AvatarLocator"`
+		Licence       string `db:"Licence"`
+		TelePhone     string `db:"TelePhone"`
+		Intro         string `db:"Intro"`
 	}
 
 	MerchantUpdateInfoResp {

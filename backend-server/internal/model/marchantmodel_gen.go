@@ -36,15 +36,15 @@ type (
 	}
 
 	Marchant struct {
-		Id        int64          `db:"Id"`
-		Name      string         `db:"Name"`
-		Password  string         `db:"Password"`
-		ImageId   sql.NullString `db:"ImageId"`
-		LicenceId sql.NullInt64  `db:"LicenceId"`
-		TelePhone sql.NullInt64  `db:"TelePhone"`
-		Intro     sql.NullString `db:"Intro"`
-		Data      time.Time      `db:"Data"`
-		State     int64          `db:"State"`
+		Id            int64  `db:"Id"`
+		Name          string `db:"Name"`
+		Password      string `db:"Password"`
+		AvatarLocator string `db:"AvatarLocator"`
+		Licence       string `db:"Licence"`
+		TelePhone     string `db:"TelePhone"`
+		Intro         string `db:"Intro"`
+		Date          time.Time  `db:"Date"`
+		State         int64  `db:"State"`
 	}
 )
 
@@ -91,13 +91,13 @@ func (m *defaultMarchantModel) FindOneByName(ctx context.Context, name string) (
 
 func (m *defaultMarchantModel) Insert(ctx context.Context, data *Marchant) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?)", m.table, marchantRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.Name, data.Password, data.ImageId, data.LicenceId, data.TelePhone, data.Intro, data.Data, data.State)
+	ret, err := m.conn.ExecCtx(ctx, query, data.Name, data.Password, data.AvatarLocator, data.Licence, data.TelePhone, data.Intro, data.Date, data.State)
 	return ret, err
 }
 
 func (m *defaultMarchantModel) Update(ctx context.Context, newData *Marchant) error {
 	query := fmt.Sprintf("update %s set %s where `Id` = ?", m.table, marchantRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, newData.Name, newData.Password, newData.ImageId, newData.LicenceId, newData.TelePhone, newData.Intro, newData.Data, newData.State, newData.Id)
+	_, err := m.conn.ExecCtx(ctx, query, newData.Name, newData.Password, newData.AvatarLocator, newData.Licence, newData.TelePhone, newData.Intro, newData.Date, newData.State, newData.Id)
 	return err
 }
 

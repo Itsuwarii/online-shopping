@@ -40,11 +40,6 @@ func (l *UserInfoLogic) UserInfo() (resp *types.UserInfoResp, err error) {
 		return nil, errors.New("find failed for " + fmt.Sprint(id))
 	}
 
-	if user == nil {
-		l.Logger.Error("get user failed:", err)
-		return nil, errors.New("get failed for " + fmt.Sprint(id))
-	}
-
 	return &types.UserInfoResp{
 		Name:          user.Username,
 		AvatarLocator: user.AvatarLocator,

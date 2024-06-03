@@ -2,6 +2,10 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"time"
 
 	"ludwig.com/onlineshopping/internal/svc"
 	"ludwig.com/onlineshopping/internal/types"
@@ -24,7 +28,24 @@ func NewMerchantRefreshLogic(ctx context.Context, svcCtx *svc.ServiceContext) *M
 }
 
 func (l *MerchantRefreshLogic) MerchantRefresh() (resp *types.MerchantAuth, err error) {
-	// todo: add your logic here and delete this line
+	marchantId, err := l.ctx.Value("marchantid").(json.Number).Int64()
+	if err != nil {
+		l.Logger.Error("parse marchant id failed ", err)
+		return nil, errors.New("authorization failed")
+	}
+	l.Logger.Info("to refresh auth:", fmt.Sprint(marchantId))
 
-	return
+	now := time.Now().Unix()
+	accessExpire := l.svcCtx.Config.Auth.AccessExpire
+	accessSecret := l.svcCtx.Config.Auth.AccessSecret
+	jwtToken, err := MerchantGetJwtToken(accessSecret, marchantId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.MerchantAuth{
+		Token:        jwtToken,
+		Expire:       now + accessExpire,
+		RefreshAfter: now + accessExpire/2,
+	}, nil
 }
