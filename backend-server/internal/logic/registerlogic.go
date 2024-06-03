@@ -2,10 +2,8 @@ package logic
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"fmt"
-	"strconv"
 	"time"
 
 	"ludwig.com/onlineshopping/internal/model"
@@ -29,19 +27,6 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 	}
 }
 
-func StringToNullString(s string) sql.NullString {
-	return sql.NullString{String: s, Valid: s != ""}
-}
-
-func StringToNullInt64(s string) sql.NullInt64 {
-	i, err := strconv.Atoi(s)
-	return sql.NullInt64{Int64: int64(i), Valid: err == nil}
-}
-
-func IntToNullInt64(i int) sql.NullInt64 {
-	return sql.NullInt64{Int64: int64(i), Valid: i != 0}
-}
-
 func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterResp, err error) {
 	l.Logger.Info("into register")
 
@@ -61,10 +46,10 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterRe
 	result, err := UserModel.Insert(l.ctx, &model.User{
 		Username:  req.Name,
 		Password:  req.Password,
-		ImageId:   StringToNullString(""),
-		Sex:       IntToNullInt64(req.Sex),
-		TelePhone: IntToNullInt64(req.TelePhone),
-		Intro:     StringToNullString(req.Intro),
+		ImageId:   "",
+		Sex:       req.Sex,
+		TelePhone: req.TelePhone,
+		Intro:     req.Intro,
 		Data:      time.Now(),
 		State:     types.SUCCESS,
 	})

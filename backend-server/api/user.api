@@ -91,6 +91,8 @@ type (
 	}
 
 	UserInfoUpdateResp {
+		State   int    `json:"state"`
+		Message string `json:"message"`
 	}
 
 	UserDeleteReq {

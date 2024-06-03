@@ -39,10 +39,10 @@ type (
 		Id        int64          `db:"Id"`
 		Username  string         `db:"Username"`
 		Password  string         `db:"Password"`
-		ImageId   sql.NullString `db:"ImageId"`
-		Sex       sql.NullInt64  `db:"Sex"`
-		TelePhone sql.NullInt64  `db:"TelePhone"`
-		Intro     sql.NullString `db:"Intro"`
+		ImageId   string         `db:"ImageId"`
+		Sex       int            `db:"Sex"`
+		TelePhone string         `db:"TelePhone"`
+		Intro     string         `db:"Intro"`
 		Data      time.Time      `db:"Data"`
 		State     int64          `db:"State"`
 	}

@@ -105,7 +105,7 @@ type MerchantInfoResp struct {
 	ImageId   string `json:"image_id"`
 	Date      int64  `json:"date"`
 	LicenceID int    `json:"lience_id"`
-	TelePhone int    `json:"telephone"`
+	TelePhone string    `json:"telephone"`
 	Desc      string `json:"desc"`
 }
 
@@ -133,7 +133,7 @@ type MerchantNameAvailableResp struct {
 type MerchantRegisterReq struct {
 	Name      string `json:"name"`
 	Password  string `json:"password"`
-	TelePhone int    `json:"telephone"`
+	TelePhone string    `json:"telephone"`
 	LicenceID int    `json:"lience_id"`
 	Intro     string `json:"intro"`
 }
@@ -149,7 +149,7 @@ type MerchantUpdateInfoReq struct {
 	ImageId   string `json:"image_id"`
 	Date      int64  `json:"date"`
 	LicenceID int    `json:"lience_id"`
-	TelePhone int    `json:"telephone"`
+	TelePhone string    `json:"telephone"`
 	Desc      string `json:"desc"`
 }
 
@@ -228,7 +228,7 @@ type RegisterReq struct {
 	Name      string `json:"name"`
 	Password  string `json:"password"`
 	Sex       int    `json:"sex"`
-	TelePhone int    `json:"telephone"`
+	TelePhone string    `json:"telephone"`
 	Intro     string `json:"intro"`
 }
 
@@ -259,7 +259,7 @@ type UserInfoResp struct {
 	Name      string `json:"name"`
 	ImageId   string `json:"image_id"`
 	Sex       int    `json:"sex"`
-	TelePhone int    `json:"telephone"`
+	TelePhone string `json:"telephone"`
 	Desc      string `json:"desc"`
 }
 
@@ -267,9 +267,11 @@ type UserInfoUpdateReq struct {
 	Name      string `json:"name"`
 	ImageId   string `json:"image_id"`
 	Sex       int    `json:"sex"`
-	TelePhone int    `json:"telephone"`
+	TelePhone string    `json:"telephone"`
 	Intro     string `json:"intro"`
 }
 
 type UserInfoUpdateResp struct {
+	State   int    `json:"state"`
+	Message string `json:"message"`
 }
