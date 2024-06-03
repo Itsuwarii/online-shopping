@@ -44,14 +44,14 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterRe
 	}
 
 	result, err := UserModel.Insert(l.ctx, &model.User{
-		Username:  req.Name,
-		Password:  req.Password,
-		ImageId:   "",
-		Sex:       req.Sex,
-		TelePhone: req.TelePhone,
-		Intro:     req.Intro,
-		Data:      time.Now(),
-		State:     types.SUCCESS,
+		Username:      req.Name,
+		Password:      req.Password,
+		AvatarLocator: "",
+		Sex:           req.Sex,
+		TelePhone:     req.TelePhone,
+		Intro:         req.Intro,
+		Date:          time.Now(),
+		State:         types.SUCCESS,
 	})
 	if err != nil {
 		l.Logger.Info("register ", Name, " but insert failed ", err)

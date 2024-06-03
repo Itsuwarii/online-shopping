@@ -14,9 +14,9 @@ type (
 	}
 
 	LoginResp {
-		Id      int    `json:"id"`
+		Id      int64   `json:"id"`
 		Name    string `json:"name"`
-		State   int    `json:"state"`
+		State   int64   `json:"state"`
 		Message string `json:"message"`
 		Auth    Auth   `json:"auth"`
 	}
@@ -29,19 +29,19 @@ type (
 	}
 
 	NameAvailableResp {
-		State int `json:"state"`
+		State int64`json:"state"`
 	}
 
 	RegisterReq {
 		Name      string `json:"name"`
 		Password  string `json:"password"`
-		Sex       int    `json:"sex"`
-		TelePhone int    `json:"telephone"`
+		Sex       int64   `json:"sex"`
+		TelePhone int64   `json:"telephone"`
 		Intro     string `json:"intro"`
 	}
 
 	RegisterResp {
-		State   int    `json:"state"`
+		State   int64   `json:"state"`
 		Message string `json:"message"`
 		Auth    Auth   `json:"auth"`
 	}
@@ -77,21 +77,21 @@ type (
 	UserInfoResp {
 		Name      string `json:"name"`
 		ImageId   string `json:"image_id"`
-		Sex       int    `json:"sex"`
-		TelePhone int    `json:"telephone"`
+		Sex       int64   `json:"sex"`
+		TelePhone int64   `json:"telephone"`
 		Desc      string `json:"desc"`
 	}
 
 	UserInfoUpdateReq {
 		Name      string `json:"name"`
 		ImageId   string `json:"image_id"`
-		Sex       int    `json:"sex"`
-		TelePhone int    `json:"telephone"`
+		Sex       int64   `json:"sex"`
+		TelePhone int64   `json:"telephone"`
 		Intro     string `json:"intro"`
 	}
 
 	UserInfoUpdateResp {
-		State   int    `json:"state"`
+		State   int64   `json:"state"`
 		Message string `json:"message"`
 	}
 

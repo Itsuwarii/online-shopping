@@ -46,15 +46,15 @@ func (l *UserInfoUpdateLogic) UpdateUserInfo(req *types.UserInfoUpdateReq) (resp
 	}
 
 	err = l.svcCtx.Model.UserModel.Update(l.ctx, &model.User{
-		Id:        id,
-		Username:  req.Name,
-		Password:  old.Password,
-		ImageId:   req.ImageId,
-		Sex:       req.Sex,
-		TelePhone: req.TelePhone,
-		Intro:     req.Intro,
-		Data:      old.Data,
-		State:     old.State,
+		Id:            id,
+		Username:      req.Name,
+		Password:      old.Password,
+		AvatarLocator: req.AvatarLocator,
+		Sex:           req.Sex,
+		TelePhone:     req.TelePhone,
+		Intro:         req.Intro,
+		Date:          old.Date,
+		State:         old.State,
 	})
 	if err != nil {
 		l.Logger.Error("update user failed:", err)

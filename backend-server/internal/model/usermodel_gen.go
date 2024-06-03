@@ -39,11 +39,11 @@ type (
 		Id        int64          `db:"Id"`
 		Username  string         `db:"Username"`
 		Password  string         `db:"Password"`
-		ImageId   string         `db:"ImageId"`
-		Sex       int            `db:"Sex"`
+		AvatarLocator string     `db:"AvatarLocator"`
+		Sex       int64          `db:"Sex"`
 		TelePhone string         `db:"TelePhone"`
 		Intro     string         `db:"Intro"`
-		Data      time.Time      `db:"Data"`
+		Date      time.Time      `db:"Date"`
 		State     int64          `db:"State"`
 	}
 )
@@ -91,13 +91,13 @@ func (m *defaultUserModel) FindOneByUsername(ctx context.Context, username strin
 
 func (m *defaultUserModel) Insert(ctx context.Context, data *User) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.Username, data.Password, data.ImageId, data.Sex, data.TelePhone, data.Intro, data.Data, data.State)
+	ret, err := m.conn.ExecCtx(ctx, query, data.Username, data.Password, data.AvatarLocator, data.Sex, data.TelePhone, data.Intro, data.Date, data.State)
 	return ret, err
 }
 
 func (m *defaultUserModel) Update(ctx context.Context, newData *User) error {
 	query := fmt.Sprintf("update %s set %s where `Id` = ?", m.table, userRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, newData.Username, newData.Password, newData.ImageId, newData.Sex, newData.TelePhone, newData.Intro, newData.Data, newData.State, newData.Id)
+	_, err := m.conn.ExecCtx(ctx, query, newData.Username, newData.Password, newData.AvatarLocator, newData.Sex, newData.TelePhone, newData.Intro, newData.Date, newData.State, newData.Id)
 	return err
 }
 

@@ -3,12 +3,12 @@ create table product(
     Name varchar(32) not null,
     MerchantId integer(32) not null,
     Price Float(10) not null,
-    AvatarId varchar(32) not null,
-    ImageIdList varchar(255),
-    Descript varchar(255),
-    Amount integer(10),
+    AvatarLocator varchar(32) not null,
+    ImagesLocator varchar(255) not null,
+    Descript varchar(255) not null,
+    Amount integer(10) not null,
     State integer(10) not null,
-    Data timestamp not null,
+    Date timestamp not null,
     PRIMARY KEY(Id)
 ) ENGINE = InnoDB CHARSET = utf8;
 

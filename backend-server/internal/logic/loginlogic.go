@@ -58,7 +58,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	}
 
 	return &types.LoginResp{
-		Id:      int(user.Id),
+		Id:      user.Id,
 		Name:    user.Username,
 		State:   types.SUCCESS,
 		Message: "logined",

@@ -2,22 +2,22 @@
 package types
 
 type ActionContentReq struct {
-	ActionID  int   `json:"Action_id"`
+	ActionID  int64   `json:"Action_id"`
 	StartTime int64 `json:"start_time"`
 	EndTime   int64 `json:"end_time"`
 }
 
 type ActionContentResp struct {
-	ActionID     int       `json:"Action_id"`
+	ActionID     int64       `json:"Action_id"`
 	Content_List []Content `json:"content_list"`
 }
 
 type ActionCreateReq struct {
-	MerchantId int `json:"merchant_id"`
+	MerchantId int64 `json:"merchant_id"`
 }
 
 type ActionCreateResp struct {
-	ActionID int `json:"action_id"`
+	ActionID int64 `json:"action_id"`
 }
 
 type ActionDeleteReq struct {
@@ -25,7 +25,7 @@ type ActionDeleteReq struct {
 }
 
 type ActionListResp struct {
-	ActionIdList []int `json:"action_id_list"`
+	ActionIdList []int64 `json:"action_id_list"`
 }
 
 type ActionReq struct {
@@ -33,13 +33,13 @@ type ActionReq struct {
 }
 
 type ActionResp struct {
-	ActionID   int `json:"action_id"`
-	UserId     int `json:"user_id"`
-	MerchantId int `json:"merchant_id"`
+	ActionID   int64 `json:"action_id"`
+	UserId     int64 `json:"user_id"`
+	MerchantId int64 `json:"merchant_id"`
 }
 
 type ActionUpdateReq struct {
-	ActionID int     `json:"action_id"`
+	ActionID int64     `json:"action_id"`
 	Content  Content `json:"content"`
 }
 
@@ -54,9 +54,9 @@ type Cart struct {
 }
 
 type CartProduct struct {
-	ProductId int   `json:"id"`
-	Number    int   `json:"number"`
-	Date      int64 `json:"date`
+	ProductId int64   `json:"id"`
+	Number    int64   `json:"number"`
+	Date      int64   `json:"date`
 }
 
 type Content struct {
@@ -71,7 +71,7 @@ type DateScope struct {
 }
 
 type DeleteProductReq struct {
-	ID int `path:"id"`
+	ID int64 `path:"id"`
 }
 
 type LoginReq struct {
@@ -80,9 +80,9 @@ type LoginReq struct {
 }
 
 type LoginResp struct {
-	Id      int    `json:"id"`
+	Id      int64  `json:"id"`
 	Name    string `json:"name"`
-	State   int    `json:"state"`
+	State   int64  `json:"state"`
 	Message string `json:"message"`
 	Auth    Auth   `json:"auth"`
 }
@@ -100,13 +100,13 @@ type MerchantDeleteResp struct {
 }
 
 type MerchantInfoResp struct {
-	Id        int    `json:"id"`
-	Name      string `json:"name"`
-	ImageId   string `json:"image_id"`
-	Date      int64  `json:"date"`
-	LicenceID int    `json:"lience_id"`
-	TelePhone string    `json:"telephone"`
-	Desc      string `json:"desc"`
+	Id        int64   `json:"id"`
+	Name      string  `json:"name"`
+	ImageId   string  `json:"image_id"`
+	Date      int64   `json:"date"`
+	Licence   string  `json:"lience"`
+	TelePhone string  `json:"telephone"`
+	Intro     string  `json:"intro"`
 }
 
 type MerchantLoginReq struct {
@@ -115,9 +115,9 @@ type MerchantLoginReq struct {
 }
 
 type MerchantLoginResp struct {
-	Id      int          `json:"id"`
+	Id      int64        `json:"id"`
 	Name    string       `json:"name"`
-	State   int          `json:"state"`
+	State   int64        `json:"state"`
 	Message string       `json:"message"`
 	Auth    MerchantAuth `json:"auth"`
 }
@@ -127,30 +127,30 @@ type MerchantNameAvailableReq struct {
 }
 
 type MerchantNameAvailableResp struct {
-	State int `json:"state"`
+	State int64 `json:"state"`
 }
 
 type MerchantRegisterReq struct {
 	Name      string `json:"name"`
 	Password  string `json:"password"`
-	TelePhone string    `json:"telephone"`
-	LicenceID int    `json:"lience_id"`
+	TelePhone string `json:"telephone"`
+	Licence   string `json:"lience"`
 	Intro     string `json:"intro"`
 }
 
 type MerchantRegisterResp struct {
-	State   int          `json:"state"`
+	State   int64        `json:"state"`
 	Message string       `json:"message"`
 	Auth    MerchantAuth `json:"auth"`
 }
 
 type MerchantUpdateInfoReq struct {
 	Name      string `json:"name"`
-	ImageId   string `json:"image_id"`
+	AvatarLocator   string `json:"avatar_locator"`
 	Date      int64  `json:"date"`
-	LicenceID int    `json:"lience_id"`
-	TelePhone string    `json:"telephone"`
-	Desc      string `json:"desc"`
+	Licence   string `json:"lience"`
+	TelePhone string `json:"telephone"`
+	Intro      string `json:"intro"`
 }
 
 type MerchantUpdateInfoResp struct {
@@ -161,92 +161,92 @@ type NameAvailableReq struct {
 }
 
 type NameAvailableResp struct {
-	State int `json:"state"`
+	State int64 `json:"state"`
 }
 
 type NewOrder struct {
-	UserId           int            `json:"user_id"`
-	Remark           string         `json:"remark"`
-	OrderProductList []OrderProduct `json:"order_product_list"`
+	UserId           int64            `json:"user_id"`
+	Remark           string           `json:"remark"`
+	OrderProductList []OrderProduct   `json:"order_product_list"`
 }
 
 type NewProduct struct {
-	Name        string  `json:"name"`
-	Price       float64 `json:"price"`
-	AvatarId    string  `json:"avatar_id"`
-	ImageIdList []int   `json:"image_id_list"`
-	Desc        string  `json:"desc"`
-	State       int     `json:"state"`
-	Amount      int     `json:"amount"`
+	Name           string    `json:"name"`
+	Price          float64   `json:"price"`
+	AvatarLocator  string    `json:"avatar_locator"`
+	ImagesLocator  []string  `json:"images_locator"`
+	Intro          string    `json:"intro"`
+	State          int64     `json:"state"`
+	Amount         int64     `json:"amount"`
 }
 
 type Order struct {
-	UserId           int            `json:"user_id"`
-	MerchantId       int            `json:"merchant_id"`
-	Date             int64          `json:"date"`
-	State            int            `json:"state"`
-	Remark           string         `json:"remark"`
-	OrderProductList []OrderProduct `json:"order_product_ist"`
+	UserId           int64            `json:"user_id"`
+	MerchantId       int64            `json:"merchant_id"`
+	Date             int64            `json:"date"`
+	State            int64            `json:"state"`
+	Remark           string           `json:"remark"`
+	OrderProductList []OrderProduct   `json:"order_product_ist"`
 }
 
 type OrderId struct {
-	Id int `json:"id"`
+	Id int64 `json:"id"`
 }
 
 type OrderIdList struct {
-	OrdersIdList []int `json:"orders_id_list"`
+	OrdersIdList []int64 `json:"orders_id_list"`
 }
 
 type OrderProduct struct {
-	ProductId int     `json:"id"`
-	Number    int     `json:"number"`
-	Price     float64 `json:"price"`
-	Logistics string  `json:"logistics"`
+	ProductId int64     `json:"id"`
+	Number    int64     `json:"number"`
+	Price     float64   `json:"price"`
+	Logistics string    `json:"logistics"`
 }
 
 type Product struct {
-	ID          int     `json:"id"`
-	Name        string  `json:"name"`
-	Price       float64 `json:"price"`
-	AvatarId    string  `json:"avatar_id"`
-	ImageIdList []int   `json:"image_id_list"`
-	Desc        string  `json:"desc"`
-	MerchantId  int     `json:"merchant"`
-	State       int     `json:"state"`
-	Amount      int     `json:"amount"`
+	ID            int64       `json:"id"`
+	Name          string      `json:"name"`
+	MerchantId    int64       `json:"merchant"`
+	AvatarLocator string      `json:"avatar_locator"`
+	ImagesLocator []string    `json:"images_locator"`
+	Intro         string      `json:"intro"`
+	Price         float64     `json:"price"`
+	Amount        int64       `json:"amount"`
+	State         int64       `json:"state"`
 }
 
 type ProductId struct {
-	Id int `json:"id"`
+	Id int64 `json:"id"`
 }
 
 type RandomProductIdListResp struct {
-	ProductIdList []int `json:"id_list"`
+	ProductIdList []int64 `json:"id_list"`
 }
 
 type RegisterReq struct {
 	Name      string `json:"name"`
 	Password  string `json:"password"`
-	Sex       int    `json:"sex"`
-	TelePhone string    `json:"telephone"`
+	Sex       int64  `json:"sex"`
+	TelePhone string `json:"telephone"`
 	Intro     string `json:"intro"`
 }
 
 type RegisterResp struct {
-	State   int    `json:"state"`
+	State   int64  `json:"state"`
 	Message string `json:"message"`
 	Auth    Auth   `json:"auth"`
 }
 
 type UpdateProductReq struct {
-	ID          int      `path:"id"`
-	Name        string   `json:"name"`
-	Price       float64  `json:"price"`
-	AvatarId    string   `json:"avatar_id"`
-	ImageIdList []string `json:"image_id_list"`
-	Desc        string   `json:"desc"`
-	State       int      `json:"state"`
-	Amount      int      `json:"amount"`
+	ID             int64      `path:"id"`
+	Name           string     `json:"name"`
+	Price          float64    `json:"price"`
+	AvatarLocator  string     `json:"avatar_locator"`
+	ImagesLocator  []string   `json:"images_locator"`
+	Intro          string     `json:"intro"`
+	State          int64      `json:"state"`
+	Amount         int64      `json:"amount"`
 }
 
 type UserDeleteReq struct {
@@ -256,22 +256,27 @@ type UserDeleteResp struct {
 }
 
 type UserInfoResp struct {
-	Name      string `json:"name"`
-	ImageId   string `json:"image_id"`
-	Sex       int    `json:"sex"`
-	TelePhone string `json:"telephone"`
-	Desc      string `json:"desc"`
+	Name            string   `json:"name"`
+	AvatarLocator   string   `json:"avatar_locator"`
+	Sex             int64    `json:"sex"`
+	TelePhone       string   `json:"telephone"`
+	Intro           string   `json:"intro"`
 }
 
 type UserInfoUpdateReq struct {
-	Name      string `json:"name"`
-	ImageId   string `json:"image_id"`
-	Sex       int    `json:"sex"`
-	TelePhone string    `json:"telephone"`
-	Intro     string `json:"intro"`
+	Name      		string `json:"name"`
+	AvatarLocator   string `json:"avatar_locator"`
+	Sex      		int64  `json:"sex"`
+	TelePhone		string `json:"telephone"`
+	Intro    		string `json:"intro"`
 }
 
 type UserInfoUpdateResp struct {
-	State   int    `json:"state"`
-	Message string `json:"message"`
+	State   int64    `json:"state"`
+	Message string   `json:"message"`
 }
+
+const (
+	SUCCESS = 1
+	FAILED  = 2
+)

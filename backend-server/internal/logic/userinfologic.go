@@ -46,11 +46,11 @@ func (l *UserInfoLogic) UserInfo() (resp *types.UserInfoResp, err error) {
 	}
 
 	return &types.UserInfoResp{
-		Name:      user.Username,
-		ImageId:   user.ImageId,
-		Sex:       int(user.Sex),
-		TelePhone: user.TelePhone,
-		Desc:      user.Intro,
+		Name:          user.Username,
+		AvatarLocator: user.AvatarLocator,
+		Sex:           user.Sex,
+		TelePhone:     user.TelePhone,
+		Intro:         user.Intro,
 	}, nil
 	// {
 	// 	"name": "wtf",
