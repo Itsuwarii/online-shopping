@@ -39,12 +39,12 @@ type (
 		Name        string         `db:"Name"`
 		MerchantId  int64          `db:"MerchantId"`
 		Price       float64        `db:"Price"`
-		AvatarId    string         `db:"AvatarId"`
-		ImageIdList sql.NullString `db:"ImageIdList"`
-		Descript    sql.NullString `db:"Descript"`
-		Amount      sql.NullInt64  `db:"Amount"`
+		AvatarLocator string       `db:"AvatarLocator"`
+		ImagesLocator string 	   `db:"ImagesLocator"`
+		Intro   	 string         `db:"Intro"`
+		Amount      int64          `db:"Amount"`
 		State       int64          `db:"State"`
-		Data        time.Time      `db:"Data"`
+		Date        time.Time      `db:"Date"`
 	}
 )
 
@@ -77,13 +77,13 @@ func (m *defaultProductModel) FindOne(ctx context.Context, id int64) (*Product, 
 
 func (m *defaultProductModel) Insert(ctx context.Context, data *Product) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, productRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.Name, data.MerchantId, data.Price, data.AvatarId, data.ImageIdList, data.Descript, data.Amount, data.State, data.Data)
+	ret, err := m.conn.ExecCtx(ctx, query, data.Name, data.MerchantId, data.Price, data.AvatarLocator, data.ImagesLocator, data.Intro, data.Amount, data.State, data.Date)
 	return ret, err
 }
 
 func (m *defaultProductModel) Update(ctx context.Context, data *Product) error {
 	query := fmt.Sprintf("update %s set %s where `Id` = ?", m.table, productRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.Name, data.MerchantId, data.Price, data.AvatarId, data.ImageIdList, data.Descript, data.Amount, data.State, data.Data, data.Id)
+	_, err := m.conn.ExecCtx(ctx, query, data.Name, data.MerchantId, data.Price, data.AvatarLocator, data.ImagesLocator, data.Intro, data.Amount, data.State, data.Date, data.Id)
 	return err
 }
 

@@ -173,7 +173,7 @@ type NewProduct struct {
 	Name           string    `json:"name"`
 	Price          float64   `json:"price"`
 	AvatarLocator  string    `json:"avatar_locator"`
-	ImagesLocator  []string  `json:"images_locator"`
+	ImagesLocator  string    `json:"images_locator"`
 	Intro          string    `json:"intro"`
 	State          int64     `json:"state"`
 	Amount         int64     `json:"amount"`

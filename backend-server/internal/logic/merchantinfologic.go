@@ -27,17 +27,17 @@ func NewMerchantInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Merc
 }
 
 func (l *MerchantInfoLogic) MerchantInfo() (resp *types.MerchantInfoResp, err error) {
-	marchantId, err := l.ctx.Value("marchantid").(json.Number).Int64()
+	merchantId, err := l.ctx.Value("merchantid").(json.Number).Int64()
 	if err != nil {
-		l.Logger.Error("parse marchant id failed ", err)
+		l.Logger.Error("parse merchant id failed ", err)
 		return nil, errors.New("authorization failed")
 	}
-	l.Logger.Info("get info for marchant:", fmt.Sprint(marchantId))
+	l.Logger.Info("get info for merchant:", fmt.Sprint(merchantId))
 
-	marchant, err := l.svcCtx.Model.MarchantModel.FindOne(l.ctx, marchantId)
+	marchant, err := l.svcCtx.Model.MarchantModel.FindOne(l.ctx, merchantId)
 	if err != nil {
-		l.Logger.Error("select marchant failed:", err)
-		return nil, errors.New("select failed for " + fmt.Sprint(marchantId))
+		l.Logger.Error("select merchant failed:", err)
+		return nil, errors.New("select failed for " + fmt.Sprint(merchantId))
 	}
 
 	return &types.MerchantInfoResp{

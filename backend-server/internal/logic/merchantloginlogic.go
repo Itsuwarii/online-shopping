@@ -28,7 +28,7 @@ func NewMerchantLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Mer
 
 func MerchantGetJwtToken(secret string, id int64) (jwtToken string, err error) {
 	claims := make(jwt.MapClaims)
-	claims["marchantid"] = id
+	claims["merchantid"] = id
 
 	token := jwt.New(jwt.SigningMethodHS256)
 	token.Claims = claims
@@ -38,7 +38,7 @@ func MerchantGetJwtToken(secret string, id int64) (jwtToken string, err error) {
 func (l *MerchantLoginLogic) MerchantLogin(req *types.MerchantLoginReq) (resp *types.MerchantLoginResp, err error) {
 	name := req.MarchantName
 	password := req.Password
-	l.Logger.Info("marchant name=", name, ",password=", password, " into login")
+	l.Logger.Info("merchant name=", name, ",password=", password, " into login")
 
 	marchant, err := l.svcCtx.Model.MarchantModel.FindOneByName(l.ctx, name)
 	if err != nil || marchant.Password != password {

@@ -28,17 +28,17 @@ func NewMerchantRefreshLogic(ctx context.Context, svcCtx *svc.ServiceContext) *M
 }
 
 func (l *MerchantRefreshLogic) MerchantRefresh() (resp *types.MerchantAuth, err error) {
-	marchantId, err := l.ctx.Value("marchantid").(json.Number).Int64()
+	merchantId, err := l.ctx.Value("merchantid").(json.Number).Int64()
 	if err != nil {
 		l.Logger.Error("parse marchant id failed ", err)
 		return nil, errors.New("authorization failed")
 	}
-	l.Logger.Info("to refresh auth:", fmt.Sprint(marchantId))
+	l.Logger.Info("to refresh auth:", fmt.Sprint(merchantId))
 
 	now := time.Now().Unix()
 	accessExpire := l.svcCtx.Config.Auth.AccessExpire
 	accessSecret := l.svcCtx.Config.Auth.AccessSecret
-	jwtToken, err := MerchantGetJwtToken(accessSecret, marchantId)
+	jwtToken, err := MerchantGetJwtToken(accessSecret, merchantId)
 	if err != nil {
 		return nil, err
 	}

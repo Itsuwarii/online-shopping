@@ -27,17 +27,17 @@ func NewMerchantDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Me
 }
 
 func (l *MerchantDeleteLogic) MerchantDelete(req *types.MerchantDeleteReq) (resp *types.MerchantDeleteResp, err error) {
-	marchantId, err := l.ctx.Value("marchantid").(json.Number).Int64()
+	merchantId, err := l.ctx.Value("merchantid").(json.Number).Int64()
 	if err != nil {
-		l.Logger.Error("parse marchant id failed ", err)
+		l.Logger.Error("parse merchant id failed ", err)
 		return nil, errors.New("authorization failed")
 	}
-	l.Logger.Info("to delete marchant:", fmt.Sprint(marchantId))
+	l.Logger.Info("to delete merchant:", fmt.Sprint(merchantId))
 
-	err = l.svcCtx.Model.MarchantModel.Delete(l.ctx, marchantId)
+	err = l.svcCtx.Model.MarchantModel.Delete(l.ctx, merchantId)
 	if err != nil {
-		l.Logger.Error("delete marchant failed:", err)
-		return nil, errors.New("delete failed for " + fmt.Sprint(marchantId))
+		l.Logger.Error("delete merchant failed:", err)
+		return nil, errors.New("delete failed for " + fmt.Sprint(merchantId))
 	}
 
 	return

@@ -28,15 +28,15 @@ func NewMerchantUpdateInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 func (l *MerchantUpdateInfoLogic) MerchantUpdateInfo(req *types.MerchantUpdateInfoReq) (resp *types.MerchantUpdateInfoResp, err error) {
-	id, err := l.ctx.Value("marchantid").(json.Number).Int64()
+	id, err := l.ctx.Value("merchantid").(json.Number).Int64()
 	if err != nil {
 		l.Logger.Error("parse id failed ", err)
 		return nil, errors.New("authorization failed")
 	}
-	l.Logger.Info("to update marchant:", fmt.Sprint(id))
+	l.Logger.Info("to update merchant:", fmt.Sprint(id))
 
 	if req.Name == "" {
-		return nil, errors.New("username cannot use null")
+		return nil, errors.New("marchant cannot empty")
 	}
 
 	old, err := l.svcCtx.Model.MarchantModel.FindOne(l.ctx, id)

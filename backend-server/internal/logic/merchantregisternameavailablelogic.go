@@ -26,7 +26,7 @@ func NewMerchantRegisterNameAvailableLogic(ctx context.Context, svcCtx *svc.Serv
 
 func (l *MerchantRegisterNameAvailableLogic) MerchantRegisterNameAvailable(req *types.MerchantNameAvailableReq) (resp *types.MerchantNameAvailableResp, err error) {
 	Name := req.Name
-	l.Logger.Info("into check", Name, " marchant available")
+	l.Logger.Info("into check", Name, " merchant available")
 
 	MarchantModel := l.svcCtx.Model.MarchantModel
 	existed, err := MarchantModel.CheckMarchantName(l.ctx, Name)
@@ -37,7 +37,7 @@ func (l *MerchantRegisterNameAvailableLogic) MerchantRegisterNameAvailable(req *
 	if existed {
 		return &types.MerchantNameAvailableResp{
 			State: types.FAILED,
-		}, errors.New("marchant existed")
+		}, errors.New("merchant existed")
 	}
 
 	return &types.MerchantNameAvailableResp{

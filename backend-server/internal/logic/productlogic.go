@@ -24,7 +24,6 @@ func NewProductLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ProductLo
 }
 
 func (l *ProductLogic) Product(req *types.ProductId) (resp *types.Product, err error) {
-	// todo: add your logic here and delete this line
 
 	return
 }
