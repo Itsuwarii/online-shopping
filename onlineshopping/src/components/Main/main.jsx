@@ -18,6 +18,7 @@ import {
 
 import VirtualList from 'rc-virtual-list';
 import client from '../../api/axios';
+import axios from 'axios';
 
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
@@ -30,17 +31,15 @@ function Main() {
     } = theme.useToken();
 
     const [data, setData] = useState([]);
-    const fakeDataUrl =
-        'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo';
+
+    const fakeDataUrl = '';
     const ContainerHeight = 600;
-    const appendData = () => {
-        fetch(fakeDataUrl)
-            .then((res) => res.json())
-            .then((body) => {
-                setData(data.concat(body.results));
-                console.log(data.concat(body.results));
-                message.success(`${body.results.length} more items loaded!`);
-            });
+
+    async function appendData() {
+        const respone = await client.get('/product/random')
+        setData(data.concat(respone.data));
+        // console.log(data.concat(body.results));
+        // message.success(` more items loaded!`);
     };
 
     useEffect(() => {
@@ -48,7 +47,6 @@ function Main() {
     }, []);
 
     const onScroll = (e) => {
-        // Refer to: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight#problems_and_solutions
         if (Math.abs(e.currentTarget.scrollHeight - e.currentTarget.scrollTop - ContainerHeight) <= 1) {
             appendData();
         }
@@ -119,7 +117,9 @@ function Main() {
                                     <ShoppingCartOutlined />
                                     <StarOutlined />
                                 </Space>
-                            </Card>                            <Card style={{ width: '25%', height: '200px', }}>
+                            </Card>
+
+                            <Card style={{ width: '25%', height: '200px', }}>
                                 <Spin style={{ height: '120px', }} size='large'></Spin>
                                 <br />
                                 <Space style={{ fontSize: '25px', color: '#CCCCCC', }}>
@@ -127,7 +127,9 @@ function Main() {
                                     <ShoppingCartOutlined />
                                     <StarOutlined />
                                 </Space>
-                            </Card>                            <Card style={{ width: '25%', height: '200px', }}>
+                            </Card>
+
+                            <Card style={{ width: '25%', height: '200px', }}>
                                 <Spin style={{ height: '120px', }} size='large'></Spin>
                                 <br />
                                 <Space style={{ fontSize: '25px', color: '#CCCCCC', }}>
@@ -135,7 +137,9 @@ function Main() {
                                     <ShoppingCartOutlined />
                                     <StarOutlined />
                                 </Space>
-                            </Card>                            <Card style={{ width: '25%', height: '200px', }}>
+                            </Card>
+
+                            <Card style={{ width: '25%', height: '200px', }}>
                                 <Spin style={{ height: '120px', }} size='large'></Spin>
                                 <br />
                                 <Space style={{ fontSize: '25px', color: '#CCCCCC', }}>
