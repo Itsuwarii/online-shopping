@@ -29,13 +29,12 @@ func (l *RegisterNameAvailableLogic) RegisterNameAvailable(req *types.NameAvaila
 	l.Logger.Info("into check", Name, " username available")
 
 	UserModel := l.svcCtx.Model.UserModel
-	user, err := UserModel.FindOneByUsername(l.ctx, Name)
+	existed, err := UserModel.CheckUserName(l.ctx, Name)
 	if err != nil {
-		l.Logger.Error("query failed ", err)
-		return nil, errors.New("check failed")
+		return nil, errors.New("query failed")
 	}
 
-	if user != nil {
+	if existed {
 		return &types.NameAvailableResp{
 			State: types.FAILED,
 		}, errors.New("username existed")

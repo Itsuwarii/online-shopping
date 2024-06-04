@@ -279,3 +279,8 @@ const (
 	SUCCESS = 1
 	FAILED  = 2
 )
+
+const(
+	AVAILABLE = 1
+	UNAVAILABLE = 2
+)

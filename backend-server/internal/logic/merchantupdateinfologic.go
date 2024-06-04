@@ -2,7 +2,11 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
 
+	"ludwig.com/onlineshopping/internal/model"
 	"ludwig.com/onlineshopping/internal/svc"
 	"ludwig.com/onlineshopping/internal/types"
 
@@ -24,7 +28,38 @@ func NewMerchantUpdateInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 func (l *MerchantUpdateInfoLogic) MerchantUpdateInfo(req *types.MerchantUpdateInfoReq) (resp *types.MerchantUpdateInfoResp, err error) {
-	// todo: add your logic here and delete this line
+	id, err := l.ctx.Value("marchantid").(json.Number).Int64()
+	if err != nil {
+		l.Logger.Error("parse id failed ", err)
+		return nil, errors.New("authorization failed")
+	}
+	l.Logger.Info("to update marchant:", fmt.Sprint(id))
 
-	return
+	if req.Name == "" {
+		return nil, errors.New("username cannot use null")
+	}
+
+	old, err := l.svcCtx.Model.MarchantModel.FindOne(l.ctx, id)
+	if err != nil {
+		l.Logger.Error("get marchant failed:", err)
+		return nil, errors.New("find failed for " + fmt.Sprint(id) + " failed")
+	}
+
+	err = l.svcCtx.Model.MarchantModel.Update(l.ctx, &model.Marchant{
+		Id:            id,
+		Name:          req.Name,
+		Password:      old.Password,
+		AvatarLocator: req.AvatarLocator,
+		Licence:       req.Licence,
+		TelePhone:     req.TelePhone,
+		Intro:         req.Intro,
+		Date:          old.Date,
+		State:         old.State,
+	})
+	if err != nil {
+		l.Logger.Error("update marchant failed:", err)
+		return nil, errors.New("update failed for " + fmt.Sprint(id))
+	}
+
+	return &types.MerchantUpdateInfoResp{}, nil
 }

@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"errors"
 
 	"ludwig.com/onlineshopping/internal/svc"
 	"ludwig.com/onlineshopping/internal/types"
@@ -24,7 +25,22 @@ func NewMerchantRegisterNameAvailableLogic(ctx context.Context, svcCtx *svc.Serv
 }
 
 func (l *MerchantRegisterNameAvailableLogic) MerchantRegisterNameAvailable(req *types.MerchantNameAvailableReq) (resp *types.MerchantNameAvailableResp, err error) {
-	// todo: add your logic here and delete this line
+	Name := req.Name
+	l.Logger.Info("into check", Name, " marchant available")
 
-	return
+	MarchantModel := l.svcCtx.Model.MarchantModel
+	existed, err := MarchantModel.CheckMarchantName(l.ctx, Name)
+	if err != nil {
+		return nil, errors.New("query failed")
+	}
+
+	if existed {
+		return &types.MerchantNameAvailableResp{
+			State: types.FAILED,
+		}, errors.New("marchant existed")
+	}
+
+	return &types.MerchantNameAvailableResp{
+		State: types.SUCCESS,
+	}, nil
 }
