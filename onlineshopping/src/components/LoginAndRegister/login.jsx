@@ -1,33 +1,40 @@
 import React from 'react';
-import { Button, Checkbox, Form, Input, Row, Flex } from 'antd';
+import { Button, Checkbox, Form, Input, Row, Flex, message } from 'antd';
 import {
     UserOutlined,
     VerifiedOutlined,
 } from '@ant-design/icons';
-import axios from 'axios';
-import client from '../../api/axios';
+import client, { saveAccessToken } from '../../api/axios';
 
 
 const Login = () => {
-    var username = null;
-    var password = null;
+    var username = '';
+    var password = '';
 
-    async function submit() {
-        // type LoginReq struct {
-        //     Username string `json:"username"`
-        //     Password string `json:"password"`
-        // }
-        client.post('token/signin', {
-            "Username": username,
-            "Password": password
-        })
-            .then(function (response) {
-                console.log(response);
-                
-            })
-            .catch(function (error) {
-                console.log("##########",error);
+    function submit() {
+        console.log('into submit')
+        if (username != '' && password != '') {
+            client.post('token/signin', {
+                "username": username,
+                "password": password
+            }).then(function (response) {
+                if (response.status == 200) {
+                    console.log("login success", response);
+                    saveAccessToken(response.data.auth.token);
+                    window.location.replace('/');
+                } else {
+                    console.log(response);
+                }
+            }).catch(function (error) {
+                console.log(error);
+                if (error.response.data == "password check failed\n") {
+                    message.info("Password check failed");
+                }else{
+                    message.info("Login failed");
+                }
             });
+        }
+        console.log('go out submit')
     }
     function onChangeUserName(e) {
         username = e.target.value;
@@ -59,6 +66,7 @@ const Login = () => {
                     align='center'
                 >
                     <Form
+                        onSubmitCapture={submit}
                         initialValues={{
                             remember: true,
                         }}
@@ -85,7 +93,7 @@ const Login = () => {
                                 },
                             ]}
                         >
-                            <Input.Password prefix={<VerifiedOutlined />}></Input.Password>
+                            <Input.Password onChange={onChangePassword} prefix={<VerifiedOutlined />}></Input.Password>
                         </Form.Item>
 
                         <Form.Item
@@ -108,7 +116,6 @@ const Login = () => {
                             }}
                         >
                             <Button
-                                onClick={submit}
                                 type="primary" htmlType='submit' size='large'
                                 style={{
                                     width: '100%'

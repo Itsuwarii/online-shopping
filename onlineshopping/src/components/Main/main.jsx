@@ -17,8 +17,7 @@ import {
 } from 'antd';
 
 import VirtualList from 'rc-virtual-list';
-import client from '../../api/axios';
-import axios from 'axios';
+import client, { removeAccessToken } from '../../api/axios';
 
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
@@ -36,8 +35,8 @@ function Main() {
     const ContainerHeight = 600;
 
     async function appendData() {
-        const respone = await client.get('/product/random')
-        setData(data.concat(respone.data));
+        // const respone = await client.get('/product/random')
+        // setData(data.concat(respone.data));
         // console.log(data.concat(body.results));
         // message.success(` more items loaded!`);
     };
@@ -54,38 +53,6 @@ function Main() {
 
 
     const loadingView = (
-        // <div style={{
-        //     width: '100%',
-        //     height: '100%',
-        //     overflow: 'auto',
-        // }}>
-        //     <Affix>
-        //         <Flex wrap gap="middle"
-        //             style={{
-        //                 height: '100%',
-        //                 width: '100%',
-        //             }}
-        //         >
-        //             <div style={{
-        //                 width: '200px',
-        //                 height: '200px',
-        //                 // background: '#000000',
-        //                 border: '1px solid #DDDDDD',
-        //                 borderRadius: '10px',
-        //                 padding: '20px',
-        //             }}>
-        //                 <Spin style={{ height: '120px', }} size='large'></Spin>
-        //                 <br />
-        //                 <Space style={{ fontSize: '25px', color: '#DDDDDD', }}>
-        //                     <CheckOutlined />
-        //                     <ShoppingCartOutlined />
-        //                     <StarOutlined />
-        //                 </Space>
-        //             </div>
-
-        //         </Flex>
-        //     </Affix>
-        // </div>
 
         <List gap="middle"
             style={{
@@ -109,6 +76,14 @@ function Main() {
                                 width: '100%',
                             }}
                         >
+                            {/* <List.Item key={item.email}>
+                        <List.Item.Meta
+                            avatar={<Avatar src={item.picture.large} />}
+                            title={<a href="https://ant.design">{item.name.last}</a>}
+                            description={item.email}
+                        />
+                        <div>Content</div>
+                    </List.Item> */}
                             <Card style={{ width: '25%', height: '200px', }}>
                                 <Spin style={{ height: '120px', }} size='large'></Spin>
                                 <br />
@@ -151,14 +126,6 @@ function Main() {
 
 
                         </Flex>
-                        {/* <List.Item key={item.email}>
-                        <List.Item.Meta
-                            avatar={<Avatar src={item.picture.large} />}
-                            title={<a href="https://ant.design">{item.name.last}</a>}
-                            description={item.email}
-                        />
-                        <div>Content</div>
-                    </List.Item> */}
                     </>
                 )}
 
@@ -176,20 +143,20 @@ function Main() {
     // Load goods data
     React.useEffect(() => {
         client.get(`/randomGoods`).then((response) => {
-            let view = response.data.map((item) => {
-                <Card style={{
-                    width: '25%',
-                }}>
-                    <Meta
-                        avatar={<Avatar src={item.picutre} />}
-                        title={item.title}
-                        description={item.description}
-                    />
-                </Card>
-            });
+            // let view = response.data.map((item) => {
+            //     <Card style={{
+            //         width: '25%',
+            //     }}>
+            //         <Meta
+            //             avatar={<Avatar src={item.picutre} />}
+            //             title={item.title}
+            //             description={item.description}
+            //         />
+            //     </Card>
+            // });
 
-            randomGoodsView = view;
-            setContent(randomGoodsView);
+            // randomGoodsView = view;
+            // setContent(randomGoodsView);
         }).catch(error => {
             console.log(error);
         });
@@ -230,6 +197,7 @@ function Main() {
 
         }
         else if (key == '5') {
+            removeAccessToken();
             window.location.replace('/login')
         }
     };

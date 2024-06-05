@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 
 	"ludwig.com/onlineshopping/internal/config"
 	"ludwig.com/onlineshopping/internal/handler"
@@ -20,7 +21,14 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
-	server := rest.MustNewServer(c.RestConf, rest.WithCors("*"))
+	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(nil, func(w http.ResponseWriter) {
+		origin := w.Header().Get("Origin")
+		w.Header().Set("Access-Control-Allow-Origin", origin)
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH")
+		w.Header().Set("Access-Control-Expose-Headers", "Content-Length, Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+	}, "*"))
 	defer server.Stop()
 
 	ctx := svc.NewServiceContext(c)

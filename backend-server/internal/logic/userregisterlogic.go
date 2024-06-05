@@ -32,15 +32,15 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterRe
 
 	Name := req.Name
 	UserModel := l.svcCtx.Model.UserModel
-	user, err := UserModel.FindOneByUsername(l.ctx, Name)
+	existed, err := UserModel.CheckUserName(l.ctx, Name)
 	if err != nil {
-		l.Logger.Error("check user failed ", err)
+		l.Logger.Error("check username failed ", err)
 		return nil, errors.New("check failed")
 	}
 
-	if user != nil {
-		l.Logger.Info("register ", Name, " but user existed ", err)
-		return nil, errors.New("existed")
+	if existed {
+		l.Logger.Error("user existed ", err)
+		return nil, errors.New("user existed")
 	}
 
 	result, err := UserModel.Insert(l.ctx, &model.User{
