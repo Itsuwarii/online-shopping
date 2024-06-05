@@ -51,7 +51,7 @@ type (
 func newMarchantModel(conn sqlx.SqlConn) *defaultMarchantModel {
 	return &defaultMarchantModel{
 		conn:  conn,
-		table: "`marchant`",
+		table: "`merchant`",
 	}
 }
 
