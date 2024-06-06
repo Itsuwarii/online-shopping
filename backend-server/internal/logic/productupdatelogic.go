@@ -24,7 +24,7 @@ func NewProductUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Pro
 }
 
 func (l *ProductUpdateLogic) ProductUpdate(req *types.UpdateProductReq) error {
-	// todo: add your logic here and delete this line
+	
 
 	return nil
 }

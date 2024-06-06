@@ -6,6 +6,7 @@ import {
     ShoppingOutlined, LoadingOutlined, CheckOutlined,
     AppstoreOutlined, MailOutlined, SettingOutlined,
     StarOutlined, IdcardOutlined, LogoutOutlined,
+    UnorderedListOutlined,MessageOutlined,ProductOutlined,
     CommentOutlined
 } from '@ant-design/icons';
 
@@ -217,18 +218,23 @@ function Main() {
                     items={[
                         {
                             key: 'main',
-                            label: 'Shopping',
-                            icon: <ShoppingOutlined />,
+                            label: 'Sale',
+                            icon: <UnorderedListOutlined />,
                             children: [
                                 {
                                     key: '1',
-                                    label: 'Goods',
-                                    icon: <ShoppingOutlined />,
+                                    label: 'Orders',
+                                    icon: <UnorderedListOutlined />,
                                 },
                                 {
                                     key: '2',
-                                    label: 'Cart',
-                                    icon: <ShoppingCartOutlined />,
+                                    label: 'Product',
+                                    icon: <ProductOutlined />,
+                                },
+                                {
+                                    key: '3',
+                                    label: 'Dialogue',
+                                    icon: <MessageOutlined />,
                                 },
                             ],
                         },
