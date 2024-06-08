@@ -5,9 +5,26 @@ import (
 	"fmt"
 
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
+	"ludwig.com/onlineshopping/internal/types"
 )
 
 var _ ProductModel = (*customProductModel)(nil)
+
+func (m *customProductModel) RandomFindAllAvailable(ctx context.Context, limit int64) ([]Product, error) {
+	avaliable := fmt.Sprint(types.AVAILABLE)
+
+	query := fmt.Sprintf("select %s from %s as t1 join (select round(RAND()*(SELECT MAX(Id) FROM %s)) as randId ) AS t2 WHERE `State`=%s and t1.Id>=t2.randId ORDER BY t1.Id LIMIT %s", productRows, m.table, m.table, avaliable, fmt.Sprint(limit))
+	var resp []Product
+	err := m.conn.QueryRowsCtx(ctx, &resp, query)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlx.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
 
 func (m *customProductModel) FindProductForMerchant(ctx context.Context, merchantId int64, offset int64, limit int64) ([]Product, error) {
 	query := fmt.Sprintf("select %s from %s where `MerchantId` = ? limit ? offset ?", productRows, m.table)
@@ -30,6 +47,7 @@ type (
 		productModel
 		withSession(session sqlx.Session) ProductModel
 		FindProductForMerchant(ctx context.Context, merchantId int64, offset int64, limit int64) ([]Product, error)
+		RandomFindAllAvailable(ctx context.Context, limit int64) ([]Product, error)
 	}
 
 	customProductModel struct {

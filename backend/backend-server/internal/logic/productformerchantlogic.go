@@ -26,13 +26,6 @@ func NewProductForMerchantLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 
 // /product/all
 func (l *ProductForMerchantLogic) ProductForMerchant(req *types.ProductListReq) (resp *types.ProductListResp, err error) {
-	// merchantId, err := l.ctx.Value("merchantid").(json.Number).Int64()
-	// if err != nil {
-	// 	l.Logger.Error("parse merchant id failed ", err)
-	// 	return nil, errors.New("authorization failed")
-	// }
-	// l.Logger.Info("get product for merchant:", fmt.Sprint(merchantId))
-
 	var merchantId int64 = 1
 
 	offset := req.Index

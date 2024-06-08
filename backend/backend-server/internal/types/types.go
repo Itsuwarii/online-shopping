@@ -228,8 +228,8 @@ type ProductListResp struct {
 	ProductList []Product `json:"product_list"`
 }
 
-type RandomProductIdListResp struct {
-	ProductIdList []int64 `json:"id_list"`
+type RandomProductListResp struct {
+	ProductList []Product `json:"product_list"`
 }
 
 type RegisterReq struct {

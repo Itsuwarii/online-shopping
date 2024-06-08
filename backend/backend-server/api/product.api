@@ -1,8 +1,8 @@
 syntax = "v1"
 
 type (
-	RandomProductIdListResp {
-		ProductIdList []int `json:"id_list"`
+	RandomProductListResp {
+		ProductList []Product `json:"product_list"`
 	}
 
 	ProductListReq {
@@ -64,7 +64,7 @@ type (
 service mall-api {
 	// 用户商品推荐列表
 	@handler ProductRandomIdListHandler
-	get /random returns (RandomProductIdListResp)
+	get /random returns (RandomProductListResp)
 
 	// 商家获取商品列表
 	@handler ProductForMerchantHandler
