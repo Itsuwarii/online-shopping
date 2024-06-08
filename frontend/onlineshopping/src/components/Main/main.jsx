@@ -23,155 +23,161 @@ function Main() {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
-    const [data, setData] = useState([]);
-
-    const ContainerHeight = 600;
-
-    async function appendData() {
-
-    };
-
-    useEffect(() => {
-        appendData();
-    }, []);
-
+    const ContainerHeight = 700;
     const onScroll = (e) => {
-        if (Math.abs(e.currentTarget.scrollHeight - e.currentTarget.scrollTop - ContainerHeight) <= 1) {
+        if (Math.abs(e.currentTarget.scrollHeight - e.currentTarget.scrollTop - ContainerHeight) <= 10) {
             appendData();
         }
     };
 
-
+    // views
     const loadingView = (
-
-        <List gap="middle"
-            style={{
-                height: '100%',
-                width: '100%',
-            }}
-        >
-            <VirtualList
-                warp
-                data={data}
-                height={ContainerHeight}
-                itemHeight={47}
-                itemKey="email"
-                onScroll={onScroll}
-            >
+        <List gap="middle" style={{ height: '100%', width: '100%', }} >
+            <VirtualList warp='true' data={[{ "key": 1 }, { "key": 2 }, { "key": 3 }, { "key": 4 }]} height={ContainerHeight} itemHeight={47} itemKey="key" onScroll={onScroll}  >
                 {(item) => (
                     <>
-                        <Flex gap="middle"
-                            style={{
-                                height: '100%',
-                                width: '100%',
-                            }}
-                        >
-                            {/* <List.Item key={item.email}>
-                        <List.Item.Meta
-                            avatar={<Avatar src={item.picture.large} />}
-                            title={<a href="https://ant.design">{item.name.last}</a>}
-                            description={item.email}
-                        />
-                        <div>Content</div>
-                    </List.Item> */}
-                            <Card style={{ width: '25%', height: '200px', }}>
-                                <Spin style={{ height: '120px', }} size='large'></Spin>
-                                <br />
-                                <Space style={{ fontSize: '25px', color: '#CCCCCC', }}>
-                                    <CheckOutlined />
-                                    <ShoppingCartOutlined />
-                                    <StarOutlined />
-                                </Space>
+                        <Flex gap="large" style={{ height: '100%', width: '100%', }}>
+                            <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
+                                <Meta avatar={<Spin size='large'></Spin>} />
+                                <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
+                                    <CheckOutlined />     <ShoppingCartOutlined />  </Space>
+                            </Card>                            <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
+                                <Meta avatar={<Spin size='large'></Spin>} />
+                                <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
+                                    <CheckOutlined />     <ShoppingCartOutlined />  </Space>
+                            </Card>                            <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
+                                <Meta avatar={<Spin size='large'></Spin>} />
+                                <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
+                                    <CheckOutlined />     <ShoppingCartOutlined />  </Space>
+                            </Card>                            <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
+                                <Meta avatar={<Spin size='large'></Spin>} />
+                                <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
+                                    <CheckOutlined />     <ShoppingCartOutlined />  </Space>
                             </Card>
-
-                            <Card style={{ width: '25%', height: '200px', }}>
-                                <Spin style={{ height: '120px', }} size='large'></Spin>
-                                <br />
-                                <Space style={{ fontSize: '25px', color: '#CCCCCC', }}>
-                                    <CheckOutlined />
-                                    <ShoppingCartOutlined />
-                                    <StarOutlined />
-                                </Space>
-                            </Card>
-
-                            <Card style={{ width: '25%', height: '200px', }}>
-                                <Spin style={{ height: '120px', }} size='large'></Spin>
-                                <br />
-                                <Space style={{ fontSize: '25px', color: '#CCCCCC', }}>
-                                    <CheckOutlined />
-                                    <ShoppingCartOutlined />
-                                    <StarOutlined />
-                                </Space>
-                            </Card>
-
-                            <Card style={{ width: '25%', height: '200px', }}>
-                                <Spin style={{ height: '120px', }} size='large'></Spin>
-                                <br />
-                                <Space style={{ fontSize: '25px', color: '#CCCCCC', }}>
-                                    <CheckOutlined />
-                                    <ShoppingCartOutlined />
-                                    <StarOutlined />
-                                </Space>
-                            </Card>
-
-
                         </Flex>
                     </>
                 )}
-
             </VirtualList>
         </List>
-
     );
+    var randomGoodsView = loadingView;
+    var cartView = loadingView;
+    var accountView = '';
+    const [content, setContent] = useState(randomGoodsView);
+
+    // product data
+    const [productsData, setProductsData] = useState([]);
+    var productsDataLine = 0;
+
+    function appendData() {
+        client.get(`product/random`).then((response) => {
+            // console.log(response)
+
+            let list = response.data.product_list;
+
+            for (let index = 0; index < list.length;) {
+                let sublist = [];
+
+                for (let n = 0; n < 4; n++) {
+                    let element = list[index++];
+                    if (element != null) {
+                        sublist.push(element);
+                    }
+                }
+
+                if (sublist.length == 4) {
+                    const struct = { 'key': productsDataLine++, 'line': sublist };
+                    let tempData = productsData;
+                    tempData.push(struct);
+                    setProductsData(tempData);
+                }
+            }
+            // console.log("update list", productsData, productsDataLine);
+
+            randomGoodsView = (
+                <List gap="middle" style={{ height: '100%', width: '100%', }} >
+                    <VirtualList warp='true' data={productsData} height={ContainerHeight} itemHeight={47} itemKey="key" onScroll={onScroll}  >
+                        {(item) => (
+
+                            <>
+                                <Flex gap="large" style={{ height: '100%', width: '100%', }}>
+
+                                    <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
+                                        <Meta
+
+                                            avatar={item.line[0].avatar_locator ? <Spin size='large'></Spin> : ''}
+                                            title={item.line[0].name}
+                                            description={item.line[0].intro}
+                                        />
+
+                                        <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
+                                            <CheckOutlined />
+                                            <ShoppingCartOutlined />
+                                            {/* <StarOutlined /> */}
+                                        </Space>
+
+                                    </Card>
+                                    <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
+                                        <Meta
+                                            avatar={item.line[1].avatar_locator ? <Spin size='large'></Spin> : ''}
+                                            title={item.line[1].name}
+                                            description={item.line[1].intro}
+                                        />
+
+                                        <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
+                                            <CheckOutlined />
+                                            <ShoppingCartOutlined />
+                                            {/* <StarOutlined /> */}
+                                        </Space>
+
+                                    </Card>
+                                    <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
+                                        <Meta
+                                            avatar={item.line[2].avatar_locator ? <Spin size='large'></Spin> : ''}
+                                            title={item.line[2].name}
+                                            description={item.line[2].intro}
+                                        />
+
+                                        <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
+                                            <CheckOutlined />
+                                            <ShoppingCartOutlined />
+                                            {/* <StarOutlined /> */}
+                                        </Space>
+
+                                    </Card>
+                                    <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
+                                        <Meta
+                                            avatar={item.line[3].avatar_locator ? <Spin size='large'></Spin> : ''}
+                                            title={item.line[3].name}
+                                            description={item.line[3].intro}
+                                        />
+
+                                        <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
+                                            <CheckOutlined />
+                                            <ShoppingCartOutlined />
+                                            {/* <StarOutlined /> */}
+                                        </Space>
+
+                                    </Card>
+
+                                </Flex>
+                            </>
+                        )}
+                    </VirtualList>
+                </List>
+            )
 
 
-    // View
-    const randomGoodsView = loadingView;
-    const cartView = loadingView;
-    const [content, setContent] = useState(loadingView);
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
+
 
     // Load goods data
     React.useEffect(() => {
-        client.get(`/randomGoods`).then((response) => {
-            // let view = response.data.map((item) => {
-            //     <Card style={{
-            //         width: '25%',
-            //     }}>
-            //         <Meta
-            //             avatar={<Avatar src={item.picutre} />}
-            //             title={item.title}
-            //             description={item.description}
-            //         />
-            //     </Card>
-            // });
-
-            // randomGoodsView = view;
-            // setContent(randomGoodsView);
-        }).catch(error => {
-            console.log(error);
-        });
-    }, []);
-
-    // Load cart data
-    React.useEffect(() => {
-        client.get(`/cart`).then((response) => {
-            let view = response.data.map((item) => {
-                <Card style={{
-                    width: '25%',
-                }}>
-                    <Meta
-                        avatar={<Avatar src={item.picutre} />}
-                        title={item.title}
-                        description={item.description}
-                    />
-                </Card>
-            });
-
-            cartView = view;
-            setContent(cartView);
-        }).catch(error => {
-            console.log(error);
-        });
+        appendData();
     }, []);
 
     // Menu click event
@@ -184,10 +190,10 @@ function Main() {
             setContent(cartView);
         }
         else if (key == '4') {
-
+            setContent(accountView);
         }
         else if (key == '5') {
-            removeAccessToken();
+            // removeAccessToken();
             window.location.replace('/login')
         }
     };
@@ -257,6 +263,7 @@ function Main() {
                             type="text"
                             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                             onClick={() => setCollapsed(!collapsed)}
+
                             style={{
                                 fontSize: '16px',
                                 width: 64,

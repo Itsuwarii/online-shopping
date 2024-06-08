@@ -33,7 +33,7 @@ func (l *ProductRandomIdListLogic) ProductRandomIdList() (resp *types.RandomProd
 		return nil, errors.New("authorization failed")
 	}
 
-	var limit int64 = 2
+	var limit int64 = 20
 	productList, err := l.svcCtx.Model.ProductModel.RandomFindAllAvailable(l.ctx, limit)
 	if err != nil {
 		l.Logger.Error("find product for marchant with error", err)
