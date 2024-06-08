@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
+
 import {
-    AutoComplete,
-    Button,
-    Cascader,
-    Checkbox,
-    Col,
-    Form,
-    Input,
-    InputNumber,
-    Row,
-    Select,
-    Flex,
-    message,
+    Button, Checkbox, Form, Input, Row,
+    Select, Flex, message,
 } from 'antd';
+
 import client, { saveAccessToken } from '../../api/axios';
+
 const { Option } = Select;
 
 const formItemLayout = {
@@ -78,7 +71,6 @@ const Register = () => {
         agreement = e.target.checked
     }
     function submit() {
-        // console.log(agreement)
         if (username != '' && password != '' && confirmPassword == password && agreement == true) {
             client.post('token/register', {
                 "name": username,
@@ -94,7 +86,7 @@ const Register = () => {
                 }
             }).catch(function (error) {
                 console.log(error);
-                if (error.response.data == 'user existed\n'){
+                if (error.response.data == 'user existed\n') {
                     message.info("User existed please goto login!");
                 }
             });

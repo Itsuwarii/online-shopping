@@ -1,19 +1,13 @@
 import React, { Fragment, useState, useEffect } from 'react';
 
 import {
-    MenuFoldOutlined, MenuUnfoldOutlined, UploadOutlined,
-    UserOutlined, VideoCameraOutlined, ShoppingCartOutlined,
-    ShoppingOutlined, LoadingOutlined, CheckOutlined,
-    AppstoreOutlined, MailOutlined, SettingOutlined,
-    StarOutlined, IdcardOutlined, LogoutOutlined,
-    CommentOutlined
+    MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, ShoppingCartOutlined,
+    ShoppingOutlined, CheckOutlined, SettingOutlined, StarOutlined, LogoutOutlined,
 } from '@ant-design/icons';
 
 import {
-    Menu, Flex, Affix, Avatar, Spin,
-    Card, Skeleton, message, Switch, Input,
-    Layout, theme, Button, Drawer, Radio,
-    Space, List
+    Menu, Flex, Avatar, Spin, Card, Input,
+    Layout, theme, Button, Space, List
 } from 'antd';
 
 import VirtualList from 'rc-virtual-list';
@@ -31,14 +25,10 @@ function Main() {
 
     const [data, setData] = useState([]);
 
-    const fakeDataUrl = '';
     const ContainerHeight = 600;
 
     async function appendData() {
-        // const respone = await client.get('/product/random')
-        // setData(data.concat(respone.data));
-        // console.log(data.concat(body.results));
-        // message.success(` more items loaded!`);
+
     };
 
     useEffect(() => {

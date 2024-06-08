@@ -5,8 +5,17 @@ type (
 		ProductIdList []int `json:"id_list"`
 	}
 
+	ProductListReq {
+		Index int64 `json:"index"`
+		Size  int64 `json:"size"`
+	}
+
+	ProductListResp {
+		ProductList []Product `json:"product_list"`
+	}
+
 	ProductId {
-		Id int `json:"id"`
+		Id int64 `json:"id"`
 	}
 
 	Product {
@@ -53,9 +62,15 @@ type (
 	jwt: Auth
 )
 service mall-api {
+	// 用户商品推荐列表
 	@handler ProductRandomIdListHandler
 	get /random returns (RandomProductIdListResp)
 
+	// 商家获取商品列表
+	@handler ProductForMerchantHandler
+	get /all (ProductListReq) returns (ProductListResp)
+
+	// 获取一个商品
 	@handler ProductHandler
 	get / (ProductId) returns (Product)
 

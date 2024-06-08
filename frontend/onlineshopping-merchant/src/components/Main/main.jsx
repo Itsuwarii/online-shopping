@@ -6,7 +6,7 @@ import {
     ShoppingOutlined, LoadingOutlined, CheckOutlined,
     AppstoreOutlined, MailOutlined, SettingOutlined,
     StarOutlined, IdcardOutlined, LogoutOutlined,
-    UnorderedListOutlined,MessageOutlined,ProductOutlined,
+    UnorderedListOutlined, MessageOutlined, ProductOutlined,
     CommentOutlined
 } from '@ant-design/icons';
 
@@ -31,8 +31,6 @@ function Main() {
     } = theme.useToken();
 
     const [data, setData] = useState([]);
-
-    const fakeDataUrl = '';
     const ContainerHeight = 600;
 
     async function appendData() {
@@ -77,14 +75,6 @@ function Main() {
                                 width: '100%',
                             }}
                         >
-                            {/* <List.Item key={item.email}>
-                        <List.Item.Meta
-                            avatar={<Avatar src={item.picture.large} />}
-                            title={<a href="https://ant.design">{item.name.last}</a>}
-                            description={item.email}
-                        />
-                        <div>Content</div>
-                    </List.Item> */}
                             <Card style={{ width: '25%', height: '200px', }}>
                                 <Spin style={{ height: '120px', }} size='large'></Spin>
                                 <br />
@@ -94,38 +84,6 @@ function Main() {
                                     <StarOutlined />
                                 </Space>
                             </Card>
-
-                            <Card style={{ width: '25%', height: '200px', }}>
-                                <Spin style={{ height: '120px', }} size='large'></Spin>
-                                <br />
-                                <Space style={{ fontSize: '25px', color: '#CCCCCC', }}>
-                                    <CheckOutlined />
-                                    <ShoppingCartOutlined />
-                                    <StarOutlined />
-                                </Space>
-                            </Card>
-
-                            <Card style={{ width: '25%', height: '200px', }}>
-                                <Spin style={{ height: '120px', }} size='large'></Spin>
-                                <br />
-                                <Space style={{ fontSize: '25px', color: '#CCCCCC', }}>
-                                    <CheckOutlined />
-                                    <ShoppingCartOutlined />
-                                    <StarOutlined />
-                                </Space>
-                            </Card>
-
-                            <Card style={{ width: '25%', height: '200px', }}>
-                                <Spin style={{ height: '120px', }} size='large'></Spin>
-                                <br />
-                                <Space style={{ fontSize: '25px', color: '#CCCCCC', }}>
-                                    <CheckOutlined />
-                                    <ShoppingCartOutlined />
-                                    <StarOutlined />
-                                </Space>
-                            </Card>
-
-
                         </Flex>
                     </>
                 )}
@@ -137,49 +95,12 @@ function Main() {
 
 
     // View
-    const randomGoodsView = loadingView;
-    const cartView = loadingView;
+ 
     const [content, setContent] = useState(loadingView);
 
-    // Load goods data
     React.useEffect(() => {
-        client.get(`/randomGoods`).then((response) => {
-            // let view = response.data.map((item) => {
-            //     <Card style={{
-            //         width: '25%',
-            //     }}>
-            //         <Meta
-            //             avatar={<Avatar src={item.picutre} />}
-            //             title={item.title}
-            //             description={item.description}
-            //         />
-            //     </Card>
-            // });
+        client.get(`/product`).then((response) => {
 
-            // randomGoodsView = view;
-            // setContent(randomGoodsView);
-        }).catch(error => {
-            console.log(error);
-        });
-    }, []);
-
-    // Load cart data
-    React.useEffect(() => {
-        client.get(`/cart`).then((response) => {
-            let view = response.data.map((item) => {
-                <Card style={{
-                    width: '25%',
-                }}>
-                    <Meta
-                        avatar={<Avatar src={item.picutre} />}
-                        title={item.title}
-                        description={item.description}
-                    />
-                </Card>
-            });
-
-            cartView = view;
-            setContent(cartView);
         }).catch(error => {
             console.log(error);
         });
@@ -189,10 +110,13 @@ function Main() {
     const menuHandle = (event) => {
         let key = event.key;
         if (key == '1') {
-            setContent(randomGoodsView);
+
         }
         else if (key == '2') {
-            setContent(cartView);
+
+        }
+        else if (key == '3') {
+
         }
         else if (key == '4') {
 

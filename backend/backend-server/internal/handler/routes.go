@@ -169,6 +169,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/random",
 				Handler: ProductRandomIdListHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/all",
+				Handler: ProductForMerchantHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/product"),

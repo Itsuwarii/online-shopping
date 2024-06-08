@@ -208,7 +208,7 @@ type Product struct {
 	Name          string      `json:"name"`
 	MerchantId    int64       `json:"merchant"`
 	AvatarLocator string      `json:"avatar_locator"`
-	ImagesLocator []string    `json:"images_locator"`
+	ImagesLocator string      `json:"images_locator"`
 	Intro         string      `json:"intro"`
 	Price         float64     `json:"price"`
 	Amount        int64       `json:"amount"`
@@ -217,6 +217,15 @@ type Product struct {
 
 type ProductId struct {
 	Id int64 `json:"id"`
+}
+
+type ProductListReq struct {
+	Index int64 `json:"index"`
+	Size  int64 `json:"size"`
+}
+
+type ProductListResp struct {
+	ProductList []Product `json:"product_list"`
 }
 
 type RandomProductIdListResp struct {
@@ -242,7 +251,7 @@ type UpdateProductReq struct {
 	Name           string     `json:"name"`
 	Price          float64    `json:"price"`
 	AvatarLocator  string     `json:"avatar_locator"`
-	ImagesLocator  []string   `json:"images_locator"`
+	ImagesLocator  string   `json:"images_locator"`
 	Intro          string     `json:"intro"`
 	State          int64      `json:"state"`
 	Amount         int64      `json:"amount"`
