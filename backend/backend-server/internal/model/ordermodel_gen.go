@@ -34,13 +34,23 @@ type (
 		table string
 	}
 
+	// Id integer NOT NULL AUTO_INCREMENT,
+    // UserId integer not null,
+    // MerchantId integer not null,
+    // Date timestamp not null,
+    // State integer not null,
+    // ProductId integer not null,
+    // Number integer not null,
+    // Remark varchar(255) not null,
 	Order struct {
 		Id         int64          `db:"Id"`
 		UserId     int64          `db:"UserId"`
 		MerchantId int64          `db:"MerchantId"`
 		Date       time.Time      `db:"Date"`
 		State      int64          `db:"State"`
-		Remark     sql.NullString `db:"Remark"`
+		ProductId  int64		   `db:ProductId`
+		Number     int64	    	`db:Number`
+		Remark     string         `db:"Remark"`
 	}
 )
 
@@ -73,13 +83,13 @@ func (m *defaultOrderModel) FindOne(ctx context.Context, id int64) (*Order, erro
 
 func (m *defaultOrderModel) Insert(ctx context.Context, data *Order) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?)", m.table, orderRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.UserId, data.MerchantId, data.Date, data.State, data.Remark)
+	ret, err := m.conn.ExecCtx(ctx, query, data.UserId, data.MerchantId, data.Date, data.State,data.ProductId,data.Number, data.Remark)
 	return ret, err
 }
 
 func (m *defaultOrderModel) Update(ctx context.Context, data *Order) error {
 	query := fmt.Sprintf("update %s set %s where `Id` = ?", m.table, orderRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.UserId, data.MerchantId, data.Date, data.State, data.Remark, data.Id)
+	_, err := m.conn.ExecCtx(ctx, query, data.UserId, data.MerchantId, data.Date, data.State,data.ProductId,data.Number, data.Remark, data.Id)
 	return err
 }
 

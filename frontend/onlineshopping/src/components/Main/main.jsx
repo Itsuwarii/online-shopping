@@ -60,9 +60,9 @@ function Main() {
             </VirtualList>
         </List>
     );
-    var randomGoodsView = loadingView;
-    var cartView = loadingView;
-    var accountView = '';
+    const [randomGoodsView, setRandomGoodsView] = useState(loadingView);
+    const [cartView, setCartView] = useState('');
+    const [accountView, setAccountView] = useState('');
     const [content, setContent] = useState(randomGoodsView);
 
     // product data
@@ -94,7 +94,7 @@ function Main() {
             }
             // console.log("update list", productsData, productsDataLine);
 
-            randomGoodsView = (
+            setRandomGoodsView(
                 <List gap="middle" style={{ height: '100%', width: '100%', }} >
                     <VirtualList warp='true' data={productsData} height={ContainerHeight} itemHeight={47} itemKey="key" onScroll={onScroll}  >
                         {(item) => (
@@ -167,7 +167,6 @@ function Main() {
                 </List>
             )
 
-
         }).catch(error => {
             console.log(error);
         });
@@ -184,12 +183,15 @@ function Main() {
     const menuHandle = (event) => {
         let key = event.key;
         if (key == '1') {
+            console.log("switch product view");
             setContent(randomGoodsView);
         }
         else if (key == '2') {
+            console.log("switch cart view");
             setContent(cartView);
         }
         else if (key == '4') {
+            console.log("switch account view");
             setContent(accountView);
         }
         else if (key == '5') {

@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"errors"
 
 	"ludwig.com/onlineshopping/internal/svc"
 	"ludwig.com/onlineshopping/internal/types"
@@ -24,7 +25,16 @@ func NewOrderDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Order
 }
 
 func (l *OrderDeleteLogic) OrderDelete(req *types.OrderId) error {
-	// todo: add your logic here and delete this line
+	// id, err := l.ctx.Value("id").(json.Number).Int64()
+	// if err != nil {
+	// 	l.Logger.Error("parse id failed ", err)
+	// 	return errors.New("authorization failed")
+	// }
+
+	err := l.svcCtx.Model.OrderModel.Delete(l.ctx, req.Id)
+	if err != nil {
+		return errors.New("order delete failed")
+	}
 
 	return nil
 }

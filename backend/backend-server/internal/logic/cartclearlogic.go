@@ -2,6 +2,8 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 
 	"github.com/zeromicro/go-zero/core/logx"
 	"ludwig.com/onlineshopping/internal/svc"
@@ -22,7 +24,16 @@ func NewCartClearLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CartCle
 }
 
 func (l *CartClearLogic) CartClear() error {
-	// todo: add your logic here and delete this line
+	id, err := l.ctx.Value("id").(json.Number).Int64()
+	if err != nil {
+		l.Logger.Error("parse id failed ", err)
+		return errors.New("authorization failed")
+	}
+
+	err = l.svcCtx.Model.CartModel.DeleteAll(l.ctx, id)
+	if err != nil {
+		return errors.New("delete failed")
+	}
 
 	return nil
 }

@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"errors"
 
 	"ludwig.com/onlineshopping/internal/svc"
 	"ludwig.com/onlineshopping/internal/types"
@@ -24,7 +25,31 @@ func NewOrderGetLogic(ctx context.Context, svcCtx *svc.ServiceContext) *OrderGet
 }
 
 func (l *OrderGetLogic) OrderGet(req *types.OrderId) (resp *types.Order, err error) {
-	// todo: add your logic here and delete this line
+	// id, err := l.ctx.Value("id").(json.Number).Int64()
+	// if err != nil {
+	// 	l.Logger.Error("parse id failed ", err)
+	// 	return nil, errors.New("authorization failed")
+	// }
 
-	return
+	result, err := l.svcCtx.Model.OrderModel.FindOne(l.ctx, req.Id)
+	if err != nil {
+		return nil, errors.New("find order failed")
+	}
+
+	// UserId           int64            `json:"user_id"`
+	// MerchantId       int64            `json:"merchant_id"`
+	// Date             int64            `json:"date"`
+	// State            int64            `json:"state"`
+	// Remark           string           `json:"remark"`
+	// ProductId        int64		      `json:"product_id"`
+	// Number 			 int64  		  `json:"number"`
+	return &types.Order{
+		UserId:     result.UserId,
+		MerchantId: result.MerchantId,
+		Date:       result.Date.Unix(),
+		State:      result.State,
+		Remark:     result.Remark,
+		ProductId:  result.ProductId,
+		Number:     result.Number,
+	}, nil
 }

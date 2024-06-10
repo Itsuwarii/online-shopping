@@ -166,7 +166,8 @@ type NameAvailableResp struct {
 type NewOrder struct {
 	UserId           int64            `json:"user_id"`
 	Remark           string           `json:"remark"`
-	OrderProductList []OrderProduct   `json:"order_product_list"`
+	ProductId        int64		      `json:"product_id"`
+	Number 			 int64  		  `json:"number"`
 }
 
 type NewProduct struct {
@@ -185,23 +186,24 @@ type Order struct {
 	Date             int64            `json:"date"`
 	State            int64            `json:"state"`
 	Remark           string           `json:"remark"`
-	OrderProductList []OrderProduct   `json:"order_product_ist"`
+	ProductId        int64		      `json:"product_id"`
+	Number 			 int64  		  `json:"number"`
 }
 
 type OrderId struct {
 	Id int64 `json:"id"`
 }
 
-type OrderIdList struct {
-	OrdersIdList []int64 `json:"orders_id_list"`
+type OrderList struct {
+	OrdersList []Order `json:"orders_list"`
 }
 
-type OrderProduct struct {
-	ProductId int64     `json:"id"`
-	Number    int64     `json:"number"`
-	Price     float64   `json:"price"`
-	Logistics string    `json:"logistics"`
-}
+// type OrderProduct struct {
+// 	ProductId int64     `json:"id"`
+// 	Number    int64     `json:"number"`
+// 	Price     float64   `json:"price"`
+// 	Logistics string    `json:"logistics"`
+// }
 
 type Product struct {
 	ID            int64       `json:"id"`

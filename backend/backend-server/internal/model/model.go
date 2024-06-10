@@ -15,7 +15,6 @@ type Model struct {
 	ActionContentModel
 	CartModel
 	MarchantModel
-	OrderContentModel
 	OrderModel
 	ProductModel
 	UserModel
@@ -42,7 +41,6 @@ func GetInstanceModel(c config.Config) (m *Model) {
 			ActionContentModel: NewActionContentModel(conn),
 			CartModel:          NewCartModel(conn),
 			MarchantModel:      NewMarchantModel(conn),
-			OrderContentModel:  NewOrderContentModel(conn),
 			OrderModel:         NewOrderModel(conn),
 			ProductModel:       NewProductModel(conn),
 			UserModel:          NewUserModel(conn),

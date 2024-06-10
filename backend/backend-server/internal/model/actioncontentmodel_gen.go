@@ -36,7 +36,7 @@ type (
 
 	ActionContent struct {
 		Id        int64     `db:"Id"`
-		ContentId int64     `db:"ContentId"`
+		ActionId int64      `db:"ActionId"`
 		OwnerId   int64     `db:"OwnerId"`
 		Date      time.Time `db:"Date"`
 		Text      string    `db:"Text"`
@@ -72,13 +72,13 @@ func (m *defaultActionContentModel) FindOne(ctx context.Context, id int64) (*Act
 
 func (m *defaultActionContentModel) Insert(ctx context.Context, data *ActionContent) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?)", m.table, actionContentRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.ContentId, data.OwnerId, data.Date, data.Text)
+	ret, err := m.conn.ExecCtx(ctx, query, data.ActionId, data.OwnerId, data.Date, data.Text)
 	return ret, err
 }
 
 func (m *defaultActionContentModel) Update(ctx context.Context, data *ActionContent) error {
 	query := fmt.Sprintf("update %s set %s where `Id` = ?", m.table, actionContentRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.ContentId, data.OwnerId, data.Date, data.Text, data.Id)
+	_, err := m.conn.ExecCtx(ctx, query, data.ActionId, data.OwnerId, data.Date, data.Text, data.Id)
 	return err
 }
 

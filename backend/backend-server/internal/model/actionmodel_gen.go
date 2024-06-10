@@ -37,7 +37,6 @@ type (
 		Id         int64 `db:"Id"`
 		UserId     int64 `db:"UserId"`
 		MerchantId int64 `db:"MerchantId"`
-		ContentId  int64 `db:"ContentId"`
 	}
 )
 
@@ -69,14 +68,14 @@ func (m *defaultActionModel) FindOne(ctx context.Context, id int64) (*Action, er
 }
 
 func (m *defaultActionModel) Insert(ctx context.Context, data *Action) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?)", m.table, actionRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.UserId, data.MerchantId, data.ContentId)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?)", m.table, actionRowsExpectAutoSet)
+	ret, err := m.conn.ExecCtx(ctx, query, data.UserId, data.MerchantId)
 	return ret, err
 }
 
 func (m *defaultActionModel) Update(ctx context.Context, data *Action) error {
 	query := fmt.Sprintf("update %s set %s where `Id` = ?", m.table, actionRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.UserId, data.MerchantId, data.ContentId, data.Id)
+	_, err := m.conn.ExecCtx(ctx, query, data.UserId, data.MerchantId, data.Id)
 	return err
 }
 
