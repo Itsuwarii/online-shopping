@@ -48,8 +48,8 @@ type (
 		MerchantId int64          `db:"MerchantId"`
 		Date       time.Time      `db:"Date"`
 		State      int64          `db:"State"`
-		ProductId  int64		   `db:ProductId`
-		Number     int64	    	`db:Number`
+		ProductId  int64		  `db:"ProductId"`
+		Number     int64	      `db:"Number"`
 		Remark     string         `db:"Remark"`
 	}
 )
@@ -57,7 +57,7 @@ type (
 func newOrderModel(conn sqlx.SqlConn) *defaultOrderModel {
 	return &defaultOrderModel{
 		conn:  conn,
-		table: "`order`",
+		table: "`order_table`",
 	}
 }
 
