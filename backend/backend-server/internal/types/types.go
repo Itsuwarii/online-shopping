@@ -56,7 +56,7 @@ type Cart struct {
 type CartProduct struct {
 	ProductId int64   `json:"id"`
 	Number    int64   `json:"number"`
-	Date      int64   `json:"date`
+	Date      int64   `json:"date"`
 }
 
 type Content struct {
@@ -237,7 +237,7 @@ type RandomProductListResp struct {
 type RegisterReq struct {
 	Name      string `json:"name"`
 	Password  string `json:"password"`
-	Sex       int64  `json:"sex"`
+	Sex       string `json:"sex"`
 	TelePhone string `json:"telephone"`
 	Intro     string `json:"intro"`
 }
@@ -268,7 +268,7 @@ type UserDeleteResp struct {
 type UserInfoResp struct {
 	Name            string   `json:"name"`
 	AvatarLocator   string   `json:"avatar_locator"`
-	Sex             int64    `json:"sex"`
+	Sex             string    `json:"sex"`
 	TelePhone       string   `json:"telephone"`
 	Intro           string   `json:"intro"`
 }
@@ -276,7 +276,7 @@ type UserInfoResp struct {
 type UserInfoUpdateReq struct {
 	Name      		string `json:"name"`
 	AvatarLocator   string `json:"avatar_locator"`
-	Sex      		int64  `json:"sex"`
+	Sex      		string  `json:"sex"`
 	TelePhone		string `json:"telephone"`
 	Intro    		string `json:"intro"`
 }

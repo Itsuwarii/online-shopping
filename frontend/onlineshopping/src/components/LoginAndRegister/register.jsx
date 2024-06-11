@@ -43,7 +43,7 @@ const Register = () => {
     var username = ''
     var password = ''
     var confirmPassword = ''
-    var gender = 0
+    var gender = ''
     var intro = ''
     var telephone = ''
     var agreement = false
@@ -65,7 +65,6 @@ const Register = () => {
     }
     function onChangeGender(e) {
         gender = e.target.value;
-
     }
     function onChangeAgreement(e) {
         agreement = e.target.checked
@@ -79,15 +78,17 @@ const Register = () => {
                 "telephone": telephone,
                 "intro": intro,
             }).then(function (response) {
-                if (response.code === 200) {
-                    console.log("register success", response);
-                    saveAccessToken(response.data.Auth.Token);
-                    window.location.replace('/');
-                }
+                message.success("Register success")
+                console.log("register success", response);
+                saveAccessToken(response.data.auth.token);
+                window.location.replace('/');
+
             }).catch(function (error) {
                 console.log(error);
-                if (error.response.data == 'user existed\n') {
-                    message.info("User existed please goto login!");
+                if (error.response != null && error.response.data != null) {
+                    if (error.response.data == 'user existed\n') {
+                        message.info("User existed please goto login!");
+                    }
                 }
             });
         }
@@ -207,11 +208,19 @@ const Register = () => {
                                 },
                             ]}
                         >
-                            <Select placeholder="select your gender">
-                                <Option onChange={onChangeGender} value="1">Male</Option>
-                                <Option onChange={onChangeGender} value="2">Female</Option>
-                                <Option onChange={onChangeGender} value="0">Other</Option>
+
+
+                            <Select onChange={onChangeGender} placeholder="select your gender">
+                                <Select.Option value="male">Male</Select.Option>
+                                <Select.Option value="female">Female</Select.Option>
+                                <Select.Option value="secret">Secret</Select.Option>
                             </Select>
+
+                            {/* <Select placeholder="select your gender">
+                                <Option onChange={onChangeGender} value="male">Male</Option>
+                                <Option onChange={onChangeGender} value="female">Female</Option>
+                                <Option onChange={onChangeGender} value="other">Other</Option>
+                            </Select> */}
                         </Form.Item>
 
                         <Form.Item

@@ -27,10 +27,14 @@ const Login = () => {
                 }
             }).catch(function (error) {
                 console.log(error);
+                message.config({
+                    duration:1,
+                    maxCount:1,
+                })
                 if (error.response.data == "password check failed\n") {
-                    message.info("Password check failed");
+                    message.error("Password check failed");
                 }else{
-                    message.info("Login failed");
+                    message.error("Login failed");
                 }
             });
         }

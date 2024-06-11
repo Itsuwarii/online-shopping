@@ -40,7 +40,7 @@ type (
 		Username  string         `db:"Username"`
 		Password  string         `db:"Password"`
 		AvatarLocator string     `db:"AvatarLocator"`
-		Sex       int64          `db:"Sex"`
+		Sex       string          `db:"Sex"`
 		TelePhone string         `db:"TelePhone"`
 		Intro     string         `db:"Intro"`
 		Date      time.Time      `db:"Date"`
