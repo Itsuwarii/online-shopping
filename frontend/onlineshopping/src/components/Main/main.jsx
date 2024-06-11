@@ -7,246 +7,182 @@ import {
 
 import {
     Menu, Flex, Avatar, Spin, Card, Input,
-    Layout, theme, Button, Space, List
+    Layout, theme, Button, Space, List, Image
 } from 'antd';
 
-import VirtualList from 'rc-virtual-list';
 import client, { removeAccessToken } from '../../api/axios';
 
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
 const { Meta } = Card;
 
-function Main() {
-    const [collapsed, setCollapsed] = useState(false);
-    const {
-        token: { colorBgContainer, borderRadiusLG },
-    } = theme.useToken();
-
-    const ContainerHeight = 700;
-    const onScroll = (e) => {
-        if (Math.abs(e.currentTarget.scrollHeight - e.currentTarget.scrollTop - ContainerHeight) <= 10) {
-            appendData();
-        }
-    };
+const Main = () => {
 
     // views
-    const loadingView = (
-        <List gap="middle" style={{ height: '100%', width: '100%', }} >
-            <VirtualList warp='true' data={[{ "key": 1 }, { "key": 2 }, { "key": 3 }, { "key": 4 }]} height={ContainerHeight} itemHeight={47} itemKey="key" onScroll={onScroll}  >
-                {(item) => (
-                    <>
-                        <Flex gap="large" style={{ height: '100%', width: '100%', }}>
-                            <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
-                                <Meta avatar={<Spin size='large'></Spin>} />
-                                <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
-                                    <CheckOutlined />     <ShoppingCartOutlined />  </Space>
-                            </Card>                            <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
-                                <Meta avatar={<Spin size='large'></Spin>} />
-                                <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
-                                    <CheckOutlined />     <ShoppingCartOutlined />  </Space>
-                            </Card>                            <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
-                                <Meta avatar={<Spin size='large'></Spin>} />
-                                <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
-                                    <CheckOutlined />     <ShoppingCartOutlined />  </Space>
-                            </Card>                            <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
-                                <Meta avatar={<Spin size='large'></Spin>} />
-                                <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
-                                    <CheckOutlined />     <ShoppingCartOutlined />  </Space>
-                            </Card>
-                        </Flex>
-                    </>
-                )}
-            </VirtualList>
-        </List>
-    );
-    const [randomGoodsView, setRandomGoodsView] = useState(loadingView);
-    const [cartView, setCartView] = useState('');
-    const [accountView, setAccountView] = useState('');
-    const [content, setContent] = useState(randomGoodsView);
+    // const loadingView = (
+    //     <List gap="middle" style={{ height: '100%', width: '100%', }} >
+    //         <VirtualList warp='true' data={[{ "key": 1 }, { "key": 2 }, { "key": 3 }, { "key": 4 }]} itemHeight={47} itemKey="key"  >
+    //             {(item) => (
+    //                 <>
+    //                     <Flex gap="large" style={{ height: '100%', width: '100%', }}>
+    //                         <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
+    //                             <Meta avatar={<Spin size='large'></Spin>} />
+    //                             <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
+    //                                 <CheckOutlined />     <ShoppingCartOutlined />  </Space>
+    //                         </Card>                            <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
+    //                             <Meta avatar={<Spin size='large'></Spin>} />
+    //                             <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
+    //                                 <CheckOutlined />     <ShoppingCartOutlined />  </Space>
+    //                         </Card>                            <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
+    //                             <Meta avatar={<Spin size='large'></Spin>} />
+    //                             <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
+    //                                 <CheckOutlined />     <ShoppingCartOutlined />  </Space>
+    //                         </Card>                            <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
+    //                             <Meta avatar={<Spin size='large'></Spin>} />
+    //                             <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
+    //                                 <CheckOutlined />     <ShoppingCartOutlined />  </Space>
+    //                         </Card>
+    //                     </Flex>
+    //                 </>
+    //             )}
+    //         </VirtualList>
+    //     </List>
+    // );
 
-    // product data
-    const [productsData, setProductsData] = useState([]);
-    var productsDataLine = 0;
-
-    function appendData() {
-        client.get(`product/random`).then((response) => {
-            // console.log(response)
-
-            let list = response.data.product_list;
-
-            for (let index = 0; index < list.length;) {
-                let sublist = [];
-
-                for (let n = 0; n < 4; n++) {
-                    let element = list[index++];
-                    if (element != null) {
-                        sublist.push(element);
-                    }
-                }
-
-                if (sublist.length == 4) {
-                    const struct = { 'key': productsDataLine++, 'line': sublist };
-                    let tempData = productsData;
-                    tempData.push(struct);
-                    setProductsData(tempData);
-                }
+    class RandomProductView extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = {
+                list: []
             }
-            // console.log("update list", productsData, productsDataLine);
 
-            setRandomGoodsView(
-                <List gap="middle" style={{ height: '100%', width: '100%', }} >
-                    <VirtualList warp='true' data={productsData} height={ContainerHeight} itemHeight={47} itemKey="key" onScroll={onScroll}  >
-                        {(item) => (
+        }
 
-                            <>
-                                <Flex gap="large" style={{ height: '100%', width: '100%', }}>
+        componentDidMount() {
+            this.pullData()
+        }
 
-                                    <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
-                                        <Meta
+        pullData = () => {
+            client.get(`product/random`)
+                .then((response) => {
+                    console.log('data respone')
+                    this.setState({
+                        data: this.state.list = this.state.list.concat(response.data.product_list)
+                    })
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        };
 
-                                            avatar={item.line[0].avatar_locator ? <Spin size='large'></Spin> : ''}
-                                            title={item.line[0].name}
-                                            description={item.line[0].intro}
-                                        />
+        onSelectProduct = (event) => {
+            console.log(event.target)
+        }
 
-                                        <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
-                                            <CheckOutlined />
-                                            <ShoppingCartOutlined />
-                                            {/* <StarOutlined /> */}
-                                        </Space>
+        onAddToCart = (event) => {
+            console.log(event.target)
+        }
 
-                                    </Card>
-                                    <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
-                                        <Meta
-                                            avatar={item.line[1].avatar_locator ? <Spin size='large'></Spin> : ''}
-                                            title={item.line[1].name}
-                                            description={item.line[1].intro}
-                                        />
+        render() {
+            return (
+                <Flex wrap gap="large" style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }}>
+                    {
+                        this.state.list.map((item) => (
+                            <Card key={item.id} style={{ width: "250px", height: '300px', }}>
+                                <Meta
+                                    // avatar={item.avatar_locator ? <Spin size='large'></Spin> : ''}
+                                    avatar={<Image placeholder='true'
+                                        // style={{ borderRadiusLG: '50px' }}
+                                        src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'></Image>}
+                                    title={item.name}
+                                    description={item.intro}
+                                />
 
-                                        <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
-                                            <CheckOutlined />
-                                            <ShoppingCartOutlined />
-                                            {/* <StarOutlined /> */}
-                                        </Space>
+                                <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
+                                    <Button value={item.id} onClick={this.onSelectProduct}><CheckOutlined /></Button>
+                                    <Button value={item.id} onClick={this.onAddToCart}><ShoppingCartOutlined /></Button>
+                                    {/* <StarOutlined /> */}
+                                </Space>
 
-                                    </Card>
-                                    <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
-                                        <Meta
-                                            avatar={item.line[2].avatar_locator ? <Spin size='large'></Spin> : ''}
-                                            title={item.line[2].name}
-                                            description={item.line[2].intro}
-                                        />
-
-                                        <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
-                                            <CheckOutlined />
-                                            <ShoppingCartOutlined />
-                                            {/* <StarOutlined /> */}
-                                        </Space>
-
-                                    </Card>
-                                    <Card style={{ margin: '10px', width: '25%', height: '200px', }}>
-                                        <Meta
-                                            avatar={item.line[3].avatar_locator ? <Spin size='large'></Spin> : ''}
-                                            title={item.line[3].name}
-                                            description={item.line[3].intro}
-                                        />
-
-                                        <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px', color: '#CCCCCC', }}>
-                                            <CheckOutlined />
-                                            <ShoppingCartOutlined />
-                                            {/* <StarOutlined /> */}
-                                        </Space>
-
-                                    </Card>
-
-                                </Flex>
-                            </>
-                        )}
-                    </VirtualList>
-                </List>
+                            </Card>
+                        ))
+                    }
+                </Flex>
             )
+        }
+    }
 
-        }).catch(error => {
-            console.log(error);
-        });
-    };
+    class CartView extends React.Component {
+        render() {
+            return (
+                <div></div>
+            )
+        }
+    }
 
+    class AccountView extends React.Component {
+        render() {
+            return (
+                <div></div>
+            )
+        }
+    }
 
-
-    // Load goods data
-    React.useEffect(() => {
-        appendData();
-    }, []);
+    const [viewIndex, setViewIndex] = useState('1');
 
     // Menu click event
     const menuHandle = (event) => {
         let key = event.key;
+
         if (key == '1') {
+            setViewIndex('1');
             console.log("switch product view");
-            setContent(randomGoodsView);
         }
         else if (key == '2') {
+            setViewIndex('2');
             console.log("switch cart view");
-            setContent(cartView);
         }
         else if (key == '4') {
+            setViewIndex('4');
             console.log("switch account view");
-            setContent(accountView);
         }
         else if (key == '5') {
+            setViewIndex('5');
             // removeAccessToken();
             window.location.replace('/login')
         }
     };
 
+    const [collapsed, setCollapsed] = useState(false);
+    const { token: { colorBgContainer, borderRadiusLG }, } = theme.useToken();
+
     return (
-        <Layout style={{
-            height: '100vh',
-        }}>
-            <Sider trigger={null} collapsible collapsed={collapsed}
-                theme="light">
-                <div className="demo-logo-vertical" />
-                <Menu
-                    onClick={menuHandle}
+        <Layout style={{ height: '100vh', }}>
+            <Sider trigger={null} collapsible collapsed={collapsed} theme="light">
+                <Menu onClick={menuHandle}
                     mode="inline"
-                    defaultSelectedKeys={['1']}
-                    defaultOpenKeys={['main']}
+                    defaultSelectedKeys={['1']} defaultOpenKeys={['main']}
                     items={[
                         {
-                            key: 'main',
-                            label: 'Shopping',
-                            icon: <ShoppingOutlined />,
+                            key: 'main', label: 'Shopping', icon: <ShoppingOutlined />,
                             children: [
                                 {
-                                    key: '1',
-                                    label: 'Goods',
-                                    icon: <ShoppingOutlined />,
+                                    key: '1', label: 'Goods', icon: <ShoppingOutlined />,
                                 },
                                 {
-                                    key: '2',
-                                    label: 'Cart',
-                                    icon: <ShoppingCartOutlined />,
+                                    key: '2', label: 'Cart', icon: <ShoppingCartOutlined />,
                                 },
                             ],
                         },
+                        { type: 'divider', },
                         {
-                            type: 'divider',
-                        },
-                        {
-                            key: 'setting',
-                            label: 'Setting',
-                            icon: <SettingOutlined />,
+                            key: 'setting', label: 'Setting', icon: <SettingOutlined />,
                             children: [
                                 {
-                                    key: '4',
-                                    label: 'Account',
-                                    icon: <UserOutlined />,
+                                    key: '4', label: 'Account', icon: <UserOutlined />,
                                 },
                                 {
-                                    icon: <LogoutOutlined />,
-                                    key: '5',
-                                    label: 'Logout',
+                                    key: '5', label: 'Logout', icon: <LogoutOutlined />,
                                 },
                             ],
                         }
@@ -254,53 +190,31 @@ function Main() {
                 />
             </Sider>
             <Layout>
-                <Header
-                    style={{
-                        padding: 0,
-                        background: colorBgContainer,
-                    }}
-                >
+                <Header style={{ padding: 0, background: colorBgContainer, }}>
                     <Flex>
-                        <Button
-                            type="text"
-                            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                        <Button type="text" icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                             onClick={() => setCollapsed(!collapsed)}
-
-                            style={{
-                                fontSize: '16px',
-                                width: 64,
-                                height: 64,
-                            }}
+                            style={{ fontSize: '16px', width: 64, height: 64, }}
                         />
 
-                        <Flex style={{
-                            align: 'center',
-                            justify: 'center',
-                            width: '70%',
-                        }}>
-                            <Search
-                                style={{
-                                    height: 64,
-                                    paddingTop: 15,
-                                }}
-                                placeholder="search goods" enterButton />
+                        <Flex style={{ align: 'center', justify: 'center', width: '70%', }}>
+                            <Search style={{ height: 64, paddingTop: 15, }} placeholder="search goods" enterButton />
                         </Flex>
                     </Flex>
                 </Header>
-                <Content
-                    style={{
-                        margin: '24px 16px',
-                        padding: 24,
-                        minHeight: 280,
-                        background: colorBgContainer,
-                        borderRadius: borderRadiusLG,
-                    }}
-                >
-                    {content}
+
+                <Content style={{ flexFlow: 'column', margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, borderRadius: borderRadiusLG, }} >
+
+                    <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><RandomProductView /></div>
+                    <div style={{ display: viewIndex == '2' ? 'inline' : 'none' }}><CartView /></div>
+                    <div style={{ display: viewIndex == '4' ? 'inline' : 'none' }}><AccountView /></div>
+                    <div style={{ display: viewIndex == '5' ? 'inline' : 'none' }}>Logout</div>
+
                 </Content>
             </Layout>
         </Layout>
-
     );
+
 };
+
 export default Main;
