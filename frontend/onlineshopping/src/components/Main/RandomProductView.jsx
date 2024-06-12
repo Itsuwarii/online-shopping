@@ -5,10 +5,11 @@ import {
 } from '@ant-design/icons';
 
 import {
-    Flex, Card, Button, Space, Image, message, Spin
+    Flex, Card, Button, Space, Image, message, Spin, InputNumber,Empty
 } from 'antd';
 
 import client from '../../api/axios';
+import { getValue } from '@testing-library/user-event/dist/utils';
 
 const { Meta } = Card;
 
@@ -74,7 +75,6 @@ class RandomProductView extends React.Component {
 
     isInCart = (id) => {
         for (let i = 0; i < this.state.cart_product_list.length; i++) {
-            console.log(this.state.cart_product_list[i].id)
             if (this.state.cart_product_list[i].id == id) {
                 return true;
             }
@@ -90,6 +90,12 @@ class RandomProductView extends React.Component {
     onAddToCart = (event) => {
         console.log(event.target)
 
+    }
+
+    // 购物车数量改变
+    onChangeCartNumber = (num, id) => {
+        console.log(num, id)
+
 
     }
 
@@ -99,11 +105,12 @@ class RandomProductView extends React.Component {
                 {
                     this.state.list.length == 0
                         ?
-                        <Flex style={{ margin: '0 auto' }}>
-                            <Space>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 100 }} spin />} />
-                            </Space>
-                        </Flex>
+                        // <Flex style={{ margin: '0 auto' }}>
+                        //     <Space>
+                        //         <Spin indicator={<LoadingOutlined style={{ fontSize: 100 }} spin />} />
+                        //     </Space>
+                        // </Flex>
+                        <Empty style={{ margin: 'auto auto' }}></Empty >
                         :
                         this.state.list.map((item) => (
                             <Card key={item.id} style={{ width: "250px", height: '300px', }}>
@@ -114,12 +121,14 @@ class RandomProductView extends React.Component {
                                         src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'></Image>}
                                     title={item.name}
                                     description={item.intro}
-                                />{item.id}
+                                />
 
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
                                     <Button value={item.id} onClick={this.onSelectProduct}><CheckOutlined /></Button>
-                                    <Button value={item.id} style={{ backgroundColor: this.isInCart(item.id) ? '' : 'white' }} onClick={this.onAddToCart}><ShoppingCartOutlined /></Button>
-                                    {/* <StarOutlined /> */}
+                                    <Button value={item.id} onClick={this.onAddToCart} style={{ backgroundColor: this.isInCart(item.id) ? '#1677ff' : 'white' }}
+                                    ><ShoppingCartOutlined /></Button>
+                                    <InputNumber controlWidth={60} min={1} max={1000} defaultValue={1} onChange={(num) => this.onChangeCartNumber(num, item.id)}
+                                        style={{ display: this.isInCart(item.id) ? 'block' : 'none' }} />
                                 </Space>
 
                             </Card>
