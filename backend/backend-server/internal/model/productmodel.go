@@ -13,7 +13,9 @@ var _ ProductModel = (*customProductModel)(nil)
 func (m *customProductModel) RandomFindAllAvailable(ctx context.Context, limit int64) ([]Product, error) {
 	avaliable := fmt.Sprint(types.AVAILABLE)
 
-	query := fmt.Sprintf("select %s from %s as t1 join (select round(RAND()*(SELECT MAX(Id) FROM %s)) as randId ) AS t2 WHERE `State`=%s and t1.Id>=t2.randId ORDER BY t1.Id LIMIT %s", productRows, m.table, m.table, avaliable, fmt.Sprint(limit))
+	// SELECT %s FROM %s ORDER BY RAND() LIMIT %s;
+	// select %s from %s as t1 join (select round(RAND()*(SELECT MAX(Id) FROM %s)) as randId ) AS t2 WHERE `State`=%s and t1.Id>=t2.randId ORDER BY t1.Id LIMIT %s
+	query := fmt.Sprintf("SELECT %s FROM %s  WHERE `State`=%s ORDER BY RAND() LIMIT %s ", productRows, m.table, avaliable, fmt.Sprint(limit))
 	var resp []Product
 	err := m.conn.QueryRowsCtx(ctx, &resp, query)
 	switch err {

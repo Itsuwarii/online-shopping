@@ -1,0 +1,20 @@
+/* 
+
+.scroller::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+.scroller::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+  -webkit-border-radius: 6px;
+}
+.scroller::-webkit-scrollbar-thumb:vertical {
+  height: 12px;
+  background-color: #BDBDBD;
+  -webkit-border-radius: 6px;
+}
+.scroller::-webkit-scrollbar-thumb:horizontal {
+  width: 12px;
+  background-color: #BDBDBD;
+  -webkit-border-radius: 6px;
+} */

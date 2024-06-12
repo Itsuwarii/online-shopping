@@ -18,22 +18,19 @@ const Login = () => {
                 "username": username,
                 "password": password
             }).then(function (response) {
-                if (response.status == 200) {
-                    console.log("login success", response);
-                    saveAccessToken(response.data.auth.token);
-                    window.location.replace('/');
-                } else {
-                    console.log(response);
-                }
+                console.log("login success", response);
+                saveAccessToken(response.data.auth.token);
+                message.success("Login success")
+                window.location.replace('/');
             }).catch(function (error) {
                 console.log(error);
                 message.config({
-                    duration:1,
-                    maxCount:1,
+                    duration: 1,
+                    maxCount: 1,
                 })
                 if (error.response.data == "password check failed\n") {
                     message.error("Password check failed");
-                }else{
+                } else {
                     message.error("Login failed");
                 }
             });
