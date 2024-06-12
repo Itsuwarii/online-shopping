@@ -43,9 +43,10 @@ class CartView extends React.Component {
         let cart_product_list = [];
         let list = this.state.list;
         for (let i = 0; i < list.length; i++) {
-            if (num == 0) continue;
 
             if (list[i].id == id) {
+                if (num == 0) continue;
+
                 cart_product_list.push({
                     id: list[i].id,
                     number: num,
@@ -55,7 +56,8 @@ class CartView extends React.Component {
                 cart_product_list.push(list[i])
             }
         }
-        // console.log(cart_product_list)
+
+        this.setState({ list: cart_product_list })
 
         client.post(`cart`, {
             cart_product_list
@@ -81,14 +83,14 @@ class CartView extends React.Component {
                                     // avatar={item.avatar_locator ? <Spin size='large'></Spin> : ''}
                                     avatar={<Image placeholder='true'
                                         // style={{ borderRadiusLG: '50px' }}
-                                        src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'></Image>}
+                                        src="https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg"></Image>}
                                     title={item.name}
                                     description={item.intro}
                                 />
 
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
                                     <Button value={item.id} onClick={this.onSelectProduct}><CheckOutlined /></Button>
-                                    <Button value={item.id} onClick={this.onAddToCart}><ShoppingCartOutlined /></Button>
+                                    <Button value={item.id} onClick={this.onAddToCart} style={{ backgroundColor: '#1677ff' }}><ShoppingCartOutlined /></Button>
                                     <InputNumber variant='outlined' changeOnWheel='true' min={0} max={1000} defaultValue={item.number} onChange={(num) => this.onChangeCartNumber(num, item.id)} />
                                 </Space>
 

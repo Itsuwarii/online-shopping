@@ -5,7 +5,7 @@ import {
 } from '@ant-design/icons';
 
 import {
-    Flex, Card, Button, Space, Image, message, Spin, InputNumber,Empty
+    Flex, Card, Button, Space, Image, message, Spin, InputNumber, Empty
 } from 'antd';
 
 import client from '../../api/axios';
@@ -84,11 +84,48 @@ class RandomProductView extends React.Component {
     }
 
     onSelectProduct = (event) => {
-        console.log(event.target)
+        console.log(event)
     }
 
-    onAddToCart = (event) => {
-        console.log(event.target)
+    onAddToCart = (id) => {
+        console.log(id)
+
+        let cart_product_list = [];
+        let list = this.state.cart_product_list;
+        let existed = false;
+
+        for (let i = 0; i < list.length; i++) {
+            if (list[i].id == id) {
+                existed = true;
+                cart_product_list.push({
+                    id: list[i].id,
+                    number: list[i].number + 1,
+                    date: Date.parse(new Date())
+                })
+            } else cart_product_list.push(list[i])
+        }
+
+        if (existed == false) {
+            cart_product_list.push({
+                id,
+                number: 1,
+                date: Date.parse(new Date())
+            })
+        }
+
+        this.setState({ cart_product_list })
+
+        client.post(`cart`, {
+            cart_product_list
+        }).then((response) => {
+            message.config({
+                maxCount: 1,
+                duration: 1
+            })
+            message.success("add success")
+        }).catch(error => {
+            console.log(error);
+        });
 
     }
 
@@ -118,16 +155,16 @@ class RandomProductView extends React.Component {
                                     // avatar={item.avatar_locator ? <Spin size='large'></Spin> : ''}
                                     avatar={<Image placeholder='true'
                                         // style={{ borderRadiusLG: '50px' }}
-                                        src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'></Image>}
+                                        src="https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg"></Image>}
                                     title={item.name}
                                     description={item.intro}
                                 />
 
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
-                                    <Button value={item.id} onClick={this.onSelectProduct}><CheckOutlined /></Button>
-                                    <Button value={item.id} onClick={this.onAddToCart} style={{ backgroundColor: this.isInCart(item.id) ? '#1677ff' : 'white' }}
+                                    <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
+                                    <Button onClick={() => this.onAddToCart(item.id)} style={{ backgroundColor: this.isInCart(item.id) ? '#1677ff' : 'white' }}
                                     ><ShoppingCartOutlined /></Button>
-                                    <InputNumber controlWidth={60} min={1} max={1000} defaultValue={1} onChange={(num) => this.onChangeCartNumber(num, item.id)}
+                                    <InputNumber min={1} max={1000} defaultValue={1} onChange={(num) => this.onChangeCartNumber(num, item.id)}
                                         style={{ display: this.isInCart(item.id) ? 'block' : 'none' }} />
                                 </Space>
 
