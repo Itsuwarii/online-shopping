@@ -1,13 +1,7 @@
 import React from 'react';
-
-import {
-    ShoppingCartOutlined, CheckOutlined, LoadingOutlined
-} from '@ant-design/icons';
-
-import {
-    Flex, Card, Button, Space, Image, Spin, message
-} from 'antd';
-
+import { forwardRef, useImperativeHandle } from 'react';
+import { ShoppingCartOutlined, CheckOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Flex, Card, Button, Space, Image, Spin, message } from 'antd';
 import client from '../../api/axios';
 
 const { Meta } = Card;
@@ -15,9 +9,7 @@ const { Meta } = Card;
 class CartView extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            list: []
-        }
+        this.state = { list: [] }
     }
 
     componentDidMount() {
@@ -37,11 +29,6 @@ class CartView extends React.Component {
             })
             .catch(error => {
                 console.log(error);
-                // message.config({
-                //     duration: 1,
-                //     maxCount: 1
-                // })
-                // message.error('Network error')
                 setTimeout(this.pullData, 5000);
             });
     };

@@ -16,23 +16,22 @@ class RandomProductView extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            list: []
+            list: [],
+            cart_product_list: [],
         }
-        // this.pullData()
     }
 
     componentDidMount() {
+        // console.log('to update')
         this.pullData()
     }
 
     pullData = () => {
         client.get(`product/random`)
             .then((response) => {
-                console.log(response)
+                // console.log(response)
                 // console.log('data respone')
-                this.setState({
-                    data: this.state.list = response.data.product_list
-                })
+                this.setState({ list: response.data.product_list })
             })
             .catch(error => {
                 console.log(error);
@@ -54,7 +53,35 @@ class RandomProductView extends React.Component {
                 // message.error('Network error')
                 setTimeout(this.pullData, 5000);
             });
+
+        client.get(`cart`)
+            .then((response) => {
+                // console.log('data respone', response)
+                if (response.data != null)
+                    if (response.data.cart_product_list != null) {
+                        this.setState({
+                            cart_product_list: response.data.cart_product_list
+                        })
+
+                        // console.log(this.state)
+                    }
+            })
+            .catch(error => {
+                console.log(error);
+                setTimeout(this.pullData, 5000);
+            });
     };
+
+    isInCart = (id) => {
+        for (let i = 0; i < this.state.cart_product_list.length; i++) {
+            console.log(this.state.cart_product_list[i].id)
+            if (this.state.cart_product_list[i].id == id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     onSelectProduct = (event) => {
         console.log(event.target)
@@ -62,6 +89,8 @@ class RandomProductView extends React.Component {
 
     onAddToCart = (event) => {
         console.log(event.target)
+
+
     }
 
     render() {
@@ -85,11 +114,11 @@ class RandomProductView extends React.Component {
                                         src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'></Image>}
                                     title={item.name}
                                     description={item.intro}
-                                />
+                                />{item.id}
 
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
                                     <Button value={item.id} onClick={this.onSelectProduct}><CheckOutlined /></Button>
-                                    <Button value={item.id} onClick={this.onAddToCart}><ShoppingCartOutlined /></Button>
+                                    <Button value={item.id} style={{ backgroundColor: this.isInCart(item.id) ? '' : 'white' }} onClick={this.onAddToCart}><ShoppingCartOutlined /></Button>
                                     {/* <StarOutlined /> */}
                                 </Space>
 
