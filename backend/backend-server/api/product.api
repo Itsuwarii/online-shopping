@@ -1,3 +1,4 @@
+go: 'go mod init' accepts at most one argument
 syntax = "v1"
 
 type (
@@ -54,6 +55,10 @@ type (
 	DeleteProductReq {
 		ID int `path:"id"`
 	}
+
+	SearchProductReq {
+		KeyWord string `path:"keyword"`
+	}
 )
 
 // 商品
@@ -62,6 +67,9 @@ type (
 	jwt: Auth
 )
 service mall-api {
+	@handler ProductSearchHandler
+	post /search (SearchProductReq) returns (ProductListResp)
+
 	// 用户商品推荐列表
 	@handler ProductRandomIdListHandler
 	get /random returns (RandomProductListResp)

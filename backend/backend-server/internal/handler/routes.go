@@ -151,6 +151,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
+				Path:    "/search",
+				Handler: ProductSearchHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/",
 				Handler: ProductCreateHandler(serverCtx),
 			},

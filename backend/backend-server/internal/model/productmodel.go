@@ -28,6 +28,22 @@ func (m *customProductModel) RandomFindAllAvailable(ctx context.Context, limit i
 	}
 }
 
+func (m *customProductModel) SearchProduct(ctx context.Context, keyword string) ([]Product, error) {
+	avaliable := fmt.Sprint(types.AVAILABLE)
+
+	query := fmt.Sprintf("SELECT %s FROM %s  WHERE `State` = %s and (`Name` like '%%%s%%' or `Intro` like '%%%s%%') ", productRows, m.table, avaliable, keyword, keyword)
+	var resp []Product
+	err := m.conn.QueryRowsCtx(ctx, &resp, query)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlx.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
 func (m *customProductModel) FindProductForMerchant(ctx context.Context, merchantId int64, offset int64, limit int64) ([]Product, error) {
 	query := fmt.Sprintf("select %s from %s where `MerchantId` = ? limit ? offset ?", productRows, m.table)
 	var resp []Product
@@ -50,6 +66,7 @@ type (
 		withSession(session sqlx.Session) ProductModel
 		FindProductForMerchant(ctx context.Context, merchantId int64, offset int64, limit int64) ([]Product, error)
 		RandomFindAllAvailable(ctx context.Context, limit int64) ([]Product, error)
+		SearchProduct(ctx context.Context, keyword string) ([]Product, error)
 	}
 
 	customProductModel struct {

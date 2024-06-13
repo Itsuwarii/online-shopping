@@ -76,11 +76,11 @@ class RandomProductView extends React.Component {
     isInCart = (id) => {
         for (let i = 0; i < this.state.cart_product_list.length; i++) {
             if (this.state.cart_product_list[i].id == id) {
-                return true;
+                return this.state.cart_product_list[i].number;
             }
         }
 
-        return false;
+        return 0;
     }
 
     onSelectProduct = (event) => {
@@ -133,6 +133,39 @@ class RandomProductView extends React.Component {
     onChangeCartNumber = (num, id) => {
         console.log(num, id)
 
+        // ProductId int   `json:"id"`
+        // Number    int   `json:"number"`
+        // Date	  int64 `json:"date`
+        let cart_product_list = [];
+        let list = this.state.cart_product_list;
+        for (let i = 0; i < list.length; i++) {
+
+            if (list[i].id == id) {
+                if (num == 0) continue;
+
+                cart_product_list.push({
+                    id: list[i].id,
+                    number: num,
+                    date: Date.parse(new Date())
+                })
+            } else {
+                cart_product_list.push(list[i])
+            }
+        }
+
+        this.setState({ cart_product_list })
+
+        client.post(`cart`, {
+            cart_product_list
+        }).then((response) => {
+            message.config({
+                maxCount: 1,
+                duration: 1
+            })
+            message.success("change success")
+        }).catch(error => {
+            console.log(error);
+        });
 
     }
 
@@ -159,13 +192,22 @@ class RandomProductView extends React.Component {
                                     title={item.name}
                                     description={item.intro}
                                 />
+                                {/* 
+                                <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
+                                    <Button onClick={this.onSelectProduct}><CheckOutlined /></Button>
+                                    <Button  onClick={this.onAddToCart} style={{ backgroundColor: '#1677ff' }}><ShoppingCartOutlined /></Button>
+                                    <InputNumber variant='outlined' changeOnWheel='true' min={0} max={1000} defaultValue={item.number} onChange={(num) => this.onChangeCartNumber(num, item.id)} />
+                                </Space> */}
 
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
                                     <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
-                                    <Button onClick={() => this.onAddToCart(item.id)} style={{ backgroundColor: this.isInCart(item.id) ? '#1677ff' : 'white' }}
-                                    ><ShoppingCartOutlined /></Button>
-                                    <InputNumber min={1} max={1000} defaultValue={1} onChange={(num) => this.onChangeCartNumber(num, item.id)}
-                                        style={{ display: this.isInCart(item.id) ? 'block' : 'none' }} />
+                                    <Button onClick={() => this.onAddToCart(item.id)}
+                                        style={{ backgroundColor: this.isInCart(item.id) != 0 ? '#1677ff' : 'white' }} ><ShoppingCartOutlined /></Button>
+                                    <InputNumber min={0} max={1000}
+                                        variant='outlined' changeOnWheel='true'
+                                        value={this.isInCart(item.id)}
+                                        onChange={(num) => this.onChangeCartNumber(num, item.id)}
+                                        style={{ display: this.isInCart(item.id) != 0 ? '' : 'none' }} />
                                 </Space>
 
                             </Card>

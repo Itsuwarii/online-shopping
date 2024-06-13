@@ -234,6 +234,10 @@ type RandomProductListResp struct {
 	ProductList []Product `json:"product_list"`
 }
 
+type SearchProductReq struct {
+	Keyword string `json:"keyword"`
+}
+
 type RegisterReq struct {
 	Name      string `json:"name"`
 	Password  string `json:"password"`

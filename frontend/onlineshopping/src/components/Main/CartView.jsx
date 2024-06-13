@@ -33,6 +33,42 @@ class CartView extends React.Component {
             });
     };
 
+
+    onSelectProduct = (id) => {
+    }
+
+    onAddToCart = (id) => {
+        console.log(id)
+
+        let cart_product_list = [];
+        let list = this.state.list;
+
+        for (let i = 0; i < list.length; i++) {
+            if (list[i].id == id) {
+                cart_product_list.push({
+                    id: list[i].id,
+                    number: list[i].number + 1,
+                    date: Date.parse(new Date())
+                })
+            } else cart_product_list.push(list[i])
+        }
+
+        this.setState({ list: cart_product_list })
+
+        client.post(`cart`, {
+            cart_product_list
+        }).then((response) => {
+            message.config({
+                maxCount: 1,
+                duration: 1
+            })
+            message.success("Add success")
+        }).catch(error => {
+            console.log(error);
+        });
+
+    }
+
     // 购物车数量改变
     onChangeCartNumber = (num, id) => {
         console.log(num, id)
@@ -66,7 +102,7 @@ class CartView extends React.Component {
                 maxCount: 1,
                 duration: 1
             })
-            message.success("change success")
+            message.success("Change success")
         }).catch(error => {
             console.log(error);
         });
@@ -89,9 +125,9 @@ class CartView extends React.Component {
                                 />
 
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
-                                    <Button value={item.id} onClick={this.onSelectProduct}><CheckOutlined /></Button>
-                                    <Button value={item.id} onClick={this.onAddToCart} style={{ backgroundColor: '#1677ff' }}><ShoppingCartOutlined /></Button>
-                                    <InputNumber variant='outlined' changeOnWheel='true' min={0} max={1000} defaultValue={item.number} onChange={(num) => this.onChangeCartNumber(num, item.id)} />
+                                    <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
+                                    <Button onClick={() => this.onAddToCart(item.id)} style={{ backgroundColor: '#1677ff' }}><ShoppingCartOutlined /></Button>
+                                    <InputNumber variant='outlined' changeOnWheel='true' min={0} max={1000} value={item.number} onChange={(num) => this.onChangeCartNumber(num, item.id)} />
                                 </Space>
 
                             </Card>

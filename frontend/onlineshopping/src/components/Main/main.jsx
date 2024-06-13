@@ -7,6 +7,7 @@ import {
 
 import {
     Menu, Flex, Input, Layout, theme, Button,
+    message,
 } from 'antd';
 
 import client, { removeAccessToken } from '../../api/axios';
@@ -43,6 +44,27 @@ const Main = () => {
             window.location.replace('/login')
         }
     };
+
+    const onSearch = (keyword, event) => {
+        console.log(keyword, event);
+
+        if (keyword == '') {
+            message.config({
+                maxCount: 1,
+                duration: 1
+            })
+            message.info("Please input the search content")
+            return
+        }
+
+        client.post("product/search", {
+            keyword
+        }).then((response) => {
+            console.log(response)
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
     const [collapsed, setCollapsed] = useState(false);
     const { token: { colorBgContainer, borderRadiusLG }, } = theme.useToken();
@@ -89,7 +111,7 @@ const Main = () => {
                         />
 
                         <Flex style={{ align: 'center', justify: 'center', width: '70%', }}>
-                            <Search style={{ height: 64, paddingTop: 15, }} placeholder="search goods" enterButton />
+                            <Search onSearch={onSearch} style={{ height: 64, paddingTop: 15, }} placeholder="search goods" enterButton />
                         </Flex>
                     </Flex>
                 </Header>
