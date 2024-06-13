@@ -1,0 +1,23 @@
+.con01{
+    overflow:hidden;
+    overflow-y:auto;
+}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+.con01::-webkit-scrollbar  
+{  
+    width: 15px;  /*滚动条宽度*/
+}  
+				  
+/*定义滚动条轨道 内阴影+圆角*/  
+.con01::-webkit-scrollbar-track  
+{  
+    -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0);  
+    border-radius: 50px;  /*滚动条的背景区域的圆角*/
+}  
+				  
+/*定义滑块 内阴影+圆角*/  
+.con01::-webkit-scrollbar-thumb  
+{  
+    border-radius: 15px;  /*滚动条的圆角*/
+    -webkit-box-shadow: inset 0 0 6px rgba(90, 90, 90, 0.3);  
+}

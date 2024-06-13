@@ -4,6 +4,8 @@ import { ShoppingCartOutlined, CheckOutlined, LoadingOutlined, ClearOutlined, Sh
 import { Flex, Card, Button, Space, Image, Spin, message, InputNumber, Empty, FloatButton, Tooltip } from 'antd';
 import client from '../../api/axios';
 
+import css from './styles/index.module.css';
+
 const { Meta } = Card;
 
 class CartView extends React.Component {
@@ -96,7 +98,7 @@ class CartView extends React.Component {
 
     render() {
         return (
-            <Flex wrap gap="large" style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }}>
+            <Flex className={css.con01} wrap gap="large" style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }}>
 
                 {
                     this.props.cart_product_list.length != 0 ?

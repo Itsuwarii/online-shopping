@@ -10,6 +10,9 @@ import {
 
 import client from '../../api/axios';
 
+import css from './styles/index.module.css';
+
+
 const { Meta } = Card;
 
 class RandomProductView extends React.Component {
@@ -115,7 +118,7 @@ class RandomProductView extends React.Component {
 
     render() {
         return (
-            <Flex wrap gap="large" style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }}>
+            <Flex className={css.con01} wrap gap="large" style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }}>
                 {
                     this.props.list.length == 0
                         ?
