@@ -7,32 +7,6 @@ import client from '../../api/axios';
 const { Meta } = Card;
 
 class CartView extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = { list: [] }
-    }
-
-    componentDidMount() {
-        this.pullData()
-    }
-
-    pullData = () => {
-        client.get(`cart`)
-            .then((response) => {
-                // console.log('data respone', response)
-                if (response.data != null)
-                    if (response.data.cart_product_list != null) {
-                        this.setState({
-                            data: this.state.list = response.data.cart_product_list
-                        })
-                    }
-            })
-            .catch(error => {
-                console.log(error);
-                setTimeout(this.pullData, 5000);
-            });
-    };
-
 
     onSelectProduct = (id) => {
     }
@@ -41,19 +15,22 @@ class CartView extends React.Component {
         console.log(id)
 
         let cart_product_list = [];
-        let list = this.state.list;
+        let list = this.props.cart_product_list;
 
         for (let i = 0; i < list.length; i++) {
+
             if (list[i].id == id) {
+                let n = list[i].number;
+                if (n < 10000) n++;
                 cart_product_list.push({
                     id: list[i].id,
-                    number: list[i].number + 1,
+                    number: n,
                     date: Date.parse(new Date())
                 })
             } else cart_product_list.push(list[i])
         }
 
-        this.setState({ list: cart_product_list })
+        this.props.setCartProductList(cart_product_list)
 
         client.post(`cart`, {
             cart_product_list
@@ -77,7 +54,7 @@ class CartView extends React.Component {
         // Number    int   `json:"number"`
         // Date	  int64 `json:"date`
         let cart_product_list = [];
-        let list = this.state.list;
+        let list = this.props.cart_product_list;
         for (let i = 0; i < list.length; i++) {
 
             if (list[i].id == id) {
@@ -93,7 +70,7 @@ class CartView extends React.Component {
             }
         }
 
-        this.setState({ list: cart_product_list })
+        this.props.setCartProductList(cart_product_list)
 
         client.post(`cart`, {
             cart_product_list
@@ -112,8 +89,8 @@ class CartView extends React.Component {
         return (
             <Flex wrap gap="large" style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }}>
                 {
-                    this.state.list.length != 0 ?
-                        this.state.list.map((item) => (
+                    this.props.cart_product_list.length != 0 ?
+                        this.props.cart_product_list.map((item) => (
                             <Card key={item.id} style={{ width: "250px", height: '300px', }}>
                                 <Meta
                                     // avatar={item.avatar_locator ? <Spin size='large'></Spin> : ''}
@@ -127,7 +104,7 @@ class CartView extends React.Component {
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
                                     <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
                                     <Button onClick={() => this.onAddToCart(item.id)} style={{ backgroundColor: '#1677ff' }}><ShoppingCartOutlined /></Button>
-                                    <InputNumber variant='outlined' changeOnWheel='true' min={0} max={1000} value={item.number} onChange={(num) => this.onChangeCartNumber(num, item.id)} />
+                                    <InputNumber variant='outlined' changeOnWheel='true' min={0} max={10000} value={item.number} onChange={(num) => this.onChangeCartNumber(num, item.id)} />
                                 </Space>
 
                             </Card>

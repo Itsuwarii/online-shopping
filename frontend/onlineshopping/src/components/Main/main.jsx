@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
-    MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, ShoppingCartOutlined,
+    MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, ShoppingCartOutlined, SearchOutlined,
     ShoppingOutlined, SettingOutlined, LogoutOutlined,
 } from '@ant-design/icons';
 
@@ -14,6 +14,7 @@ import client, { removeAccessToken } from '../../api/axios';
 import AccountView from './AccountView';
 import RandomProductView from './RandomProductView';
 import CartView from './CartView';
+import SearchResultView from './SearchResultView';
 
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
@@ -21,9 +22,13 @@ const { Header, Sider, Content } = Layout;
 const Main = () => {
 
     const [viewIndex, setViewIndex] = useState('1');
+    const [search, setSearch] = useState('');
 
     // Menu click event
     const menuHandle = (event) => {
+        setSearch('');
+        pullData();
+
         let key = event.key;
 
         if (key == '1') {
@@ -42,6 +47,8 @@ const Main = () => {
             setViewIndex('5');
             removeAccessToken();
             window.location.replace('/login')
+        } else if (key == '6') {
+            setViewIndex('6')
         }
     };
 
@@ -61,10 +68,48 @@ const Main = () => {
             keyword
         }).then((response) => {
             console.log(response)
+
+            setSearchedProductList(response.data.product_list);
+            setViewIndex('6');
         }).catch(error => {
             console.log(error);
         });
     }
+
+    const [productList, setProductList] = useState([]);
+    const [searchedProductList, setSearchedProductList] = useState([]);
+    const [cart_product_list, setCartProductList] = useState([]);
+
+    useEffect(() => {
+        pullData();
+    }, [])
+
+    const pullData = () => {
+        client.get(`product/random`).then((response) => {
+            setProductList(response.data.product_list)
+        }).catch(error => {
+            if (error.response != null && error.response.statusText != null)
+                if (error.response.statusText == "Unauthorized") {
+                    message.config({
+                        duration: 1,
+                        maxCount: 1,
+                    })
+                    message.error("You are not login");
+                    return
+                }
+            setTimeout(this.pullData, 5000);
+        });
+
+        client.get(`cart`).then((response) => {
+            if (response.data != null)
+                if (response.data.cart_product_list != null) {
+                    setCartProductList(response.data.cart_product_list)
+                }
+        }).catch(error => {
+            console.log(error);
+            setTimeout(this.pullData, 5000);
+        });
+    };
 
     const [collapsed, setCollapsed] = useState(false);
     const { token: { colorBgContainer, borderRadiusLG }, } = theme.useToken();
@@ -74,7 +119,8 @@ const Main = () => {
             <Sider trigger={null} collapsible collapsed={collapsed} theme="light">
                 <Menu onClick={menuHandle}
                     mode="inline"
-                    defaultSelectedKeys={['1']} defaultOpenKeys={['main']}
+                    selectedKeys={viewIndex}
+                    defaultSelectedKeys={['1']} defaultOpenKeys={['main','setting']}
                     items={[
                         {
                             key: 'main', label: 'Shopping', icon: <ShoppingOutlined />,
@@ -84,6 +130,9 @@ const Main = () => {
                                 },
                                 {
                                     key: '2', label: 'Cart', icon: <ShoppingCartOutlined />,
+                                },
+                                {
+                                    key: '6', label: 'Search', icon: <SearchOutlined />,
                                 },
                             ],
                         },
@@ -111,17 +160,19 @@ const Main = () => {
                         />
 
                         <Flex style={{ align: 'center', justify: 'center', width: '70%', }}>
-                            <Search onSearch={onSearch} style={{ height: 64, paddingTop: 15, }} placeholder="search goods" enterButton />
+                            <Search value={search} onChange={(e) => setSearch(e.value)} onSearch={onSearch} style={{ height: 64, paddingTop: 15, }} placeholder="search goods" enterButton />
                         </Flex>
                     </Flex>
                 </Header>
 
                 <Content style={{ flexFlow: 'column', margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, borderRadius: borderRadiusLG, }} >
 
-                    <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><RandomProductView /></div>
-                    <div style={{ display: viewIndex == '2' ? 'inline' : 'none' }}><CartView /></div>
+                    <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><RandomProductView setCartProductList={setCartProductList} cart_product_list={cart_product_list} list={productList} /></div>
+                    <div style={{ display: viewIndex == '2' ? 'inline' : 'none' }}><CartView setCartProductList={setCartProductList} cart_product_list={cart_product_list} /></div>
                     <div style={{ display: viewIndex == '4' ? 'inline' : 'none' }}><AccountView /></div>
                     <div style={{ display: viewIndex == '5' ? 'inline' : 'none' }}>Logout</div>
+                    <div style={{ display: viewIndex == '6' ? 'inline' : 'none' }}><SearchResultView setCartProductList={setCartProductList} cart_product_list={cart_product_list} setSearchedProductList={setSearchedProductList} searchedProductList={searchedProductList} ></SearchResultView></div>
+
 
                 </Content>
             </Layout>

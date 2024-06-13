@@ -9,77 +9,18 @@ import {
 } from 'antd';
 
 import client from '../../api/axios';
-import { getValue } from '@testing-library/user-event/dist/utils';
 
 const { Meta } = Card;
 
 class RandomProductView extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            list: [],
-            cart_product_list: [],
-        }
-    }
-
-    componentDidMount() {
-        // console.log('to update')
-        this.pullData()
-    }
-
-    pullData = () => {
-        client.get(`product/random`)
-            .then((response) => {
-                // console.log(response)
-                // console.log('data respone')
-                this.setState({ list: response.data.product_list })
-            })
-            .catch(error => {
-                console.log(error);
-                if (error.response != null)
-                    if (error.response.statusText != null)
-                        if (error.response.statusText == "Unauthorized") {
-                            message.config({
-                                duration: 1,
-                                maxCount: 1,
-                            })
-                            message.error("You are not login");
-                            return
-                        }
-
-                // message.config({
-                //     duration: 1,
-                //     maxCount: 1
-                // })
-                // message.error('Network error')
-                setTimeout(this.pullData, 5000);
-            });
-
-        client.get(`cart`)
-            .then((response) => {
-                // console.log('data respone', response)
-                if (response.data != null)
-                    if (response.data.cart_product_list != null) {
-                        this.setState({
-                            cart_product_list: response.data.cart_product_list
-                        })
-
-                        // console.log(this.state)
-                    }
-            })
-            .catch(error => {
-                console.log(error);
-                setTimeout(this.pullData, 5000);
-            });
-    };
 
     isInCart = (id) => {
-        for (let i = 0; i < this.state.cart_product_list.length; i++) {
-            if (this.state.cart_product_list[i].id == id) {
-                return this.state.cart_product_list[i].number;
+        let list = this.props.cart_product_list
+        for (let i = 0; i < list.length; i++) {
+            if (list[i].id == id) {
+                return list[i].number;
             }
         }
-
         return 0;
     }
 
@@ -91,15 +32,18 @@ class RandomProductView extends React.Component {
         console.log(id)
 
         let cart_product_list = [];
-        let list = this.state.cart_product_list;
+        let list = this.props.cart_product_list;
         let existed = false;
 
         for (let i = 0; i < list.length; i++) {
             if (list[i].id == id) {
                 existed = true;
+
+                let n = list[i].number;
+                if (n < 10000) n++;
                 cart_product_list.push({
                     id: list[i].id,
-                    number: list[i].number + 1,
+                    number: n,
                     date: Date.parse(new Date())
                 })
             } else cart_product_list.push(list[i])
@@ -113,7 +57,7 @@ class RandomProductView extends React.Component {
             })
         }
 
-        this.setState({ cart_product_list })
+        this.props.setCartProductList(cart_product_list)
 
         client.post(`cart`, {
             cart_product_list
@@ -122,7 +66,7 @@ class RandomProductView extends React.Component {
                 maxCount: 1,
                 duration: 1
             })
-            message.success("add success")
+            message.success("Add success")
         }).catch(error => {
             console.log(error);
         });
@@ -137,7 +81,7 @@ class RandomProductView extends React.Component {
         // Number    int   `json:"number"`
         // Date	  int64 `json:"date`
         let cart_product_list = [];
-        let list = this.state.cart_product_list;
+        let list = this.props.cart_product_list;
         for (let i = 0; i < list.length; i++) {
 
             if (list[i].id == id) {
@@ -153,7 +97,7 @@ class RandomProductView extends React.Component {
             }
         }
 
-        this.setState({ cart_product_list })
+        this.props.setCartProductList(cart_product_list)
 
         client.post(`cart`, {
             cart_product_list
@@ -173,7 +117,7 @@ class RandomProductView extends React.Component {
         return (
             <Flex wrap gap="large" style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }}>
                 {
-                    this.state.list.length == 0
+                    this.props.list.length == 0
                         ?
                         // <Flex style={{ margin: '0 auto' }}>
                         //     <Space>
@@ -182,7 +126,7 @@ class RandomProductView extends React.Component {
                         // </Flex>
                         <Empty style={{ margin: 'auto auto' }}></Empty >
                         :
-                        this.state.list.map((item) => (
+                        this.props.list.map((item) => (
                             <Card key={item.id} style={{ width: "250px", height: '300px', }}>
                                 <Meta
                                     // avatar={item.avatar_locator ? <Spin size='large'></Spin> : ''}
@@ -203,7 +147,7 @@ class RandomProductView extends React.Component {
                                     <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
                                     <Button onClick={() => this.onAddToCart(item.id)}
                                         style={{ backgroundColor: this.isInCart(item.id) != 0 ? '#1677ff' : 'white' }} ><ShoppingCartOutlined /></Button>
-                                    <InputNumber min={0} max={1000}
+                                    <InputNumber min={0} max={10000}
                                         variant='outlined' changeOnWheel='true'
                                         value={this.isInCart(item.id)}
                                         onChange={(num) => this.onChangeCartNumber(num, item.id)}
