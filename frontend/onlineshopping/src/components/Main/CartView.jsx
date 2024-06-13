@@ -1,7 +1,7 @@
 import React from 'react';
 import { forwardRef, useImperativeHandle } from 'react';
-import { ShoppingCartOutlined, CheckOutlined, LoadingOutlined } from '@ant-design/icons';
-import { Flex, Card, Button, Space, Image, Spin, message, InputNumber, Empty } from 'antd';
+import { ShoppingCartOutlined, CheckOutlined, LoadingOutlined, ClearOutlined, ShoppingOutlined } from '@ant-design/icons';
+import { Flex, Card, Button, Space, Image, Spin, message, InputNumber, Empty, FloatButton, Tooltip } from 'antd';
 import client from '../../api/axios';
 
 const { Meta } = Card;
@@ -46,6 +46,15 @@ class CartView extends React.Component {
 
     }
 
+    onClearCart = () => {
+        client.delete(`cart`).then((response) => {
+            this.props.setCartProductList([])
+            message.success('clear cart success')
+        }).catch(err => {
+            console.log('delete cart failed')
+        })
+    }
+
     // 购物车数量改变
     onChangeCartNumber = (num, id) => {
         console.log(num, id)
@@ -88,6 +97,7 @@ class CartView extends React.Component {
     render() {
         return (
             <Flex wrap gap="large" style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }}>
+
                 {
                     this.props.cart_product_list.length != 0 ?
                         this.props.cart_product_list.map((item) => (
@@ -102,8 +112,12 @@ class CartView extends React.Component {
                                 />
 
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
-                                    <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
-                                    <Button onClick={() => this.onAddToCart(item.id)} style={{ backgroundColor: '#1677ff' }}><ShoppingCartOutlined /></Button>
+                                    <Tooltip title="Buy this">
+                                        <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
+                                    </Tooltip>
+                                    <Tooltip title="Add to cart">
+                                        <Button onClick={() => this.onAddToCart(item.id)} style={{ backgroundColor: '#1677ff' }}><ShoppingCartOutlined /></Button>
+                                    </Tooltip>
                                     <InputNumber variant='outlined' changeOnWheel='true' min={0} max={10000} value={item.number} onChange={(num) => this.onChangeCartNumber(num, item.id)} />
                                 </Space>
 
@@ -112,6 +126,8 @@ class CartView extends React.Component {
                         :
                         <Empty style={{ margin: 'auto auto' }}></Empty >
                 }
+                <FloatButton style={{ right: 100, bottom: 100 + 70 }} type="primary" tooltip={<div>Buy All</div>} icon={<ShoppingOutlined />} />
+                <FloatButton onClick={this.onClearCart} style={{ right: 100, bottom: 100 }} type="default" tooltip={<div>Clear Cart</div>} icon={<ClearOutlined />} />
             </Flex>
         )
     }

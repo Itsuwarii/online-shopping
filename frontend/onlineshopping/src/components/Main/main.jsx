@@ -167,7 +167,7 @@ const Main = () => {
 
                 <Content style={{ flexFlow: 'column', margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, borderRadius: borderRadiusLG, }} >
 
-                    <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><RandomProductView setCartProductList={setCartProductList} cart_product_list={cart_product_list} list={productList} /></div>
+                    <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><RandomProductView pullData={pullData} setCartProductList={setCartProductList} cart_product_list={cart_product_list} setProductList={setProductList} list={productList} /></div>
                     <div style={{ display: viewIndex == '2' ? 'inline' : 'none' }}><CartView setCartProductList={setCartProductList} cart_product_list={cart_product_list} /></div>
                     <div style={{ display: viewIndex == '4' ? 'inline' : 'none' }}><AccountView /></div>
                     <div style={{ display: viewIndex == '5' ? 'inline' : 'none' }}>Logout</div>

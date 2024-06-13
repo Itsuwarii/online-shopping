@@ -5,7 +5,8 @@ import {
 } from '@ant-design/icons';
 
 import {
-    Flex, Card, Button, Space, Image, message, Spin, InputNumber, Empty
+    Flex, Card, Button, Space, Image, message, Spin, InputNumber, Empty,
+    Tooltip
 } from 'antd';
 
 import client from '../../api/axios';
@@ -87,8 +88,12 @@ class SearchResultView extends React.Component {
                                 <Meta avatar={<Image placeholder='true' src="https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg"></Image>} title={item.name} description={item.intro} />
 
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
-                                    <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
-                                    <Button onClick={() => this.onAddToCart(item.id)} style={{ backgroundColor: this.isInCart(item.id) != 0 ? '#1677ff' : 'white' }} ><ShoppingCartOutlined /></Button>
+                                    <Tooltip title="Buy this">
+                                        <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
+                                    </Tooltip>
+                                    <Tooltip title="Add to cart">
+                                        <Button onClick={() => this.onAddToCart(item.id)} style={{ backgroundColor: this.isInCart(item.id) != 0 ? '#1677ff' : 'white' }} ><ShoppingCartOutlined /></Button>
+                                    </Tooltip>
                                     <InputNumber min={0} max={10000} variant='outlined' changeOnWheel='true' value={this.isInCart(item.id)} onChange={(num) => this.onChangeCartNumber(num, item.id)}
                                         style={{ display: this.isInCart(item.id) != 0 ? '' : 'none' }} />
                                 </Space>

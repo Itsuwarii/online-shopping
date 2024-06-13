@@ -1,11 +1,11 @@
 import React from 'react';
 
 import {
-    ShoppingCartOutlined, CheckOutlined, LoadingOutlined
+    ShoppingCartOutlined, CheckOutlined, LoadingOutlined, ShoppingOutlined, ReloadOutlined
 } from '@ant-design/icons';
 
 import {
-    Flex, Card, Button, Space, Image, message, Spin, InputNumber, Empty
+    Flex, Card, Button, Space, Image, message, Spin, InputNumber, Empty, Tooltip, FloatButton
 } from 'antd';
 
 import client from '../../api/axios';
@@ -144,9 +144,14 @@ class RandomProductView extends React.Component {
                                 </Space> */}
 
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
-                                    <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
-                                    <Button onClick={() => this.onAddToCart(item.id)}
-                                        style={{ backgroundColor: this.isInCart(item.id) != 0 ? '#1677ff' : 'white' }} ><ShoppingCartOutlined /></Button>
+                                    <Tooltip title="Buy this">
+                                        <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
+                                    </Tooltip>
+
+                                    <Tooltip title="Add to cart">
+                                        <Button onClick={() => this.onAddToCart(item.id)}
+                                            style={{ backgroundColor: this.isInCart(item.id) != 0 ? '#1677ff' : 'white' }} ><ShoppingCartOutlined /></Button>
+                                    </Tooltip>
                                     <InputNumber min={0} max={10000}
                                         variant='outlined' changeOnWheel='true'
                                         value={this.isInCart(item.id)}
@@ -157,6 +162,7 @@ class RandomProductView extends React.Component {
                             </Card>
                         ))
                 }
+                <FloatButton onClick={() => { this.props.setProductList([]); this.props.pullData() }} style={{ right: 100, bottom: 100 }} type="default" tooltip={<div>Refresh</div>} icon={<ReloadOutlined />} />
             </Flex>
         )
     }
