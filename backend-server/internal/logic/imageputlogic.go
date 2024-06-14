@@ -6,8 +6,8 @@ import (
 	"encoding/hex"
 	"os"
 
-	"ludwig.com/imageserver/internal/svc"
-	"ludwig.com/imageserver/internal/types"
+	"ludwig.com/onlineshopping/internal/svc"
+	"ludwig.com/onlineshopping/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -41,7 +41,7 @@ func (l *ImagePutLogic) ImagePut(req *types.ImageReq) (resp *types.ImageIndex, e
 	hash := hex.EncodeToString(hashByte[:])
 
 	// Write to local path
-	dir := l.svcCtx.Config.DataDir
+	dir := l.svcCtx.Config.ImageDir
 	fileName := dir + hash
 
 	l.Logger.Info(fileName + " to write")

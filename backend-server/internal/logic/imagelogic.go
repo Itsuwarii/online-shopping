@@ -4,8 +4,8 @@ import (
 	"context"
 	"os"
 
-	"ludwig.com/imageserver/internal/svc"
-	"ludwig.com/imageserver/internal/types"
+	"ludwig.com/onlineshopping/internal/svc"
+	"ludwig.com/onlineshopping/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -27,7 +27,7 @@ func NewImageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ImageLogic 
 func (l *ImageLogic) Image(req *types.ImageIndex) (resp *types.ImageResp, err error) {
 	hash := req.ImageHash
 
-	dir := l.svcCtx.Config.DataDir
+	dir := l.svcCtx.Config.ImageDir
 	filePath := dir + hash
 
 	imageByte, err := os.ReadFile(filePath)

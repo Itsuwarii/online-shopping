@@ -299,3 +299,17 @@ const(
 	AVAILABLE = 1
 	UNAVAILABLE = 2
 )
+
+type ImageIndex struct {
+	ImageHash string `json:"hash"`
+	Message   string `json:"message"`
+}
+
+type ImageReq struct {
+	ImageBase64 string `json:"base64"`
+}
+
+type ImageResp struct {
+	ImageHash   string `json:"hash"`
+	ImageBase64 string `json:"base64"`
+}
