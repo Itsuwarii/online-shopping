@@ -175,7 +175,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: ProductRandomIdListHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/all",
 				Handler: ProductForMerchantHandler(serverCtx),
 			},
@@ -224,9 +224,14 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodGet,
-				Path:    "/",
+				Method:  http.MethodPost,
+				Path:    "/get",
 				Handler: OrderGetHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/merchant/get",
+				Handler: OrderGetForMerchantHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
@@ -239,7 +244,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: OrderDeleteHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/list",
 				Handler: OrdersListHandler(serverCtx),
 			},

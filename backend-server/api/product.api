@@ -75,7 +75,7 @@ service mall-api {
 
 	// 商家获取商品列表
 	@handler ProductForMerchantHandler
-	get /all (ProductListReq) returns (ProductListResp)
+	post /all (ProductListReq) returns (ProductListResp)
 
 	// 获取一个商品
 	@handler ProductHandler

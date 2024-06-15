@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios from "axios";
 
 const client = axios.create({
     baseURL: `http://localhost:8888/`,
@@ -6,7 +6,7 @@ const client = axios.create({
 
 client.interceptors.request.use(
     config => {
-        let accessToken = getAuthorization();
+        let accessToken = getAccessToken();
         if (accessToken) {
             config.headers = Object.assign({
                 Authorization: `${accessToken}`
@@ -34,16 +34,6 @@ export const getAccessToken = () => {
 // 移除
 export const removeAccessToken = () => {
     localStorage.removeItem(ACCESS_TOKEN);
-};
-
-// 封装参数放到请求头中
-export const getAuthorization = () => {
-    let accessToken = getAccessToken();
-    return accessToken != null
-        ? {}
-        : {
-            Authorization: `Bearer ${getAccessToken()}`,
-        };
 };
 
 export default client;

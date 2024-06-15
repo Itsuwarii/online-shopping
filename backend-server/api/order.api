@@ -1,3 +1,4 @@
+go: 'go mod init' accepts at most one argument
 syntax = "v1"
 
 // 订单里的一个商品
@@ -14,8 +15,8 @@ type (
 		EndDate   int64 `json:"end_date"`
 	}
 
-	OrderIdList {
-		OrdersIdList []int `json:"orders_id_list"`
+	OrderList {
+		OrdersList []Order `json:"orders_list"`
 	}
 
 	Order {
@@ -46,11 +47,11 @@ type (
 service mall-api {
 	// 获取订单索引
 	@handler OrdersListHandler
-	get /list (DateScope) returns (OrderIdList)
+	post /list (DateScope) returns (OrderList)
 
 	// 获取属于登录用户的一个订单
 	@handler OrderGetHandler
-	get / (OrderId) returns (Order)
+	post /get (OrderId) returns (Order)
 
 	// 创建订单
 	@handler OrderCreateHandler
@@ -59,4 +60,8 @@ service mall-api {
 	// 删除订单
 	@handler OrderDeleteHandler
 	delete / (OrderId)
+
+	@handler OrderGetForMerchantHandler
+	post /merchant/get returns (OrderList)
+
 }

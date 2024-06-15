@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 
 	"ludwig.com/onlineshopping/internal/svc"
@@ -26,7 +27,12 @@ func NewProductForMerchantLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 
 // /product/all
 func (l *ProductForMerchantLogic) ProductForMerchant(req *types.ProductListReq) (resp *types.ProductListResp, err error) {
-	var merchantId int64 = 1
+	// var merchantId int64 = 1
+	merchantId, err := l.ctx.Value("merchantid").(json.Number).Int64()
+	if err != nil {
+		l.Logger.Error("parse marchant id failed ", err)
+		return nil, errors.New("authorization failed")
+	}
 
 	offset := req.Index
 	limit := req.Size

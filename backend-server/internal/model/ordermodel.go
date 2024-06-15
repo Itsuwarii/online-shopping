@@ -23,6 +23,20 @@ func (m *defaultOrderModel) FindWithUser(ctx context.Context, id int64) ([]Order
 	}
 }
 
+func (m *defaultOrderModel) FindWithMerchant(ctx context.Context, id int64) ([]Order, error) {
+	query := fmt.Sprintf("select %s from %s where `MerchantId` = ? ", orderRows, m.table)
+	var resp []Order
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, id)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlx.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
 type (
 	// OrderModel is an interface to be customized, add more methods here,
 	// and implement the added methods in customOrderModel.
@@ -30,6 +44,7 @@ type (
 		orderModel
 		withSession(session sqlx.Session) OrderModel
 		FindWithUser(ctx context.Context, id int64) ([]Order, error)
+		FindWithMerchant(ctx context.Context, id int64) ([]Order, error)
 	}
 
 	customOrderModel struct {
