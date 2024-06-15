@@ -115,7 +115,7 @@ function Main() {
                         <div style={{ display: viewIndex == '3' ? 'inline' : 'none' }}><OrderView></OrderView></div>
                         <div style={{ display: viewIndex == '4' ? 'inline' : 'none' }}><DialogueView></DialogueView></div>
                         <div style={{ display: viewIndex == '5' ? 'inline' : 'none' }}><AccountView></AccountView></div>
-                        <div style={{ display: viewIndex == '6' ? 'inline' : 'none' }}><Skeleton active avatar paragraph={{ rows: 2}} /></div>
+                        <div style={{ display: viewIndex == '6' ? 'inline' : 'none' }}><Skeleton active avatar paragraph={{ rows: 2 }} /></div>
                     </Content>
                 </Layout>
                 <Sider trigger={null} collapsible collapsed={collapsed}
