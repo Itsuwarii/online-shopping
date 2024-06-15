@@ -11,6 +11,35 @@ const { Meta } = Card;
 class CartView extends React.Component {
 
     onSelectProduct = (id) => {
+        // console.log(id)
+
+        let purchaseList = []
+
+        let list = this.props.cart_product_list;
+        for (let i = 0; i < list.length; i++) {
+            if (list[i].id == id) {
+                this.pullPruduct(list[i].id).then(
+                    data => {
+                        let n = list[i].number;
+                        // console.log(data)
+
+                        purchaseList.push({
+                            id: data.id,
+                            avatar_locator: data.avatar_locator,
+                            images_locator: data.images_locator,
+                            intro: data.intro,
+                            merchant: data.merchant,
+                            name: data.name,
+                            price: data.price,
+                            buyNumber: n,
+                        })
+                        this.props.setPurchaseList(purchaseList);
+                        this.props.toPurchase();
+                    }
+                )
+                break;
+            }
+        }
     }
 
     onAddToCart = (id) => {
@@ -78,16 +107,18 @@ class CartView extends React.Component {
                         avatar_locator: data.avatar_locator,
                         intro: data.intro,
                         merchant: data.merchant,
+                        images_locator: data.images_locator,
                         name: data.name,
                         price: data.price,
                         buyNumber: n,
                     })
                     this.props.setPurchaseList(purchaseList);
+                    if (i == list.length - 1) {
+                        this.props.toPurchase();
+                    }
                 }
             )
         }
-
-        this.props.toPurchase()
     }
 
     // 购物车数量改变

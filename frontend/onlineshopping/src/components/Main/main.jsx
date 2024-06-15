@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import {
     MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, ShoppingCartOutlined, SearchOutlined,
-    ShoppingOutlined, SettingOutlined, LogoutOutlined, PayCircleOutlined,HistoryOutlined
+    ShoppingOutlined, SettingOutlined, LogoutOutlined, PayCircleOutlined, HistoryOutlined
 } from '@ant-design/icons';
 
 import {
@@ -16,6 +16,7 @@ import RandomProductView from './RandomProductView';
 import CartView from './CartView';
 import SearchResultView from './SearchResultView';
 import DetrimentView from './Detriment';
+import OrderView from './OrderView';
 
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
@@ -53,6 +54,8 @@ const Main = () => {
 
         } else if (key == '7') {
             setViewIndex('7')
+        } else if (key == '8') {
+            setViewIndex('8')
         }
     };
 
@@ -186,7 +189,9 @@ const Main = () => {
                     <div style={{ display: viewIndex == '4' ? 'inline' : 'none' }}><AccountView /></div>
                     <div style={{ display: viewIndex == '5' ? 'inline' : 'none' }}>Logout</div>
                     <div style={{ display: viewIndex == '6' ? 'inline' : 'none' }}><SearchResultView setCartProductList={setCartProductList} cart_product_list={cart_product_list} setSearchedProductList={setSearchedProductList} searchedProductList={searchedProductList} ></SearchResultView></div>
-                    <div style={{ display: viewIndex == '7' ? 'inline' : 'none' }}><DetrimentView purchaseList={purchaseList} ></DetrimentView></div>
+                    <div style={{ display: viewIndex == '7' ? 'inline' : 'none' }}><DetrimentView setPurchaseList={setPurchaseList} purchaseList={purchaseList} ></DetrimentView></div>
+                    <div style={{ display: viewIndex == '8' ? 'inline' : 'none' }}><OrderView></OrderView></div>
+
                 </Content>
             </Layout>
         </Layout>

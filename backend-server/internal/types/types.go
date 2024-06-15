@@ -164,10 +164,8 @@ type NameAvailableResp struct {
 }
 
 type NewOrder struct {
-	UserId           int64            `json:"user_id"`
 	Remark           string           `json:"remark"`
-	ProductId        int64		      `json:"product_id"`
-	Number 			 int64  		  `json:"number"`
+	Product          Product		  `json:"product"`
 }
 
 type NewProduct struct {
@@ -187,6 +185,7 @@ type Order struct {
 	State            int64            `json:"state"`
 	Remark           string           `json:"remark"`
 	ProductId        int64		      `json:"product_id"`
+	Price            float64          `json:"price"`
 	Number 			 int64  		  `json:"number"`
 }
 
@@ -257,7 +256,7 @@ type UpdateProductReq struct {
 	Name           string     `json:"name"`
 	Price          float64    `json:"price"`
 	AvatarLocator  string     `json:"avatar_locator"`
-	ImagesLocator  string   `json:"images_locator"`
+	ImagesLocator  string     `json:"images_locator"`
 	Intro          string     `json:"intro"`
 	State          int64      `json:"state"`
 	Amount         int64      `json:"amount"`

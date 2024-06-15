@@ -5,6 +5,7 @@ create table order(
     Date timestamp not null,
     State integer not null,
     ProductId integer not null,
+    Price float not null,
     Number integer not null,
     Remark varchar(255) not null,
     PRIMARY KEY(Id)

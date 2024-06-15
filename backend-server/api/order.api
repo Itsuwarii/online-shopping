@@ -1,4 +1,3 @@
-go: 'go mod init' accepts at most one argument
 syntax = "v1"
 
 // 订单里的一个商品
@@ -29,9 +28,8 @@ type (
 	}
 
 	NewOrder {
-		UserId           int            `json:"user_id"`
 		Remark           string         `json:"remark"`
-		OrderProductList []OrderProduct `json:"order_product_list"`
+		Produc           Product        `json:"product"`
 	}
 
 	OrderId {
@@ -45,9 +43,9 @@ type (
 	jwt: Auth
 )
 service mall-api {
-	// 获取订单索引
+	// 获取订单
 	@handler OrdersListHandler
-	post /list (DateScope) returns (OrderList)
+	post /list returns (OrderList)
 
 	// 获取属于登录用户的一个订单
 	@handler OrderGetHandler

@@ -25,7 +25,7 @@ func NewOrdersListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Orders
 	}
 }
 
-func (l *OrdersListLogic) OrdersList(req *types.DateScope) (resp *types.OrderList, err error) {
+func (l *OrdersListLogic) OrdersList() (resp *types.OrderList, err error) {
 	id, err := l.ctx.Value("id").(json.Number).Int64()
 	if err != nil {
 		l.Logger.Error("parse id failed ", err)
@@ -50,6 +50,7 @@ func (l *OrdersListLogic) OrdersList(req *types.DateScope) (resp *types.OrderLis
 			UserId:     v.UserId,
 			MerchantId: v.MerchantId,
 			Date:       v.Date.Unix(),
+			Price:      v.Price,
 			Remark:     v.Remark,
 			ProductId:  v.ProductId,
 			Number:     v.Number,
