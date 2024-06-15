@@ -28,7 +28,7 @@ class RandomProductView extends React.Component {
     }
 
     onSelectProduct = (id) => {
-        console.log(id)
+        // console.log(id)
 
         let purchaseList = []
         let list = this.props.list
@@ -153,11 +153,6 @@ class RandomProductView extends React.Component {
                 {
                     this.props.list.length == 0
                         ?
-                        // <Flex style={{ margin: '0 auto' }}>
-                        //     <Space>
-                        //         <Spin indicator={<LoadingOutlined style={{ fontSize: 100 }} spin />} />
-                        //     </Space>
-                        // </Flex>
                         <Empty style={{ margin: 'auto auto' }}></Empty >
                         :
                         this.props.list.map((item) => (
@@ -170,13 +165,6 @@ class RandomProductView extends React.Component {
                                     title={item.name}
                                     description={item.intro}
                                 />
-                                {/* 
-                                <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
-                                    <Button onClick={this.onSelectProduct}><CheckOutlined /></Button>
-                                    <Button  onClick={this.onAddToCart} style={{ backgroundColor: '#1677ff' }}><ShoppingCartOutlined /></Button>
-                                    <InputNumber variant='outlined' changeOnWheel='true' min={0} max={1000} defaultValue={item.number} onChange={(num) => this.onChangeCartNumber(num, item.id)} />
-                                </Space> */}
-
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
                                     <Tooltip title="Buy this">
                                         <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
@@ -184,7 +172,8 @@ class RandomProductView extends React.Component {
 
                                     <Tooltip title="Add to cart">
                                         <Button onClick={() => this.onAddToCart(item.id)}
-                                            style={{ backgroundColor: this.isInCart(item.id) != 0 ? '#1677ff' : 'white' }} ><ShoppingCartOutlined /></Button>
+                                            style={{ backgroundColor: this.isInCart(item.id) != 0 ? '#bae0ff' : '' }}
+                                             ><ShoppingCartOutlined /></Button>
                                     </Tooltip>
                                     <InputNumber min={0} max={10000}
                                         variant='outlined' changeOnWheel='true'

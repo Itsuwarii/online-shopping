@@ -80,7 +80,7 @@ class SearchResultView extends React.Component {
 
     render() {
         return (
-            <Flex className={css.con01} wrap gap="large" style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }}>
+            <Flex className={css.con01} wrap='true' gap="large" style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }}>
                 {
                     this.props.searchedProductList == null || this.props.searchedProductList.length == 0
                         ?
@@ -95,7 +95,7 @@ class SearchResultView extends React.Component {
                                         <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
                                     </Tooltip>
                                     <Tooltip title="Add to cart">
-                                        <Button onClick={() => this.onAddToCart(item.id)} style={{ backgroundColor: this.isInCart(item.id) != 0 ? '#1677ff' : 'white' }} ><ShoppingCartOutlined /></Button>
+                                        <Button onClick={() => this.onAddToCart(item.id)} style={{ backgroundColor: this.isInCart(item.id) != 0 ? '#bae0ff' : 'white' }} ><ShoppingCartOutlined /></Button>
                                     </Tooltip>
                                     <InputNumber min={0} max={10000} variant='outlined' changeOnWheel='true' value={this.isInCart(item.id)} onChange={(num) => this.onChangeCartNumber(num, item.id)}
                                         style={{ display: this.isInCart(item.id) != 0 ? '' : 'none' }} />

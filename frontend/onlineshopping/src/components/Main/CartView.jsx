@@ -57,13 +57,43 @@ class CartView extends React.Component {
         })
     }
 
+    async pullPruduct(id) {
+        let respone = await client.post(`product/get`, {
+            id: id
+        })
+        return respone.data;
+    }
+
+    onBuyAll = () => {
+        let purchaseList = []
+        let list = this.props.cart_product_list;
+
+        for (let i = 0; i < list.length; i++) {
+            this.pullPruduct(list[i].id).then(
+                data => {
+                    let n = list[i].number;
+
+                    purchaseList.push({
+                        id: data.id,
+                        avatar_locator: data.avatar_locator,
+                        intro: data.intro,
+                        merchant: data.merchant,
+                        name: data.name,
+                        price: data.price,
+                        buyNumber: n,
+                    })
+                    this.props.setPurchaseList(purchaseList);
+                }
+            )
+        }
+
+        this.props.toPurchase()
+    }
+
     // 购物车数量改变
     onChangeCartNumber = (num, id) => {
         console.log(num, id)
 
-        // ProductId int   `json:"id"`
-        // Number    int   `json:"number"`
-        // Date	  int64 `json:"date`
         let cart_product_list = [];
         let list = this.props.cart_product_list;
         for (let i = 0; i < list.length; i++) {
@@ -101,7 +131,8 @@ class CartView extends React.Component {
             <Flex className={css.con01} wrap gap="large" style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }}>
 
                 {
-                    this.props.cart_product_list.length != 0 ?
+                    this.props.cart_product_list && this.props.cart_product_list.length != 0
+                        ?
                         this.props.cart_product_list.map((item) => (
                             <Card key={item.id} style={{ width: "250px", height: '300px', }}>
                                 <Meta
@@ -118,7 +149,7 @@ class CartView extends React.Component {
                                         <Button onClick={() => this.onSelectProduct(item.id)}><CheckOutlined /></Button>
                                     </Tooltip>
                                     <Tooltip title="Add to cart">
-                                        <Button onClick={() => this.onAddToCart(item.id)} style={{ backgroundColor: '#1677ff' }}><ShoppingCartOutlined /></Button>
+                                        <Button onClick={() => this.onAddToCart(item.id)} style={{ backgroundColor: '#bae0ff' }}><ShoppingCartOutlined /></Button>
                                     </Tooltip>
                                     <InputNumber variant='outlined' changeOnWheel='true' min={0} max={10000} value={item.number} onChange={(num) => this.onChangeCartNumber(num, item.id)} />
                                 </Space>
@@ -128,7 +159,7 @@ class CartView extends React.Component {
                         :
                         <Empty style={{ margin: 'auto auto' }}></Empty >
                 }
-                <FloatButton style={{ right: 100, bottom: 100 + 70 }} type="primary" tooltip={<div>Buy All</div>} icon={<ShoppingOutlined />} />
+                <FloatButton onClick={this.onBuyAll} style={{ right: 100, bottom: 100 + 70 }} type="primary" tooltip={<div>Buy All</div>} icon={<ShoppingOutlined />} />
                 <FloatButton onClick={this.onClearCart} style={{ right: 100, bottom: 100 }} type="default" tooltip={<div>Clear Cart</div>} icon={<ClearOutlined />} />
             </Flex>
         )

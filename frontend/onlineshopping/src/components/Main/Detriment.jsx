@@ -28,31 +28,37 @@ class DetrimentView extends React.Component {
 
     render() {
         return (
-            <>
-                <List itemLayout="horizontal">
-                    {
-                        this.props.purchaseList && this.props.purchaseList.length == 0 ?
-                            <Empty style={{ margin: 'auto auto' }}></Empty >
-                            :
-                            this.props.purchaseList.map((item) => (
-                                <List.Item key={item.id}>
-                                    <List.Item.Meta
-                                        avatar={<Avatar src='' />}
-                                        title={item.name}
-                                        description={item.intro}
-                                    />
-                                    <Flex >
-                                        Price : {item.price}
-                                        Total : {item.price * item.buyNumber}
-                                    </Flex>
-                                </List.Item>
-                            ))
-                    }
-                </List>
+            <Flex className={css.con01} style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }} >
+                {
+                    this.props.purchaseList != null && this.props.purchaseList.length != 0
+                        ?
 
-                <div style={{ fontSize: '30px', marginRight: '20px', position: 'absolute', right: 200, bottom: 100 }}>Total :  {this.getTotal()}</div>
-                <Button size='large' type='primary' style={{ position: 'absolute', right: 100, bottom: 100 }} >PurChase</Button>
-            </>
+                        <>
+                            <List style={{ margin: '15px', width: '100%', height: '100%' }} itemLayout="horizontal">
+                                {
+                                    this.props.purchaseList.map((item) => (
+                                        <List.Item key={item.id}>
+                                            <List.Item.Meta
+                                                avatar={<Avatar src='' />}
+                                                title={item.name}
+                                                description={item.intro}
+                                            />
+                                            <Flex >
+                                                Price : {item.price.toFixed(2)}
+                                                Total : {(item.price * item.buyNumber).toFixed(2)}
+                                            </Flex>
+                                        </List.Item>
+                                    ))
+
+                                }
+                            </List>
+                            <div style={{ fontSize: '30px', marginRight: '20px', position: 'absolute', right: 200, bottom: 100 }}>Total :  {(this.getTotal()).toFixed(2)}</div>
+                            <Button size='large' type='primary' style={{ position: 'absolute', right: 100, bottom: 100 }} >PurChase</Button>
+                        </>
+                        :
+                        <Empty style={{ margin: 'auto auto' }}></Empty >
+                }
+            </Flex>
         )
     }
 }

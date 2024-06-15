@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import {
     MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, ShoppingCartOutlined, SearchOutlined,
-    ShoppingOutlined, SettingOutlined, LogoutOutlined,
+    ShoppingOutlined, SettingOutlined, LogoutOutlined, PayCircleOutlined,HistoryOutlined
 } from '@ant-design/icons';
 
 import {
@@ -50,6 +50,9 @@ const Main = () => {
             window.location.replace('/login')
         } else if (key == '6') {
             setViewIndex('6')
+
+        } else if (key == '7') {
+            setViewIndex('7')
         }
     };
 
@@ -139,14 +142,11 @@ const Main = () => {
                                 {
                                     key: '6', label: 'Search', icon: <SearchOutlined />,
                                 },
-                            ],
-                        },
-                        { type: 'divider', },
-                        {
-                            key: 'chat', label: 'Chat', icon: <ShoppingOutlined />,
-                            children: [
                                 {
-                                    key: '?', label: '???', icon: <ShoppingOutlined />,
+                                    key: '7', label: 'Purchase', icon: <PayCircleOutlined />,
+                                },
+                                {
+                                    key: '8', label: 'Order', icon: <HistoryOutlined />,
                                 },
                             ],
                         },
@@ -182,7 +182,7 @@ const Main = () => {
                 <Content style={{ flexFlow: 'column', margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, borderRadius: borderRadiusLG, }} >
 
                     <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><RandomProductView setPurchaseList={setPurchaseList} toPurchase={toPurchase} pullData={pullData} setCartProductList={setCartProductList} cart_product_list={cart_product_list} setProductList={setProductList} list={productList} /></div>
-                    <div style={{ display: viewIndex == '2' ? 'inline' : 'none' }}><CartView setCartProductList={setCartProductList} cart_product_list={cart_product_list} /></div>
+                    <div style={{ display: viewIndex == '2' ? 'inline' : 'none' }}><CartView purchaseList={purchaseList} setPurchaseList={setPurchaseList} toPurchase={toPurchase} setCartProductList={setCartProductList} cart_product_list={cart_product_list} /></div>
                     <div style={{ display: viewIndex == '4' ? 'inline' : 'none' }}><AccountView /></div>
                     <div style={{ display: viewIndex == '5' ? 'inline' : 'none' }}>Logout</div>
                     <div style={{ display: viewIndex == '6' ? 'inline' : 'none' }}><SearchResultView setCartProductList={setCartProductList} cart_product_list={cart_product_list} setSearchedProductList={setSearchedProductList} searchedProductList={searchedProductList} ></SearchResultView></div>
