@@ -27,9 +27,40 @@ class RandomProductView extends React.Component {
         return 0;
     }
 
-    onSelectProduct = (event) => {
-        console.log(event)
+    onSelectProduct = (id) => {
+        console.log(id)
+
+        let purchaseList = []
+        let list = this.props.list
+
+        let buyNumber = 1;
+        let cart_product_list = this.props.cart_product_list;
+        for (let i = 0; i < cart_product_list.length; i++) {
+            if (cart_product_list[i].id == id) {
+                buyNumber = cart_product_list[i].number;
+                break;
+            }
+        }
+
+        for (let i = 0; i < list.length; i++) {
+            if (list[i].id == id) {
+                purchaseList.push({
+                    id: list[i].id,
+                    avatar_locator:list[i].avatar_locator,
+                    intro:list[i].intro,
+                    merchant:list[i].merchant,
+                    name:list[i].name,
+                    price:list[i].price,
+                    buyNumber:buyNumber,
+                })
+                break;
+            }
+        }
+
+        this.props.setPurchaseList(purchaseList)
+        this.props.toPurchase()
     }
+
 
     onAddToCart = (id) => {
         console.log(id)

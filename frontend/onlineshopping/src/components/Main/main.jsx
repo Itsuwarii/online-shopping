@@ -15,6 +15,7 @@ import AccountView from './AccountView';
 import RandomProductView from './RandomProductView';
 import CartView from './CartView';
 import SearchResultView from './SearchResultView';
+import DetrimentView from './Detriment';
 
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
@@ -79,6 +80,10 @@ const Main = () => {
     const [productList, setProductList] = useState([]);
     const [searchedProductList, setSearchedProductList] = useState([]);
     const [cart_product_list, setCartProductList] = useState([]);
+    const [purchaseList, setPurchaseList] = useState([]);
+    const toPurchase = () => {
+        setViewIndex('7')
+    }
 
     useEffect(() => {
         pullData();
@@ -120,7 +125,7 @@ const Main = () => {
                 <Menu onClick={menuHandle}
                     mode="inline"
                     selectedKeys={viewIndex}
-                    defaultSelectedKeys={['1']} defaultOpenKeys={['main','setting']}
+                    defaultSelectedKeys={['1']} defaultOpenKeys={['main', 'setting']}
                     items={[
                         {
                             key: 'main', label: 'Shopping', icon: <ShoppingOutlined />,
@@ -133,6 +138,15 @@ const Main = () => {
                                 },
                                 {
                                     key: '6', label: 'Search', icon: <SearchOutlined />,
+                                },
+                            ],
+                        },
+                        { type: 'divider', },
+                        {
+                            key: 'chat', label: 'Chat', icon: <ShoppingOutlined />,
+                            children: [
+                                {
+                                    key: '?', label: '???', icon: <ShoppingOutlined />,
                                 },
                             ],
                         },
@@ -167,13 +181,12 @@ const Main = () => {
 
                 <Content style={{ flexFlow: 'column', margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, borderRadius: borderRadiusLG, }} >
 
-                    <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><RandomProductView pullData={pullData} setCartProductList={setCartProductList} cart_product_list={cart_product_list} setProductList={setProductList} list={productList} /></div>
+                    <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><RandomProductView setPurchaseList={setPurchaseList} toPurchase={toPurchase} pullData={pullData} setCartProductList={setCartProductList} cart_product_list={cart_product_list} setProductList={setProductList} list={productList} /></div>
                     <div style={{ display: viewIndex == '2' ? 'inline' : 'none' }}><CartView setCartProductList={setCartProductList} cart_product_list={cart_product_list} /></div>
                     <div style={{ display: viewIndex == '4' ? 'inline' : 'none' }}><AccountView /></div>
                     <div style={{ display: viewIndex == '5' ? 'inline' : 'none' }}>Logout</div>
                     <div style={{ display: viewIndex == '6' ? 'inline' : 'none' }}><SearchResultView setCartProductList={setCartProductList} cart_product_list={cart_product_list} setSearchedProductList={setSearchedProductList} searchedProductList={searchedProductList} ></SearchResultView></div>
-
-
+                    <div style={{ display: viewIndex == '7' ? 'inline' : 'none' }}><DetrimentView purchaseList={purchaseList} ></DetrimentView></div>
                 </Content>
             </Layout>
         </Layout>
