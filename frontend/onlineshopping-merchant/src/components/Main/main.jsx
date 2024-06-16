@@ -71,7 +71,7 @@ function Main() {
         }}>
             <ConfigProvider theme={{
                 token: {
-                    colorPrimary: '#874d00', borderRadius: 100, colorBgContainer: '',
+                    colorPrimary: '#874d00', borderRadius: 100, colorBgContainer: '#FFFFFF',
                 },
             }}>
                 <Layout>

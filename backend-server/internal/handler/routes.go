@@ -165,8 +165,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: ProductCreateHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodPut,
-				Path:    "/",
+				Method:  http.MethodPost,
+				Path:    "/update",
 				Handler: ProductUpdateHandler(serverCtx),
 			},
 			{

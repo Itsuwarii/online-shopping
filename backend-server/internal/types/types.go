@@ -257,7 +257,7 @@ type RegisterResp struct {
 }
 
 type UpdateProductReq struct {
-	ID             int64      `path:"id"`
+	ID             int64      `json:"id"`
 	Name           string     `json:"name"`
 	Price          float64    `json:"price"`
 	AvatarLocator  string     `json:"avatar_locator"`

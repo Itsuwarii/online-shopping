@@ -21,7 +21,7 @@ class OrderView extends React.Component {
     pullData = () => {
         client.post(`order/merchant/get`)
             .then((respone) => {
-                console.log(respone);
+                // console.log(respone);
                 // [
                 //     {
                 //         "user_id": 1,

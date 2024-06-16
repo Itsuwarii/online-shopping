@@ -48,19 +48,17 @@ func (l *ProductForMerchantLogic) ProductForMerchant(req *types.ProductListReq) 
 	var responeList []types.Product
 
 	for _, pro := range productList {
-		if pro.State == types.AVAILABLE {
-			responeList = append(responeList, types.Product{
-				ID:            pro.Id,
-				Name:          pro.Name,
-				MerchantId:    pro.MerchantId,
-				AvatarLocator: pro.AvatarLocator,
-				ImagesLocator: pro.ImagesLocator,
-				Intro:         pro.Intro,
-				Price:         pro.Price,
-				Amount:        pro.Amount,
-				State:         pro.State,
-			})
-		}
+		responeList = append(responeList, types.Product{
+			ID:            pro.Id,
+			Name:          pro.Name,
+			MerchantId:    pro.MerchantId,
+			AvatarLocator: pro.AvatarLocator,
+			ImagesLocator: pro.ImagesLocator,
+			Intro:         pro.Intro,
+			Price:         pro.Price,
+			Amount:        pro.Amount,
+			State:         pro.State,
+		})
 	}
 
 	return &types.ProductListResp{
