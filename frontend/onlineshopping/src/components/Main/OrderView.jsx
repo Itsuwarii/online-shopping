@@ -86,17 +86,19 @@ class OrderView extends React.Component {
         let list = this.state.orders_list;
         for (let i = 0; i < list.length; i++) {
             console.log('delete', list[i].id);
-            client.post(`order/delete`, {
-                id: list[i].id,
-            }).then((resp) => {
-                message.config({
-                    maxCount: 1,
-                    duration: 1
+            if (list[i].state == 1) {
+                client.post(`order/delete`, {
+                    id: list[i].id,
+                }).then((resp) => {
+                    message.config({
+                        maxCount: 1,
+                        duration: 1
+                    })
+                    message.success('Clear order')
                 })
-                message.success('Clear order')
-            })
+            }
         }
-        this.setState({ orders_list: [] })
+        // this.setState({ orders_list: [] })
     }
 
     render() {
@@ -112,7 +114,7 @@ class OrderView extends React.Component {
                     title: 'State',
                     dataIndex: 'state',
                     key: 'state',
-                    render: (text) => <a> {text == 0 ? 'Avaiable' : 'Unabaibale'}</a>,
+                    render: (text) => <a> {text == '0' ? 'Activity' : 'Inactive'}</a>,
                 }, {
                     title: 'Date',
                     dataIndex: 'date',

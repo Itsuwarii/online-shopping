@@ -48,6 +48,7 @@ func (l *OrderGetForMerchantLogic) OrderGetForMerchant() (resp *types.OrderList,
 			Remark:     v.Remark,
 			ProductId:  v.ProductId,
 			Number:     v.Number,
+			State:      v.OState,
 		})
 	}
 

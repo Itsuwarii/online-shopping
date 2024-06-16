@@ -47,7 +47,7 @@ type (
 		UserId     int64          `db:"UserId"`
 		MerchantId int64          `db:"MerchantId"`
 		Date       time.Time      `db:"Date"`
-		State      int64          `db:"State"`
+		OState      int64         `db:"State"`
 		ProductId  int64		  `db:"ProductId"`
 		Price      float64        `db:"Price"`
 		Number     int64	      `db:"Number"`
@@ -84,13 +84,13 @@ func (m *defaultOrderModel) FindOne(ctx context.Context, id int64) (*Order, erro
 
 func (m *defaultOrderModel) Insert(ctx context.Context, data *Order) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?,?,?)", m.table, orderRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.UserId, data.MerchantId, data.Date, data.State,data.ProductId,data.Price, data.Number, data.Remark)
+	ret, err := m.conn.ExecCtx(ctx, query, data.UserId, data.MerchantId, data.Date, data.OState,data.ProductId,data.Price, data.Number, data.Remark)
 	return ret, err
 }
 
 func (m *defaultOrderModel) Update(ctx context.Context, data *Order) error {
 	query := fmt.Sprintf("update %s set %s where `Id` = ?", m.table, orderRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.UserId, data.MerchantId, data.Date, data.State,data.ProductId,data.Price, data.Number, data.Remark, data.Id)
+	_, err := m.conn.ExecCtx(ctx, query, data.UserId, data.MerchantId, data.Date, data.OState,data.ProductId,data.Price, data.Number, data.Remark, data.Id)
 	return err
 }
 

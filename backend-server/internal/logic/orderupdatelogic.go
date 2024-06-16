@@ -43,7 +43,7 @@ func (l *OrderUpdateLogic) OrderUpdate(req *types.Order) (err error) {
 		UserId:     req.UserId,
 		MerchantId: req.MerchantId,
 		Date:       time.Unix(req.Date, 0),
-		State:      req.State,
+		OState:     req.State,
 		ProductId:  req.ProductId,
 		Price:      req.Price,
 		Number:     req.Number,

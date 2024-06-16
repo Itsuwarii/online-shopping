@@ -44,7 +44,7 @@ func (l *OrderCreateLogic) OrderCreate(req *types.NewOrder) (resp *types.Order, 
 		ProductId:  req.Product.ID,
 		Price:      req.Product.Price * float64(req.Product.Amount),
 		Number:     req.Product.Amount,
-		State:      types.AVAILABLE,
+		OState:     types.AVAILABLE,
 		Remark:     req.Remark,
 	})
 

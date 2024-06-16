@@ -1,6 +1,6 @@
 import React from 'react';
 import { forwardRef, useImperativeHandle } from 'react';
-import { ShoppingCartOutlined, CheckOutlined, LoadingOutlined, ClearOutlined, ShoppingOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, CheckOutlined, ReloadOutlined, LoadingOutlined, ClearOutlined, ShoppingOutlined } from '@ant-design/icons';
 import { Flex, Card, Button, Space, Image, Spin, message, InputNumber, Empty, FloatButton, Tooltip, List, Table, Input } from 'antd';
 import client from '../../api/axios';
 
@@ -21,29 +21,73 @@ class OrderView extends React.Component {
     pullData = () => {
         client.post(`order/merchant/get`)
             .then((respone) => {
-                // console.log(respone);
-                // [
-                //     {
-                //         "user_id": 1,
-                //         "merchant_id": 1,
-                //         "date": 1718464002,
-                //         "state": 0,
-                //         "remark": "",
-                //         "product_id": 25,
-                //         "price": 2.22,
-                //         "number": 2
-                //     }
-                // ]
-
-                this.setState({ orders_list: respone.data.orders_list })
+                console.log(respone)
+                this.setState({ orders_list: [...respone.data.orders_list] })
             }).catch(e => {
                 console.log(e);
             })
     }
 
+    pushData = (order) => {
+        let payload = {
+            id: order.id,
+            user_id: order.user_id,
+            merchant_id: order.merchant_id,
+            date: order.date,
+            state: order.state,
+            remark: order.remark,
+            product_id: order.product_id,
+            price: order.price,
+            number: order.number,
+        }
+
+        client.post(`order/update`, payload).then(_ => {
+            message.config({
+                maxCount: 1,
+                duration: 1,
+            })
+            message.success('Update success');
+        }).catch(e => {
+            console.log(e);
+        })
+    }
+
+    changeRemark = (record, e) => {
+        let remark = e.target.value;
+
+        let newList = [];
+        let list = this.state.orders_list;
+        for (let i = 0; i < list.length; i++) {
+            let item = list[i];
+            if (item.id == record.id) {
+                newList.push({ ...record, remark });
+
+                this.pushData({ ...record, remark });
+            } else {
+                newList.push(item);
+            }
+        }
+        this.setState({ orders_list: [...newList] });
+    }
+
     changeState = (record) => {
+        let state = record.state;
+        if (state == 0) state = 1;
+        else state = 0;
 
+        let newList = [];
+        let list = this.state.orders_list;
+        for (let i = 0; i < list.length; i++) {
+            let item = list[i];
+            if (item.id == record.id) {
+                newList.push({ ...record, state });
 
+                this.pushData({ ...record, state });
+            } else {
+                newList.push(item);
+            }
+        }
+        this.setState({ orders_list: [...newList] });
     }
 
 
@@ -69,7 +113,9 @@ class OrderView extends React.Component {
                         title: 'Remark',
                         dataIndex: 'remark',
                         key: 'remark',
-                        render: text => <div style={{ fontSize: '15px', }}>{text}</div>
+                        render: (n, record, _) => (
+                            <Input type='text' placeholder='Remark' style={{ borderRadius: '1px', width: '100px' }} value={n} onChange={(e) => { this.changeRemark(record, e) }}></Input>
+                        )
                     },
                     {
                         title: 'Price',
@@ -88,12 +134,15 @@ class OrderView extends React.Component {
                         key: 'state',
                         sorter: (a, b) => a.state - b.state,
                         render: (text, record, _) => (
-                            <Button style={{ width: '100px' }} onClick={() => { this.changeState(record) }}>{text == 1 ? 'Avaibable' : 'Unavaibable'}</Button>
+                            <Button style={{ width: '100px' }} onClick={() => { this.changeState(record) }}>{text == '0' ? 'Activity' : 'Inactive'}</Button>
                         )
                     },
 
                     ]} dataSource={this.state.orders_list}>
                 </Table>
+
+
+                <FloatButton onClick={() => { this.setState({ orders_list: [] }); this.pullData() }} style={{ right: 300, bottom: 100 + 70 }} type="default" tooltip={<div>Refresh</div>} icon={<ReloadOutlined />} />
             </Flex>
         )
     }

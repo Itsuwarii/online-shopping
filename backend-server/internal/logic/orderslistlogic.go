@@ -55,6 +55,7 @@ func (l *OrdersListLogic) OrdersList() (resp *types.OrderList, err error) {
 			Remark:     v.Remark,
 			ProductId:  v.ProductId,
 			Number:     v.Number,
+			State:      v.OState,
 		})
 	}
 

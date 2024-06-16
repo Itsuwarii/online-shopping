@@ -48,7 +48,7 @@ func (l *OrderGetLogic) OrderGet(req *types.OrderId) (resp *types.Order, err err
 		UserId:     result.UserId,
 		MerchantId: result.MerchantId,
 		Date:       result.Date.Unix(),
-		State:      result.State,
+		State:      result.OState,
 		Price:      result.Price,
 		Remark:     result.Remark,
 		ProductId:  result.ProductId,
