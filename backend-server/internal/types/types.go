@@ -71,7 +71,7 @@ type DateScope struct {
 }
 
 type DeleteProductReq struct {
-	ID int64 `path:"id"`
+	ID int64 `json:"id"`
 }
 
 type LoginReq struct {

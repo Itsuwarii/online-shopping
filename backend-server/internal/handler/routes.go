@@ -170,8 +170,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: ProductUpdateHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodDelete,
-				Path:    "/",
+				Method:  http.MethodPost,
+				Path:    "/delete",
 				Handler: ProductDeleteHandler(serverCtx),
 			},
 			{

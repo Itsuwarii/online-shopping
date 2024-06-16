@@ -17,6 +17,7 @@ import OrderView from './OrderView';
 import DialogueView from './DislogueView';
 import AccountView from './AccountView';
 import AddProductView from './AddProductView';
+import { useFetcher } from 'react-router-dom';
 
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
@@ -24,14 +25,49 @@ const { Meta } = Card;
 
 function Main() {
 
+    const [product_list, setProductList] = useState([]);
 
-    function pullData() {
+    useEffect(() => {
+        pullData();
+    }, [])
 
+    const pullData = () => {
 
-    };
+        client.post(`product/all`, {
+            index: 0,
+            size: 1000,
+        }).then((respone) => {
+            let list = respone.data.product_list;
+            setProductList(list);
+
+            let newList = [];
+            for (let i = 0; i < list.length; i++) {
+                let item = list[i];
+
+                if (item.avatar_locator == '') {
+                    newList.push(item);
+                    continue;
+                }
+
+                client.post(`image/get`, {
+                    hash: item.avatar_locator, message: '',
+                }).then((respone) => {
+                    console.log('image download down');
+
+                    item = { ...item, avatar: respone.data.base64 };
+                    // 修改一个商品
+                    newList.push(item);
+
+                    setProductList(newList);
+                })
+            }
+        }).catch((e) => {
+            console.log(e);
+        })
+    }
+
 
     // View
-    const [content, setContent] = useState();
     const [viewIndex, setViewIndex] = useState('1');
     const [search, setSearch] = useState('');
 
@@ -65,6 +101,17 @@ function Main() {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
+    const onSearch = (keyword, event) => {
+        if (keyword == '') {
+            message.config({
+                maxCount: 1,
+                duration: 1
+            })
+            message.info("Please input the search content")
+            return
+        }
+    }
+
     return (
         <Layout style={{
             height: '100vh',
@@ -93,6 +140,8 @@ function Main() {
                                         height: 64,
                                         paddingTop: 15,
                                     }}
+                                    value={search}
+                                    onChange={(e) => setSearch(e.value)} onSearch={onSearch}
                                     placeholder="search goods" enterButton />
                             </Flex>
 
@@ -110,7 +159,7 @@ function Main() {
                     </Header>
 
                     <Content style={{ flexFlow: 'column', margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, borderRadius: borderRadiusLG, }} >
-                        <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><ProductView ></ProductView></div>
+                        <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><ProductView setProductList={setProductList} product_list={product_list} setSearch={setSearch} search={search}></ProductView></div>
                         <div style={{ display: viewIndex == '2' ? 'inline' : 'none' }}><AddProductView ></AddProductView></div>
                         <div style={{ display: viewIndex == '3' ? 'inline' : 'none' }}><OrderView></OrderView></div>
                         <div style={{ display: viewIndex == '4' ? 'inline' : 'none' }}><DialogueView></DialogueView></div>

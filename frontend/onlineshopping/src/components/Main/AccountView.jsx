@@ -235,7 +235,6 @@ class AccountView extends React.Component {
             <Flex warp='true' style={{ overflow: 'auto', flex: '1', flexDirection: 'column', width: '100%', height: '100%', textAlign: 'center', verticalAlign: 'center' }}>
                 <Flex style={{ height: '100%', width: '50%', flexDirection: 'column', margin: "0 auto" }}>
                     <Space style={{ flexDirection: 'column', verticalAlign: 'center' }}>
-                        {/* <Upload showUploadList={false}  maxCount='1' method='post' > */}
                         <div
                             onDragEnter={this.handleDragEnter}
                             onDragLeave={this.handleDragLeave}
@@ -249,7 +248,6 @@ class AccountView extends React.Component {
                                 src={this.state.imageBase64}
                             />
                         </div>
-                        {/* </Upload> */}
                     </Space>
                     <Input  onChange={this.onChangeName} size='large' style={{ textAlign: 'center', marginTop: '20px', padding: '10px', fontSize: '20px' }} width={'50%'} placeholder='Name' value={this.state.userInfo.name}></Input>
 

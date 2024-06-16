@@ -10,27 +10,8 @@ const { Meta } = Card;
 class ProductView extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            product_list: [],
-        }
     }
 
-    componentDidMount() {
-        this.pullData();
-    }
-
-    pullData = () => {
-        client.post(`product/all`, {
-            index: 0,
-            size: 1000,
-        })
-            .then((respone) => {
-                // console.log(respone);
-                this.setState({ product_list: respone.data.product_list })
-            }).catch(e => {
-                console.log(e);
-            })
-    }
 
     pushData = (product) => {
         client.post(`product/update`, {
@@ -56,7 +37,7 @@ class ProductView extends React.Component {
 
     updateList = (product) => {
         let newList = []
-        let list = this.state.product_list;
+        let list = this.props.product_list;
         for (let i = 0; i < list.length; i++) {
             if (list[i].id == product.id) {
                 newList.push({
@@ -68,7 +49,7 @@ class ProductView extends React.Component {
                 newList.push(list[i]);
             }
         }
-        this.setState({ product_list: newList });
+        this.props.setProductList(newList);
     }
 
 
@@ -119,9 +100,96 @@ class ProductView extends React.Component {
 
         this.updateList(product);
     }
-    changeImage = (product, e) => {
-        this.updateList(product);
+
+    handleDragEnter = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    handleDragLeave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    handleDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    handleDrop = (e, product) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            const file = e.dataTransfer.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = () => {
+
+                // 本地的更新
+                let newList = [];
+                let list = this.props.product_list;
+                for (let i = 0; i < list.length; i++) {
+                    let item = list[i];
+                    if (product.id != item.id) {
+                        newList.push(item);
+                        continue;
+                    }
+                    newList.push({
+                        ...item,
+                        avatar: reader.result,
+                    });
+                }
+                this.props.setProductList(newList);
+
+                this.uploadImage(reader.result, product);
+            };
+        }
+    };
+
+    uploadImage = (file, product) => {
+        client.post('image/', {
+            base64: file,
+        }).then((respone) => {
+            let hash = respone.data.hash
+            if (hash) {
+                product = {
+                    ...product,
+                    avatar_locator: hash,
+                }
+                this.updateList(product);
+                this.pushData(product);
+                message.success('Image uploaded success');
+            }
+        }).catch((e) => {
+            console.log(e)
+        })
+    };
+
+    deleteProduct = (product) => {
+        client.post(`product/delete`, {
+            id: product.id,
+        }).then(_ => {
+            let newList = []
+            let list = this.props.product_list;
+            for (let i = 0; i < list.length; i++) {
+                if (list[i].id == product.id) {
+                } else {
+                    newList.push(list[i]);
+                }
+            }
+            this.props.setProductList(newList);
+
+            message.config({
+                maxCount: 1,
+                duration: 1,
+            })
+            message.success('Delete success');
+        }).catch((e) => {
+            console.log(e)
+        })
     }
+
 
     render() {
         return (
@@ -133,6 +201,9 @@ class ProductView extends React.Component {
                         title: 'ID',
                         dataIndex: 'id',
                         key: 'id',
+                        sorter: true,
+                        defaultSortOrder: 'ascend',
+                        sorter: (a, b) => a.id - b.id,
                         render: (text) => <p>{text}</p>,
                     }, {
                         title: 'Name',
@@ -143,10 +214,24 @@ class ProductView extends React.Component {
                         )
                     }, {
                         title: 'Avatar',
-                        dataIndex: 'avatar_locator',
-                        key: 'avatar_locator',
-                        render: (n, record, _) => (
-                            <Image type='text' style={{ borderRadius: '0', height: '100%', width: '100px' }} value={n} onChange={(e) => { this.changeImage(record, e) }}></Image>
+                        dataIndex: 'avatar',
+                        key: 'avatar',
+                        render: (avatar, record, _) => (
+                            <div
+                                onDragEnter={this.handleDragEnter}
+                                onDragLeave={this.handleDragLeave}
+                                onDragOver={this.handleDragOver}
+                                onDrop={(e) => this.handleDrop(e, record)} >
+                                {
+                                    avatar && avatar != '' ?
+                                        <><img style={{ height: '100%', width: '100px' }}
+                                            src={avatar}>
+                                        </img>
+                                        </>
+                                        :
+                                        <Empty style={{ height: '100%', width: '100px' }}></Empty>
+                                }
+                            </div>
                         )
                     },
                     {
@@ -160,6 +245,7 @@ class ProductView extends React.Component {
                         title: 'Price',
                         dataIndex: 'price',
                         key: 'price',
+                        sorter: (a, b) => a.price - b.price,
                         render: (n, record, _) => (
                             <Input type='number' style={{ width: '100px' }} value={n} onChange={(e) => { this.changePrice(record, e) }}></Input>
                         )
@@ -167,6 +253,7 @@ class ProductView extends React.Component {
                         title: 'Amount',
                         dataIndex: 'amount',
                         key: 'amount',
+                        sorter: (a, b) => a.amount - b.amount,
                         render: (n, record, _) => (
                             <Input type='number' style={{ width: '100px' }} value={n} onChange={(e) => { this.changeNumber(record, e) }}></Input>
                         )
@@ -174,13 +261,21 @@ class ProductView extends React.Component {
                         title: 'State',
                         dataIndex: 'state',
                         key: 'state',
+                        sorter: (a, b) => a.state - b.state,
                         render: (text, record, _) => (
                             <Button style={{ width: '100px' }} onClick={() => { this.changeState(record) }}>{text == 1 ? 'Avaibable' : 'Unavaibable'}</Button>
+                        )
+                    }, {
+                        title: '',
+                        dataIndex: 'delete',
+                        // key: '',
+                        render: (v, record, _) => (
+                            <Button style={{ width: '70px' }} onClick={() => { this.deleteProduct(record) }}>Delete</Button>
                         )
                     },
 
 
-                    ]} dataSource={this.state.product_list ? [...this.state.product_list] : []}>
+                    ]} dataSource={[...this.props.product_list]}>
                 </Table>
 
 
