@@ -5,8 +5,7 @@ import {
 } from '@ant-design/icons';
 
 import {
-    Flex, Avatar, Input, Image, message, Select, Space, Empty,
-    List, Button, message
+    Flex, Avatar, Input, Image, message, Select, Space, Empty, List, Button
 } from 'antd';
 
 import client from '../../api/axios';
@@ -15,21 +14,19 @@ import TextArea from 'antd/es/input/TextArea';
 import css from './styles/index.module.css';
 
 class DetrimentView extends React.Component {
+    constructor(props) {
+        super(props)
+    }
 
     pruchase = () => {
+        if (this.props.purchaseList == null) {
+            return
+        }
+
         let list = this.props.purchaseList;
         console.log(list)
 
-        // ID            int64       `json:"id"`
-        // Name          string      `json:"name"`
-        // MerchantId    int64       `json:"merchant"`
-        // AvatarLocator string      `json:"avatar_locator"`
-        // ImagesLocator string      `json:"images_locator"`
-        // Intro         string      `json:"intro"`
-        // Price         float64     `json:"price"`
-        // Amount        int64       `json:"amount"`
-        // State         int64       `json:"state"`
-
+        // 便利要购买的商品
         for (let i = 0; i < list.length; i++) {
             console.log(list[i])
             let item = list[i];
@@ -48,12 +45,46 @@ class DetrimentView extends React.Component {
                 },
             }).then(e => {
                 console.log(e);
+                this.clearFromCart(list);
+                this.props.setPurchaseList([]);
 
-                this.props.setPurchaseList()
+                message.config({
+                    maxCount: 1,
+                    duration: 1,
+                })
+                message.success('order created');
+
+                this.props.toOrder();
             }).catch(e => {
                 console.log(e);
             })
         }
+    }
+
+    clearFromCart = (list) => {
+        // 从购物车里清掉
+        let newCart = [];
+        let cart = this.props.cart_product_list;
+        if (cart != null) {
+            for (let i = 0; i < cart.length; i++) {
+                let existed = false;
+                for (let j = 0; j < list.length; j++) {
+                    if (cart[i].id == list[j].id) {
+                        existed = true;
+                    }
+                }
+                if (existed == false) newCart.push(cart[i]);
+            }
+        }
+        this.props.setCartProductList(newCart);
+
+        client.post(`cart`, {
+            cart_product_list: newCart,
+        }).then((response) => {
+            message.success('cart updated')
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     getTotal = () => {

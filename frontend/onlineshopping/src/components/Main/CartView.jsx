@@ -1,6 +1,6 @@
 import React from 'react';
 import { forwardRef, useImperativeHandle } from 'react';
-import { ShoppingCartOutlined, CheckOutlined, LoadingOutlined, ClearOutlined, ShoppingOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, CheckOutlined, LoadingOutlined, ClearOutlined,ReloadOutlined, ShoppingOutlined } from '@ant-design/icons';
 import { Flex, Card, Button, Space, Image, Spin, message, InputNumber, Empty, FloatButton, Tooltip } from 'antd';
 import client from '../../api/axios';
 
@@ -190,6 +190,7 @@ class CartView extends React.Component {
                         :
                         <Empty style={{ margin: 'auto auto' }}></Empty >
                 }
+                <FloatButton onClick={() => { this.props.setCartProductList([]); this.props.pullCartData() }} style={{ right: 100, bottom: 100 + 70 + 70 }} type="default" tooltip={<div>Refresh</div>} icon={<ReloadOutlined />} />
                 <FloatButton onClick={this.onBuyAll} style={{ right: 100, bottom: 100 + 70 }} type="primary" tooltip={<div>Buy All</div>} icon={<ShoppingOutlined />} />
                 <FloatButton onClick={this.onClearCart} style={{ right: 100, bottom: 100 }} type="default" tooltip={<div>Clear Cart</div>} icon={<ClearOutlined />} />
             </Flex>

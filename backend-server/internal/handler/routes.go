@@ -244,8 +244,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: OrderCreateHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodDelete,
-				Path:    "/",
+				Method:  http.MethodPost,
+				Path:    "/delete",
 				Handler: OrderDeleteHandler(serverCtx),
 			},
 			{

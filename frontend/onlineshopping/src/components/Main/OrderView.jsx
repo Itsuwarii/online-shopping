@@ -1,14 +1,12 @@
 import React from 'react';
 
 import {
-    AntDesignOutlined,
+    AntDesignOutlined, ClearOutlined, ReloadOutlined
 } from '@ant-design/icons';
 
 import {
-    Flex, Avatar, Input, Image, message, Select, Space, Empty,
-    List,
-    Button,
-    Table
+    Flex, Avatar, Input, Image, message, Select, Space, Empty, List, FloatButton,
+    Button, Table
 } from 'antd';
 
 import client from '../../api/axios';
@@ -33,6 +31,7 @@ class OrderView extends React.Component {
     pullData = () => {
         client.post(`order/list`)
             .then(respone => {
+                let index = 0;
                 let orders_list = [];
                 let list = respone.data.orders_list
                 for (let i = 0; i < list.length; i++) {
@@ -42,8 +41,7 @@ class OrderView extends React.Component {
                             this.getMerchant(item.merchant_id)
                                 .then(
                                     merchant => {
-                                        // console.log(merchant.Name);
-                                        orders_list.push({
+                                        orders_list[index++] = {
                                             id: item.id,
                                             user_id: item.user_id,
                                             merchant: merchant.Name,
@@ -53,13 +51,11 @@ class OrderView extends React.Component {
                                             product: product.name,
                                             price: item.price,
                                             number: item.number,
-                                        })
-                                        this.setState({ orders_list: orders_list })
-                                    }).catch(e => {
-                                        console.log(e)
+                                        }
+                                        // this.state.orders_list.values.map()
+                                        // console.log('orderlist', orders_list)
+                                        this.setState({ orders_list })
                                     })
-                        }).catch(e => {
-                            console.log(e);
                         })
                 }
             }).catch(e => {
@@ -89,11 +85,27 @@ class OrderView extends React.Component {
         return resp.data;
     }
 
+    onClearOrder = () => {
+        let list = this.state.orders_list;
+        for (let i = 0; i < list.length; i++) {
+            client.post(`order/delete`, {
+                id: list[i].id,
+            }).then((resp) => {
+                message.config({
+                    maxCount: 1,
+                    duration: 1
+                })
+                message.success('Clear order')
+            })
+        }
+        this.setState({ orders_list: [] })
+    }
+
     render() {
         return (
             <Flex className={css.con01} style={{ overflow: 'auto', flex: '1', height: '100%', width: '100%', }} >
 
-                <Table style={{ width: '100%', height: '100%' }} columns={[{
+                <Table rowKey={(item) => item.id} style={{ width: '100%', height: '100%' }} columns={[{
                     title: 'ID',
                     dataIndex: 'id',
                     key: 'id',
@@ -133,9 +145,11 @@ class OrderView extends React.Component {
                 },
 
 
-                ]} dataSource={this.state.orders_list}>
+                ]} dataSource={this.state.orders_list ? [...this.state.orders_list] : []}>
                 </Table>
 
+                <FloatButton onClick={() => { this.setState({ orders_list: [] }); this.pullData() }} style={{ right: 100, bottom: 100 + 70 }} type="default" tooltip={<div>Refresh</div>} icon={<ReloadOutlined />} />
+                <FloatButton onClick={this.onClearOrder} style={{ right: 100, bottom: 100 }} type="default" tooltip={<div>Clear All Order</div>} icon={<ClearOutlined />} />
             </Flex>
         )
     }

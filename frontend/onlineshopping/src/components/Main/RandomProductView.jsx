@@ -46,12 +46,13 @@ class RandomProductView extends React.Component {
             if (list[i].id == id) {
                 purchaseList.push({
                     id: list[i].id,
-                    avatar_locator:list[i].avatar_locator,
-                    intro:list[i].intro,
-                    merchant:list[i].merchant,
-                    name:list[i].name,
-                    price:list[i].price,
-                    buyNumber:buyNumber,
+                    avatar_locator: list[i].avatar_locator,
+                    images_locator: list[i].images_locator,
+                    intro: list[i].intro,
+                    merchant: list[i].merchant,
+                    name: list[i].name,
+                    price: list[i].price,
+                    buyNumber: buyNumber,
                 })
                 break;
             }
@@ -173,7 +174,7 @@ class RandomProductView extends React.Component {
                                     <Tooltip title="Add to cart">
                                         <Button onClick={() => this.onAddToCart(item.id)}
                                             style={{ backgroundColor: this.isInCart(item.id) != 0 ? '#bae0ff' : '' }}
-                                             ><ShoppingCartOutlined /></Button>
+                                        ><ShoppingCartOutlined /></Button>
                                     </Tooltip>
                                     <InputNumber min={0} max={10000}
                                         variant='outlined' changeOnWheel='true'

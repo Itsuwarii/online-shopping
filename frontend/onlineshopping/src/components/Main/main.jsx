@@ -28,9 +28,8 @@ const Main = () => {
 
     // Menu click event
     const menuHandle = (event) => {
-        setSearch('');
         pullData();
-
+        setSearch('');
         let key = event.key;
 
         if (key == '1') {
@@ -90,6 +89,9 @@ const Main = () => {
     const toPurchase = () => {
         setViewIndex('7')
     }
+    const toOrder = () => {
+        setViewIndex('8')
+    }
 
     useEffect(() => {
         pullData();
@@ -111,6 +113,10 @@ const Main = () => {
             setTimeout(this.pullData, 5000);
         });
 
+        pullCartData();
+    };
+
+    const pullCartData = () => {
         client.get(`cart`).then((response) => {
             if (response.data != null)
                 if (response.data.cart_product_list != null) {
@@ -120,7 +126,7 @@ const Main = () => {
             console.log(error);
             setTimeout(this.pullData, 5000);
         });
-    };
+    }
 
     const [collapsed, setCollapsed] = useState(false);
     const { token: { colorBgContainer, borderRadiusLG }, } = theme.useToken();
@@ -185,11 +191,11 @@ const Main = () => {
                 <Content style={{ flexFlow: 'column', margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, borderRadius: borderRadiusLG, }} >
 
                     <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><RandomProductView setPurchaseList={setPurchaseList} toPurchase={toPurchase} pullData={pullData} setCartProductList={setCartProductList} cart_product_list={cart_product_list} setProductList={setProductList} list={productList} /></div>
-                    <div style={{ display: viewIndex == '2' ? 'inline' : 'none' }}><CartView purchaseList={purchaseList} setPurchaseList={setPurchaseList} toPurchase={toPurchase} setCartProductList={setCartProductList} cart_product_list={cart_product_list} /></div>
+                    <div style={{ display: viewIndex == '2' ? 'inline' : 'none' }}><CartView purchaseList={purchaseList} setPurchaseList={setPurchaseList} toPurchase={toPurchase} pullCartData={pullCartData} setCartProductList={setCartProductList} cart_product_list={cart_product_list} /></div>
                     <div style={{ display: viewIndex == '4' ? 'inline' : 'none' }}><AccountView /></div>
                     <div style={{ display: viewIndex == '5' ? 'inline' : 'none' }}>Logout</div>
-                    <div style={{ display: viewIndex == '6' ? 'inline' : 'none' }}><SearchResultView setCartProductList={setCartProductList} cart_product_list={cart_product_list} setSearchedProductList={setSearchedProductList} searchedProductList={searchedProductList} ></SearchResultView></div>
-                    <div style={{ display: viewIndex == '7' ? 'inline' : 'none' }}><DetrimentView setPurchaseList={setPurchaseList} purchaseList={purchaseList} ></DetrimentView></div>
+                    <div style={{ display: viewIndex == '6' ? 'inline' : 'none' }}><SearchResultView purchaseList={purchaseList} setPurchaseList={setPurchaseList} toPurchase={toPurchase} setCartProductList={setCartProductList} cart_product_list={cart_product_list} setSearchedProductList={setSearchedProductList} searchedProductList={searchedProductList} ></SearchResultView></div>
+                    <div style={{ display: viewIndex == '7' ? 'inline' : 'none' }}><DetrimentView toOrder={toOrder} setCartProductList={setCartProductList} cart_product_list={cart_product_list} setPurchaseList={setPurchaseList} purchaseList={purchaseList} ></DetrimentView></div>
                     <div style={{ display: viewIndex == '8' ? 'inline' : 'none' }}><OrderView></OrderView></div>
 
                 </Content>
