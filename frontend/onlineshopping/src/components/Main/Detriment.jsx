@@ -6,8 +6,7 @@ import {
 
 import {
     Flex, Avatar, Input, Image, message, Select, Space, Empty,
-    List,
-    Button
+    List, Button, message
 } from 'antd';
 
 import client from '../../api/axios';
@@ -49,6 +48,7 @@ class DetrimentView extends React.Component {
                 },
             }).then(e => {
                 console.log(e);
+
                 this.props.setPurchaseList()
             }).catch(e => {
                 console.log(e);
@@ -57,6 +57,9 @@ class DetrimentView extends React.Component {
     }
 
     getTotal = () => {
+        if (this.props.purchaseList == null) {
+            return 0;
+        }
         let total = 0;
         let list = this.props.purchaseList;
         for (let i = 0; i < list.length; i++) {

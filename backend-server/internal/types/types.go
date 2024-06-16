@@ -93,6 +93,10 @@ type MerchantAuth struct {
 	RefreshAfter int64  `json:"refresh_after"`
 }
 
+type MerchantId struct{
+	Id int64 `json:"id"`
+}
+
 type MerchantDeleteReq struct {
 }
 
@@ -179,6 +183,7 @@ type NewProduct struct {
 }
 
 type Order struct {
+	Id               int64            `json:"id"`
 	UserId           int64            `json:"user_id"`
 	MerchantId       int64            `json:"merchant_id"`
 	Date             int64            `json:"date"`

@@ -47,6 +47,7 @@ func (l *OrdersListLogic) OrdersList() (resp *types.OrderList, err error) {
 	var orderList []types.Order
 	for _, v := range result {
 		orderList = append(orderList, types.Order{
+			Id:         v.Id,
 			UserId:     v.UserId,
 			MerchantId: v.MerchantId,
 			Date:       v.Date.Unix(),

@@ -1,4 +1,4 @@
-go: 'go mod init' accepts at most one argument
+
 syntax = "v1"
 
 type MerchantAuth {

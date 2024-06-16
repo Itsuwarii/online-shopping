@@ -44,6 +44,7 @@ func (l *OrderGetLogic) OrderGet(req *types.OrderId) (resp *types.Order, err err
 	// ProductId        int64		      `json:"product_id"`
 	// Number 			 int64  		  `json:"number"`
 	return &types.Order{
+		Id:         result.Id,
 		UserId:     result.UserId,
 		MerchantId: result.MerchantId,
 		Date:       result.Date.Unix(),

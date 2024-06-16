@@ -40,6 +40,7 @@ func (l *OrderGetForMerchantLogic) OrderGetForMerchant() (resp *types.OrderList,
 	var orderList []types.Order
 	for _, v := range result {
 		orderList = append(orderList, types.Order{
+			Id:         v.Id,
 			UserId:     v.UserId,
 			MerchantId: v.MerchantId,
 			Date:       v.Date.Unix(),
