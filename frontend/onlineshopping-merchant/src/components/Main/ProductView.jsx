@@ -1,6 +1,6 @@
 import React from 'react';
 import { forwardRef, useImperativeHandle } from 'react';
-import { TagOutlined, ShoppingCartOutlined, CheckOutlined, LoadingOutlined, ClearOutlined, ShoppingOutlined } from '@ant-design/icons';
+import { TagOutlined, ShoppingCartOutlined, ReloadOutlined, CheckOutlined, LoadingOutlined, ClearOutlined, ShoppingOutlined } from '@ant-design/icons';
 import { Flex, Card, Button, Space, Image, Spin, message, InputNumber, Empty, FloatButton, Tooltip, Input, List, Table } from 'antd';
 import client from '../../api/axios';
 import TextArea from 'antd/es/input/TextArea';
@@ -65,22 +65,26 @@ class ProductView extends React.Component {
 
     changePrice = (product, e) => {
         let price = Number(e.target.value);
-        product = {
-            ...product,
-            price: price,
-        }
+        if (price >= 0 && price < 99999) {
+            product = {
+                ...product,
+                price: price,
+            }
 
-        this.updateList(product);
+            this.updateList(product);
+        }
     }
 
     changeNumber = (product, e) => {
         let amount = Number(e.target.value);
-        product = {
-            ...product,
-            amount: amount,
-        }
+        if (amount >= 0 && amount < 99999) {
+            product = {
+                ...product,
+                amount: amount,
+            }
 
-        this.updateList(product);
+            this.updateList(product);
+        }
     }
     changeIntro = (product, e) => {
         let i = e.target.value;
@@ -247,7 +251,7 @@ class ProductView extends React.Component {
                         key: 'price',
                         sorter: (a, b) => a.price - b.price,
                         render: (n, record, _) => (
-                            <Input type='number' style={{ width: '100px' }} value={n} onChange={(e) => { this.changePrice(record, e) }}></Input>
+                            <Input min={0} max={99999} type='number' style={{ width: '100px' }} value={n} onChange={(e) => { this.changePrice(record, e) }}></Input>
                         )
                     }, {
                         title: 'Amount',
@@ -255,7 +259,7 @@ class ProductView extends React.Component {
                         key: 'amount',
                         sorter: (a, b) => a.amount - b.amount,
                         render: (n, record, _) => (
-                            <Input type='number' style={{ width: '100px' }} value={n} onChange={(e) => { this.changeNumber(record, e) }}></Input>
+                            <Input min={0} max={99999} type='number' style={{ width: '100px' }} value={n} onChange={(e) => { this.changeNumber(record, e) }}></Input>
                         )
                     }, {
                         title: 'State',
@@ -277,7 +281,7 @@ class ProductView extends React.Component {
 
                     ]} dataSource={[...this.props.product_list]}>
                 </Table>
-
+                <FloatButton onClick={() => { this.props.pullData() }} style={{ right: 300, bottom: 100 + 70 }} type="default" tooltip={<div>Refresh</div>} icon={<ReloadOutlined />} />
 
             </Flex>
         )

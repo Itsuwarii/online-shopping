@@ -58,7 +58,7 @@ function Main() {
                     // 修改一个商品
                     newList.push(item);
 
-                    setProductList(newList);
+                    setProductList([...newList]);
                 })
             }
         }).catch((e) => {
@@ -159,7 +159,7 @@ function Main() {
                     </Header>
 
                     <Content style={{ flexFlow: 'column', margin: '24px 16px', padding: 24, minHeight: 280, background: colorBgContainer, borderRadius: borderRadiusLG, }} >
-                        <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><ProductView setProductList={setProductList} product_list={product_list} setSearch={setSearch} search={search}></ProductView></div>
+                        <div style={{ display: viewIndex == '1' ? 'inline' : 'none' }}><ProductView pullData={pullData} setProductList={setProductList} product_list={product_list} setSearch={setSearch} search={search}></ProductView></div>
                         <div style={{ display: viewIndex == '2' ? 'inline' : 'none' }}><AddProductView ></AddProductView></div>
                         <div style={{ display: viewIndex == '3' ? 'inline' : 'none' }}><OrderView></OrderView></div>
                         <div style={{ display: viewIndex == '4' ? 'inline' : 'none' }}><DialogueView></DialogueView></div>
