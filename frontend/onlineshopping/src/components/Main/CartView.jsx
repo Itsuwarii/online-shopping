@@ -23,18 +23,25 @@ class CartView extends React.Component {
                         let n = list[i].number;
                         // console.log(data)
 
-                        purchaseList.push({
-                            id: data.id,
-                            avatar_locator: data.avatar_locator,
-                            images_locator: data.images_locator,
-                            intro: data.intro,
-                            merchant: data.merchant,
-                            name: data.name,
-                            price: data.price,
-                            buyNumber: n,
-                        })
-                        this.props.setPurchaseList(purchaseList);
-                        this.props.toPurchase();
+                        client.post(`image/get`, {
+                            hash: data.avatar_locator, message: '',
+                        }).then((respone) => {
+
+                            purchaseList.push({
+                                id: data.id,
+                                avatar_locator: data.avatar_locator,
+                                images_locator: data.images_locator,
+                                intro: data.intro,
+                                merchant: data.merchant,
+                                name: data.name,
+                                price: data.price,
+                                buyNumber: n,
+                                avatar: respone.data.base64,
+                            })
+                            this.props.setPurchaseList(purchaseList);
+                            this.props.toPurchase();
+                        }).catch(e => { console.log(e) })
+
                     }
                 )
                 break;
@@ -103,20 +110,29 @@ class CartView extends React.Component {
                 data => {
                     let n = list[i].number;
 
-                    purchaseList.push({
-                        id: data.id,
-                        avatar_locator: data.avatar_locator,
-                        intro: data.intro,
-                        merchant: data.merchant,
-                        images_locator: data.images_locator,
-                        name: data.name,
-                        price: data.price,
-                        buyNumber: n,
-                    })
-                    this.props.setPurchaseList(purchaseList);
-                    if (i == list.length - 1) {
-                        this.props.toPurchase();
-                    }
+                    client.post(`image/get`, {
+                        hash: data.avatar_locator, message: '',
+                    }).then((respone) => {
+
+                        purchaseList.push({
+                            id: data.id,
+                            avatar_locator: data.avatar_locator,
+                            intro: data.intro,
+                            avatar: respone.data.base64,
+                            merchant: data.merchant,
+                            images_locator: data.images_locator,
+                            name: data.name,
+                            price: data.price,
+                            buyNumber: n,
+                        })
+
+                        this.props.setPurchaseList([...purchaseList]);
+                        if (i == list.length - 1) {
+                            this.props.toPurchase();
+                        }
+                    }).catch(e => { console.log(e) })
+
+
                 }
             )
         }

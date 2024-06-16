@@ -53,22 +53,28 @@ class SearchResultView extends React.Component {
 
         for (let i = 0; i < list.length; i++) {
             if (list[i].id == id) {
-                purchaseList.push({
-                    id: list[i].id,
-                    avatar_locator: list[i].avatar_locator,
-                    images_locator: list[i].images_locator,
-                    intro: list[i].intro,
-                    merchant: list[i].merchant,
-                    name: list[i].name,
-                    price: list[i].price,
-                    buyNumber: buyNumber,
-                })
+
+                client.post(`image/get`, {
+                    hash: list[i].avatar_locator, message: '',
+                }).then((respone) => {
+                    purchaseList.push({
+                        id: list[i].id,
+                        avatar_locator: list[i].avatar_locator,
+                        images_locator: list[i].images_locator,
+                        intro: list[i].intro,
+                        merchant: list[i].merchant,
+                        name: list[i].name,
+                        price: list[i].price,
+                        buyNumber: buyNumber,
+                        avatar: respone.data.base64,
+                    })
+
+                    this.props.setPurchaseList([...purchaseList])
+                    this.props.toPurchase()
+                }).catch(e => { console.log(e) })
                 break;
             }
         }
-
-        this.props.setPurchaseList(purchaseList)
-        this.props.toPurchase()
     }
 
     onAddToCart = (id) => {

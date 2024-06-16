@@ -49,7 +49,7 @@ class OrderView extends React.Component {
                                     orders_list[index++] = {
                                         id: item.id,
                                         user_id: item.user_id,
-                                        merchant: merchant.Name,
+                                        merchant: merchant.data.Name,
                                         date: new Date(item.date).toLocaleTimeString("en-US"),
                                         state: item.state,
                                         remark: item.remark,
@@ -59,22 +59,22 @@ class OrderView extends React.Component {
                                     }
                                     // this.state.orders_list.values.map()
                                     // console.log('orderlist', orders_list)
-                                    this.setState({ orders_list })
+                                    this.setState({ orders_list: [...orders_list] })
                                 })
                         }).catch(_ => {
                             orders_list[index++] = {
                                 id: item.id,
                                 user_id: item.user_id,
-                                merchant: '',
+                                merchant: 'Merchant',
                                 date: new Date(item.date).toLocaleTimeString("en-US"),
                                 state: item.state,
                                 remark: item.remark,
-                                product: '',
+                                product: 'Product',
                                 price: item.price,
                                 number: item.number,
                             }
 
-                            this.setState({ orders_list })
+                            this.setState({ orders_list: [...orders_list] })
                         })
                 }
             }).catch(e => {
@@ -143,7 +143,7 @@ class OrderView extends React.Component {
                 },
 
 
-                ]} dataSource={this.state.orders_list ? [...this.state.orders_list] : []}>
+                ]} dataSource={this.state.orders_list}>
                 </Table>
 
                 <FloatButton onClick={() => { this.setState({ orders_list: [] }); this.pullData() }} style={{ right: 100, bottom: 100 + 70 }} type="default" tooltip={<div>Refresh</div>} icon={<ReloadOutlined />} />

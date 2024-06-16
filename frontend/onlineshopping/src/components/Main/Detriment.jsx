@@ -5,7 +5,7 @@ import {
 } from '@ant-design/icons';
 
 import {
-    Flex, Avatar, Input, Image, message, Select, Space, Empty, List, Button
+    Flex, Avatar, Input, Image, message, Select, Space, Empty, List, Button, Divider
 } from 'antd';
 
 import client from '../../api/axios';
@@ -113,13 +113,14 @@ class DetrimentView extends React.Component {
                             renderItem={(item) => (
                                 <List.Item key={item.id}>
                                     <List.Item.Meta
-                                        avatar={<Avatar src='' />}
-                                        title={item.name}
-                                        description={item.intro}
+                                        avatar={<Avatar style={{ height: '70px', width: '70px' }} src={item.avatar} />}
+                                        title={<div style={{ fontSize: '25px' }}>{item.name}</div>}
+                                        description={<div style={{ fontSize: '20px' }}>{item.intro}</div>}
                                     />
-                                    <Flex >
-                                        Price : {item.price.toFixed(2)}
-                                        Total : {(item.price * item.buyNumber).toFixed(2)}
+                                    <Flex style={{ flexDirection: 'column' }} >
+                                        <div style={{ fontSize: '20px' }}>Price : {item.price.toFixed(2)}</div>
+                                        <div style={{ fontSize: '20px' }}>Number : {item.buyNumber.toFixed(0)}</div>
+                                        <div style={{ fontSize: '20px' }}>Total : {(item.price * item.buyNumber).toFixed(2)}</div>
                                     </Flex>
                                 </List.Item>
                             )}>
