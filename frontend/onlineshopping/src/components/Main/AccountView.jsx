@@ -249,7 +249,7 @@ class AccountView extends React.Component {
                             />
                         </div>
                     </Space>
-                    <Input  onChange={this.onChangeName} size='large' style={{ textAlign: 'center', marginTop: '20px', padding: '10px', fontSize: '20px' }} width={'50%'} placeholder='Name' value={this.state.userInfo.name}></Input>
+                    <Input onChange={this.onChangeName} size='large' style={{ textAlign: 'center', marginTop: '20px', padding: '10px', fontSize: '20px' }} width={'50%'} placeholder='Name' value={this.state.userInfo.name}></Input>
 
                     <TextArea onChange={this.onChangeIntro} size='large' style={{ textAlign: 'center', marginTop: '20px', padding: '10px', fontSize: '20px' }} width={'50%'} placeholder='Intro' value={this.state.userInfo.intro}></TextArea>
 

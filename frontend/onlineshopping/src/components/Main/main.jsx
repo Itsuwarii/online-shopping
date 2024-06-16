@@ -73,9 +73,28 @@ const Main = () => {
         client.post("product/search", {
             keyword
         }).then((response) => {
-            console.log(response)
+            let list = response.data.product_list;
+            setSearchedProductList(list);
 
-            setSearchedProductList(response.data.product_list);
+
+            let newList = [];
+            for (let i = 0; i < list.length; i++) {
+                let item = list[i];
+
+                if (item.avatar_locator == '') {
+                    newList.push(item);
+                    continue;
+                }
+
+                client.post(`image/get`, {
+                    hash: item.avatar_locator, message: '',
+                }).then((respone) => {
+                    item = { ...item, avatar: respone.data.base64 };
+                    newList.push(item);
+                    setSearchedProductList([...newList]);
+                })
+            }
+
             setViewIndex('6');
         }).catch(error => {
             console.log(error);
@@ -99,7 +118,30 @@ const Main = () => {
 
     const pullData = () => {
         client.get(`product/random`).then((response) => {
-            setProductList(response.data.product_list)
+            let list = response.data.product_list;
+            setProductList(list)
+
+            let newList = [];
+            for (let i = 0; i < list.length; i++) {
+                let item = list[i];
+
+                if (item.avatar_locator == '') {
+                    newList.push(item);
+                    continue;
+                }
+
+                client.post(`image/get`, {
+                    hash: item.avatar_locator, message: '',
+                }).then((respone) => {
+                    // console.log('image download down');
+
+                    item = { ...item, avatar: respone.data.base64 };
+                    // 修改一个商品
+                    newList.push(item);
+
+                    setProductList([...newList]);
+                })
+            }
         }).catch(error => {
             if (error.response != null && error.response.statusText != null)
                 if (error.response.statusText == "Unauthorized") {
@@ -118,13 +160,48 @@ const Main = () => {
 
     const pullCartData = () => {
         client.get(`cart`).then((response) => {
-            if (response.data != null)
-                if (response.data.cart_product_list != null) {
-                    setCartProductList(response.data.cart_product_list)
+            let list = response.data.cart_product_list;
+            setCartProductList(list)
+
+            let newList = [];
+            if (list != null) {
+                for (let i = 0; i < list.length; i++) {
+                    let item = list[i];
+
+                    client.post(`product/get`, {
+                        id: item.id,
+                    }).then(respone => {
+                        let product = respone.data;
+
+                        if (product.avatar_locator == '') {
+                            newList.push({
+                                ...item,
+                                product,
+                            });
+                            setCartProductList(newList);
+                        } else {
+                            client.post(`image/get`, {
+                                hash: product.avatar_locator, message: '',
+                            }).then((respone) => {
+                                // 修改一个商品
+                                newList.push({
+                                    ...item,
+                                    product: {
+                                        ...product,
+                                        avatar: respone.data.base64,
+                                    }
+                                });
+
+                                console.log(newList);
+                                setCartProductList([...newList]);
+                            }).catch(e => { console.log(e) })
+                        }
+                    }).catch(e => console.log(e))
+
                 }
+            }
         }).catch(error => {
             console.log(error);
-            setTimeout(this.pullData, 5000);
         });
     }
 

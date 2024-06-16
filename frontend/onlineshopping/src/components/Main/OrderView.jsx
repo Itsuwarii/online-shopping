@@ -31,63 +31,61 @@ class OrderView extends React.Component {
     pullData = () => {
         client.post(`order/list`)
             .then(respone => {
+                // console.log('orderlist==', respone)
                 let index = 0;
                 let orders_list = [];
                 let list = respone.data.orders_list
                 for (let i = 0; i < list.length; i++) {
                     let item = list[i];
-                    this.getProduct(item.product_id).then(
-                        product => {
-                            this.getMerchant(item.merchant_id)
-                                .then(
-                                    merchant => {
-                                        orders_list[index++] = {
-                                            id: item.id,
-                                            user_id: item.user_id,
-                                            merchant: merchant.Name,
-                                            date: new Date(item.date).toLocaleTimeString("en-US"),
-                                            state: item.state,
-                                            remark: item.remark,
-                                            product: product.name,
-                                            price: item.price,
-                                            number: item.number,
-                                        }
-                                        // this.state.orders_list.values.map()
-                                        // console.log('orderlist', orders_list)
-                                        this.setState({ orders_list })
-                                    })
+                    client.post(`product/get`, {
+                        id: item.product_id,
+                    }).then(
+                        respone => {
+                            let product = respone.data;
+                            client.post(`merchant/get`, {
+                                id: item.merchant_id,
+                            }).then(
+                                merchant => {
+                                    orders_list[index++] = {
+                                        id: item.id,
+                                        user_id: item.user_id,
+                                        merchant: merchant.Name,
+                                        date: new Date(item.date).toLocaleTimeString("en-US"),
+                                        state: item.state,
+                                        remark: item.remark,
+                                        product: product.name,
+                                        price: item.price,
+                                        number: item.number,
+                                    }
+                                    // this.state.orders_list.values.map()
+                                    // console.log('orderlist', orders_list)
+                                    this.setState({ orders_list })
+                                })
+                        }).catch(_ => {
+                            orders_list[index++] = {
+                                id: item.id,
+                                user_id: item.user_id,
+                                merchant: '',
+                                date: new Date(item.date).toLocaleTimeString("en-US"),
+                                state: item.state,
+                                remark: item.remark,
+                                product: '',
+                                price: item.price,
+                                number: item.number,
+                            }
+
+                            this.setState({ orders_list })
                         })
                 }
             }).catch(e => {
-                console.log(e);
+                // console.log(e);
             })
-    }
-
-    getMerchant = async (id) => {
-        // console.log(id);
-        let resp = await client.post(`merchant/get`, {
-            id: id,
-        }).catch(e => {
-            console.log(e)
-        })
-
-        return resp.data;
-    }
-
-    getProduct = async (id) => {
-        // console.log(id);
-        let resp = await client.post(`product/get`, {
-            id: id,
-        }).catch(e => {
-            console.log(e)
-        })
-
-        return resp.data;
     }
 
     onClearOrder = () => {
         let list = this.state.orders_list;
         for (let i = 0; i < list.length; i++) {
+            console.log('delete', list[i].id);
             client.post(`order/delete`, {
                 id: list[i].id,
             }).then((resp) => {

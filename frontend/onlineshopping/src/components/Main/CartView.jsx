@@ -1,6 +1,6 @@
 import React from 'react';
 import { forwardRef, useImperativeHandle } from 'react';
-import { ShoppingCartOutlined, CheckOutlined, LoadingOutlined, ClearOutlined,ReloadOutlined, ShoppingOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, CheckOutlined, LoadingOutlined, ClearOutlined, ReloadOutlined, ShoppingOutlined } from '@ant-design/icons';
 import { Flex, Card, Button, Space, Image, Spin, message, InputNumber, Empty, FloatButton, Tooltip } from 'antd';
 import client from '../../api/axios';
 
@@ -54,26 +54,27 @@ class CartView extends React.Component {
                 let n = list[i].number;
                 if (n < 10000) n++;
                 cart_product_list.push({
-                    id: list[i].id,
+                    ...list[i],
                     number: n,
-                    date: Date.parse(new Date())
                 })
             } else cart_product_list.push(list[i])
         }
 
         this.props.setCartProductList(cart_product_list)
 
-        client.post(`cart`, {
-            cart_product_list
-        }).then((response) => {
-            message.config({
-                maxCount: 1,
-                duration: 1
-            })
-            message.success("Add success")
-        }).catch(error => {
-            console.log(error);
-        });
+        if (cart_product_list != null) {
+            client.post(`cart`, {
+                cart_product_list
+            }).then((response) => {
+                message.config({
+                    maxCount: 1,
+                    duration: 1
+                })
+                message.success("Add success")
+            }).catch(error => {
+                console.log(error);
+            });
+        }
 
     }
 
@@ -89,7 +90,7 @@ class CartView extends React.Component {
     async pullPruduct(id) {
         let respone = await client.post(`product/get`, {
             id: id
-        })
+        }).catch(e => console.log(e))
         return respone.data;
     }
 
@@ -133,9 +134,8 @@ class CartView extends React.Component {
                 if (num == 0) continue;
 
                 cart_product_list.push({
-                    id: list[i].id,
+                    ...list[i],
                     number: num,
-                    date: Date.parse(new Date())
                 })
             } else {
                 cart_product_list.push(list[i])
@@ -166,14 +166,19 @@ class CartView extends React.Component {
                         ?
                         this.props.cart_product_list.map((item) => (
                             <Card key={item.id} style={{ width: "250px", height: '300px', }}>
-                                <Meta
-                                    // avatar={item.avatar_locator ? <Spin size='large'></Spin> : ''}
-                                    avatar={<Image placeholder='true'
-                                        // style={{ borderRadiusLG: '50px' }}
-                                        src="https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg"></Image>}
-                                    title={item.name}
-                                    description={item.intro}
-                                />
+                                <Meta title={<div style={{ fontSize: '15px' }}>{item.product ? item.product.name : ''}</div>} />
+                                <Flex style={{ marginTop: '10px', flex: '1', flexDirection: 'column' }}>
+                                    {
+                                        item.product && item.product.avatar ?
+                                            <Image placeholder='true' style={{ width: '200px', height: '150px' }}
+                                                src={item.product ? item.product.avatar : ''}></Image>
+                                            : <Empty style={{ margin: 'auto auto' }}></Empty >
+                                    }
+
+
+                                    {/* {item.id} */}
+                                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', fontSize: '15px' }}>{item.product ? item.product.intro : ''}</div>
+                                </Flex>
 
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
                                     <Tooltip title="Buy this">

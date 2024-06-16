@@ -19,7 +19,12 @@ class DetrimentView extends React.Component {
     }
 
     pruchase = () => {
-        if (this.props.purchaseList == null) {
+        if (this.props.purchaseList == null || this.props.purchaseList.length == 0) {
+            message.config({
+                maxCount: 1,
+                duration: 1,
+            })
+            message.info('Please select product');
             return
         }
 

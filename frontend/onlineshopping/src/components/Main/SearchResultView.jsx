@@ -20,6 +20,11 @@ class SearchResultView extends React.Component {
 
     isInCart = (id) => {
         let list = this.props.cart_product_list;
+
+        if (list == null) {
+            return false;
+        }
+
         for (let i = 0; i < list.length; i++) {
             if (list[i].id == id) {
                 return list[i].number;
@@ -73,18 +78,20 @@ class SearchResultView extends React.Component {
         let list = this.props.cart_product_list;
         let existed = false;
 
-        for (let i = 0; i < list.length; i++) {
-            if (list[i].id == id) {
-                existed = true;
+        if (list != null) {
+            for (let i = 0; i < list.length; i++) {
+                if (list[i].id == id) {
+                    existed = true;
 
-                let n = list[i].number;
-                if (n < 10000) n++;
-                cart_product_list.push({
-                    id: list[i].id,
-                    number: n,
-                    date: Date.parse(new Date())
-                })
-            } else cart_product_list.push(list[i])
+                    let n = list[i].number;
+                    if (n < 10000) n++;
+                    cart_product_list.push({
+                        id: list[i].id,
+                        number: n,
+                        date: Date.parse(new Date())
+                    })
+                } else cart_product_list.push(list[i])
+            }
         }
 
         if (existed == false) {
@@ -121,7 +128,16 @@ class SearchResultView extends React.Component {
                         :
                         this.props.searchedProductList.map((item) => (
                             <Card key={item.id} style={{ width: "250px", height: '300px', }}>
-                                <Meta avatar={<Image placeholder='true' src="https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg"></Image>} title={item.name} description={item.intro} />
+                                <Meta title={<div style={{ fontSize: '15px' }}>{item.name}</div>} />
+                                <Flex style={{ marginTop: '10px', flex: '1', flexDirection: 'column' }}>
+                                    {
+                                        item.avatar ?
+                                            <Image placeholder='true' style={{ width: '200px', height: '150px' }}
+                                                src={item.avatar}></Image>
+                                            : <Empty style={{ margin: 'auto auto' }}></Empty >
+                                    }
+                                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', fontSize: '15px' }}> {item.intro}</div>
+                                </Flex>
 
                                 <Space style={{ position: 'absolute', left: '0', bottom: '0', margin: '25px', fontSize: '25px' }}>
                                     <Tooltip title="Buy this">
