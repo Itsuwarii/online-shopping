@@ -1,3 +1,4 @@
+
 syntax = "v1"
 
 // 订单里的一个商品
@@ -19,17 +20,20 @@ type (
 	}
 
 	Order {
-		UserId           int            `json:"user_id"`
-		MerchantId       int            `json:"merchant_id"`
-		Date             int64          `json:"date"`
-		State            int            `json:"state"`
-		Remark           string         `json:"remark"`
-		OrderProductList []OrderProduct `json:"order_product_ist"`
+		Id         int64   `json:"id"`
+		UserId     int64   `json:"user_id"`
+		MerchantId int64   `json:"merchant_id"`
+		Date       int64   `json:"date"`
+		State      int64   `json:"state"`
+		Remark     string  `json:"remark"`
+		ProductId  int64   `json:"product_id"`
+		Price      float64 `json:"price"`
+		Number     int64   `json:"number"`
 	}
 
 	NewOrder {
-		Remark           string         `json:"remark"`
-		Produc           Product        `json:"product"`
+		Remark  string       `json:"remark"`
+		Product OrderProduct `json:"product"`
 	}
 
 	OrderId {
@@ -58,6 +62,10 @@ service mall-api {
 	// 删除订单
 	@handler OrderDeleteHandler
 	delete / (OrderId)
+
+	// 修改订单
+	@handler OrderUpdateHandler
+	post /update (Order)
 
 	@handler OrderGetForMerchantHandler
 	post /merchant/get returns (OrderList)
