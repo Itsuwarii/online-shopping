@@ -149,11 +149,11 @@ type MerchantRegisterResp struct {
 }
 
 type MerchantUpdateInfoReq struct {
-	Name          string `db:"Name"`
-	AvatarLocator string `db:"AvatarLocator"`
-	Licence       string `db:"Licence"`
-	TelePhone     string `db:"TelePhone"`
-	Intro         string `db:"Intro"`
+	Name          string `json:"Name"`
+	AvatarLocator string `json:"AvatarLocator"`
+	Licence       string `json:"Licence"`
+	TelePhone     string `json:"TelePhone"`
+	Intro         string `json:"Intro"`
 }
 
 type MerchantUpdateInfoResp struct {

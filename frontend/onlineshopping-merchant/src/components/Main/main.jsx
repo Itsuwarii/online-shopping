@@ -196,11 +196,11 @@ function Main() {
                                         label: 'Orders',
                                         icon: <TagsOutlined />,
                                     },
-                                    {
-                                        key: '4',
-                                        label: 'Dialogue',
-                                        icon: <MessageOutlined />,
-                                    },
+                                    // {
+                                    //     key: '4',
+                                    //     label: 'Dialogue',
+                                    //     icon: <MessageOutlined />,
+                                    // },
                                 ],
                             },
                             {
