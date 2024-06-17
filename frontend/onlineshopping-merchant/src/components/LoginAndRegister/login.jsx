@@ -18,13 +18,10 @@ const Login = () => {
                 "marchantName": username,
                 "password": password
             }).then(function (response) {
-                if (response.status == 200) {
-                    console.log("login success", response);
-                    saveAccessToken(response.data.auth.token);
-                    window.location.replace('/');
-                } else {
-                    console.log(response);
-                }
+                console.log("login success", response);
+                saveAccessToken(response.data.auth.token);
+                window.location.replace('/');
+
             }).catch(function (error) {
                 console.log(error);
                 if (error.response.data == "password check failed\n") {

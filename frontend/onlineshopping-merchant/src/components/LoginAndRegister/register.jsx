@@ -86,11 +86,10 @@ const Register = () => {
                 "telephone": telephone,
                 "intro": intro,
             }).then(function (response) {
-                if (response.code === 200) {
-                    console.log("register success", response);
-                    saveAccessToken(response.data.Auth.Token);
-                    window.location.replace('/');
-                }
+                console.log("register success", response);
+                saveAccessToken(response.data.auth.token);
+                window.location.replace('/');
+
             }).catch(function (error) {
                 console.log(error);
                 // if (error.response.data == 'user existed\n'){
